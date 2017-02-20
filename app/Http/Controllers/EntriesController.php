@@ -28,7 +28,7 @@ class EntriesController extends Controller
             return redirect('entry/add');
         }*/
         $date = date('d/m/Y');
-        $entries = Entrie::whereDate('created_at', '=', date('Y-m-d'))->get();
+        $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->get();
         return view('entries.index', compact('entries', 'date'));
     }
 
@@ -40,11 +40,12 @@ class EntriesController extends Controller
     public function add()
     {
         //
+        $date = date('Y-m-d');
         $operations = Operation::all();
         $categories = Categorie::all();
         $companies = Companie::all();
         $units = Unit::orderBy('code')->get();
-        return view('entries.add', compact('operations','categories','companies','units'));
+        return view('entries.add', compact('operations','categories','companies','units','date'));
     }
 
     /**
@@ -109,9 +110,15 @@ class EntriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Entrie $entry)
     {
-        //
+        //dd($entry);
+        $users = User::all();
+        $operations = Operation::all();
+        $categories = Categorie::all();
+        $companies = Companie::all();
+        $units = Unit::all();
+        return view('entries.edit', compact('entry','operations','categories','companies','units','users'));
     }
 
     /**
@@ -121,9 +128,20 @@ class EntriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Entrie $entry)
     {
-        //
+        //dd($request);
+
+        $saved = $entry->update($request->all());
+
+        if ($saved) {
+            $request->session()->flash('flash_message', 'Registro modificado.');
+        }
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo modificar el Registro.');
+        }
+
+        return redirect('/entry');
     }
 
     /**
@@ -144,7 +162,6 @@ class EntriesController extends Controller
 
     public function searching(Request $request)
     {
-        # code...
         //dd($request);
         $this->validate($request, [
             'search' => 'required',
@@ -156,7 +173,7 @@ class EntriesController extends Controller
         $users = collect([]);
 
         if ($parameter == 'date') {
-            $entries = Entrie::whereRaw('date(created_at) = ?', $query)->get();            
+            $entries = Entrie::whereRaw('date(date) = ?', $query)->get();            
         }
         if ($parameter == 'user') {
             $users = User::where('name', 'LIKE', '%' . $query . '%')->get();
@@ -167,13 +184,16 @@ class EntriesController extends Controller
         if($parameter <> 'date' and $parameter <> 'user'){
             $entries = Entrie::where($parameter, 'LIKE', '%' . $query . '%')->get();
         }
-        dd($entries);
-        /*if($articleRequests->isEmpty()) {
+        
+        if($entries->isEmpty()) {
             $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
             return back();
         }
         else {
-            return view('requests.result', compact('articleRequests'));
-        } */
+           //$date = ($parameter == 'date') ? $query : '' ;
+            $search = 'Parámetro = '.$query;
+            $date = '';
+            return view('entries.index', compact('entries','date'));
+        }
     }
 }

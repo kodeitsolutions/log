@@ -70,9 +70,7 @@
                text-align:right; 
             }
 
-            :checked + label {
-               font-weight: bold;
-            }
+           
         </style>
     </head>
     <body>
@@ -98,7 +96,9 @@
         <div class="container col-md-10 col-md-offset-1">
             @yield('login')            
         </div>
-        
+       
+        @yield('table')
+
         <div class="container col-md-11 col-md-offset-1">
             <div class="col-md-6 col-md-offset-3">
                 @if(Session::has('flash_message_success'))

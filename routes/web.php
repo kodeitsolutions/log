@@ -32,6 +32,7 @@ Route::get('entry', 'EntriesController@index');
 Route::get('entry/add', 'EntriesController@add');
 Route::post('entry/add', 'EntriesController@store');
 Route::get('entry/getEntry/{id}', 'EntriesController@show');
+Route::get('entry/{entry}/edit', 'EntriesController@edit');
 Route::get('entry/search', 'EntriesController@search');
 Route::get('entry/searching', 'EntriesController@searching');
 Route::patch('entry/{entry}', 'EntriesController@update');

@@ -19,16 +19,16 @@
               <label class="control-label col-md-2">Categoría:</label>
               <div class="col-md-10">
                   <select id="type" class="form-control input-sm" name="type" required>
-                    <option selected disabled>Seleccione la categoría</option>
-                    <option value="Todos">Todos</option>
+                    <option selected disabled>Seleccione la categoría</option>                    
                     @foreach($categories as $category)
                        <option value="{{ $category->name }}">{{ $category->name }}</option>
-                    @endforeach                     
+                    @endforeach
+                    <option value="Persona-Material">Persona-Material</option>                     
                   </select>  
               </div>
           </div>
           <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('company') ? ' has-error' : '' }} row">
-              <label class="control-label col-md-2">Empresa:</label>
+              <label class="control-label col-md-2">Empresa causante de Mov.:</label>
               <div class="col-md-10">
                   <select id="company" class="form-control input-sm" name="company" required>
                     <option selected disabled>Seleccione la empresa</option>
@@ -44,6 +44,14 @@
                   <input type="text" class="form-control" name="destination" id="destination" placeholder="Ingrese el destino." value="{{ old('destination') }}" required>
               </div>
           </div>
+
+          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('date') ? ' has-error' : '' }} row">
+              <label class="control-label col-md-2">Fecha:</label>
+              <div class="col-md-10"> 
+                  <input type="date" class="form-control" name="date" id="date" value="{{ $date }}" required>
+              </div>
+          </div>
+
           <div class="form-group col-xs-2 col-sm-12 row">
             <label class="control-label col-md-2">Hora:</label>
             <div class="col-md-2">
@@ -90,6 +98,13 @@
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="person_occupation" id="person_occupation" placeholder="Ingrese la ocupación de la persona." value="{{ old('person_occupation') }}" >
               </div>
+            </div> 
+
+            <div class="row">
+              <label class="control-label col-md-2">Empresa:</label>
+              <div class="col-md-10"> 
+                <input type="text" class="form-control" name="person_company" id="person_company" placeholder="Ingrese la empresa a la que pertenece la persona." value="{{ old('person_company') }}" >
+              </div>
             </div>                            
           </div>          
 
@@ -133,7 +148,22 @@
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="vehicle_plate" id="vehicle_plate" placeholder="Ingrese la placa del vehículo." value="{{ old('vehicle_plate') }}" >
               </div>
-            </div>            
+            </div>        
+
+            <div class="row">
+              <label class="control-label col-md-2">Nombre del Chofer:</label>
+              <div class="col-md-10"> 
+                <input type="text" class="form-control" name="driver_name" id="driver_name" placeholder="Ingrese el nombre del chofer." value="{{ old('driver_name') }}" >
+              </div>
+            </div>      
+
+            <div class="row">
+              <label class="control-label col-md-2">Cédula del Chofer:</label>
+              <div class="col-md-10"> 
+                <input type="text" class="form-control" name="driver_id" id="driver_id" placeholder="Ingrese la cédula del chofer." value="{{ old('driver_id') }}" >
+              </div>
+            </div>
+
           </div>
 
           <div class="col-md-10">
@@ -171,7 +201,7 @@
 		           	$("#vehicle").show()
 		           	$("#person").hide()		           	
 		           	break;
-		        case 'Todos':
+		        case 'Persona-Material':
 		        	$("#vehicle").hide()
 		        	$("#person").show()
 		       	 	$('#material').show()
