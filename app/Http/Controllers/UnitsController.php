@@ -42,7 +42,7 @@ class UnitsController extends Controller
     {
         //
         $this->validate($request, [
-            'code' => 'required|max:5|alpha',
+            'code' => 'required|max:5|alpha|unique:units',
             'name' => 'required|max:255',
         ]);
         

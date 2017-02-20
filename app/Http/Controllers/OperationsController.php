@@ -43,7 +43,7 @@ class OperationsController extends Controller
     {
         //
         $this->validate($request, [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255|unique:operations'
         ]);
         
         $operation = new Operation($request->all());

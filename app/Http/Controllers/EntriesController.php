@@ -136,4 +136,44 @@ class EntriesController extends Controller
     {
         //
     }
+
+    public function search()
+    {
+        return view('entries.search');
+    }
+
+    public function searching(Request $request)
+    {
+        # code...
+        //dd($request);
+        $this->validate($request, [
+            'search' => 'required',
+        ]);
+
+        $parameter = $request->search;
+        $query = ($request->value_text == '') ? $request->value_date : $request->value_text ;
+
+        $users = collect([]);
+
+        if ($parameter == 'date') {
+            $entries = Entrie::whereRaw('date(created_at) = ?', $query)->get();            
+        }
+        if ($parameter == 'user') {
+            $users = User::where('name', 'LIKE', '%' . $query . '%')->get();
+            foreach ($users as $user) {
+                $entries = Entrie::where('user_id', '=', $user->id)->get();
+            }
+        }
+        if($parameter <> 'date' and $parameter <> 'user'){
+            $entries = Entrie::where($parameter, 'LIKE', '%' . $query . '%')->get();
+        }
+        dd($entries);
+        /*if($articleRequests->isEmpty()) {
+            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
+            return back();
+        }
+        else {
+            return view('requests.result', compact('articleRequests'));
+        } */
+    }
 }

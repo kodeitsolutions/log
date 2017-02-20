@@ -20,11 +20,15 @@ class CreateEntriesTable extends Migration
             $table->string('company');
             $table->string('destination');
             $table->string('time');
+            $table->date('date');
             $table->string('person_name')->nullable();
             $table->string('person_id')->nullable();
             $table->string('person_occupation')->nullable();
+            $table->string('person_company')->nullable();
             $table->string('vehicle')->nullable();
             $table->string('vehicle_plate')->nullable();
+            $table->string('driver_name')->nullable();
+            $table->string('driver_id')->nullable();
             $table->string('material_type')->nullable();
             $table->decimal('material_quantity',9,2)->nullable()->default(0);
             $table->string('material_unit')->nullable();

@@ -104,12 +104,16 @@ return [
         'code' => [
             'max' => 'El código debe ser de :max caracteres.',
             'alpha' => 'El código debe contener solo letras.',
+            'unique'   => 'Este código ya se encuentra registrado.',
         ],
         'search' => [
             'required' => 'Debe seleccionar un parámetro de búsqueda.'
         ],
         'value' => [
             'required' => 'Debe ingresar un dato para buscar.'
+        ],
+        'name' => [
+            'unique'   => 'Este nombre ya se encuentra registrado.',
         ]
     ],
 

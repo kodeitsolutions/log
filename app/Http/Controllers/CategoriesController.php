@@ -43,7 +43,7 @@ class CategoriesController extends Controller
     {
         //dd($request);
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:categories',
             'description' => 'required|max:255'
         ]);
         
@@ -129,7 +129,7 @@ class CategoriesController extends Controller
             $request->session()->flash('flash_message_not', 'No se pudo eliminar la Categoría.');   
         }
 
-        return redirect('/operation');
+        return redirect('/category');
     }
 
     public function search()

@@ -42,7 +42,7 @@ class CompaniesController extends Controller
     {
         //
         $this->validate($request, [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255|unique:companies'
         ]);
         
         $companie = new Companie($request->all());
