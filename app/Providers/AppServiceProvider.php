@@ -14,8 +14,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $date = date('Y-m-d');
+        view()->share('date',$date);
     }
-
     /**
      * Register any application services.
      *
