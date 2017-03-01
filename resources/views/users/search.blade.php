@@ -9,6 +9,7 @@
       <div class="col-sm-10">
         <h4>Búsqueda de usuarios:</h4>
         <form method="GET" action="/user/searching">
+          {{ csrf_field()}}
           	<div class="form-group col-xs-2 col-sm-8 {{ $errors->has('search') ? ' has-error' : '' }}">
             	<label>Buscar por:</label>
             	<select  id="search" class="form-control input-sm" name="search" required>
