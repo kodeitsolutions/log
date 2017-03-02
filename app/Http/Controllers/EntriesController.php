@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Session;
+use PDF;
+use Response;
 use App\User;
 use App\Entrie;
 use App\Operation;
@@ -21,14 +24,9 @@ class EntriesController extends Controller
     public function index()
     {
         //
-        /*if (Auth::user()->isAdmin) {
-            $entries = Entrie::all();
-            return view('entries.index', compact('entries'));
-        } else {
-            return redirect('entry/add');
-        }*/
         $date = date('d/m/Y');
         $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->get();
+        Session::put('entries', $entries);
         return view('entries.index', compact('entries', 'date'));
     }
 
@@ -40,12 +38,11 @@ class EntriesController extends Controller
     public function add()
     {
         //
-        $date = date('Y-m-d');
         $operations = Operation::all();
         $categories = Categorie::all();
         $companies = Companie::all();
         $units = Unit::orderBy('code')->get();
-        return view('entries.add', compact('operations','categories','companies','units','date'));
+        return view('entries.add', compact('operations','categories','companies','units'));
     }
 
     /**
@@ -101,7 +98,7 @@ class EntriesController extends Controller
         {
             return Redirect::route('entries.index');
         }
-        return \Response::json($entry);
+        return Response::json($entry);
     }
 
     /**
@@ -157,43 +154,59 @@ class EntriesController extends Controller
 
     public function search()
     {
-        return view('entries.search');
+        $operations = Operation::all();
+        $categories = Categorie::all();
+        $companies = Companie::all();
+        $units = Unit::orderBy('code')->get();
+        $users = User::all();
+        return view('entries.search',compact('operations','categories','companies','units','users'));
     }
 
     public function searching(Request $request)
     {
         //dd($request);
-        $this->validate($request, [
-            'search' => 'required',
-        ]);
 
-        $parameter = $request->search;
-        $query = ($request->value_text == '') ? $request->value_date : $request->value_text ;
+        $input = $request->all();
 
-        $users = collect([]);
+        $conditions = [['date', '>=',$request->date_from],
+                       ['date', '<=',$request->date_to]];
 
-        if ($parameter == 'date') {
-            $entries = Entrie::whereRaw('date(date) = ?', $query)->get();            
+        if($request->has('user')){
+            array_push($conditions, ['user_id','=',$request->user]);
         }
-        if ($parameter == 'user') {
-            $users = User::where('name', 'LIKE', '%' . $query . '%')->get();
-            foreach ($users as $user) {
-                $entries = Entrie::where('user_id', '=', $user->id)->get();
-            }
+        if($request->has('operation')){
+            array_push($conditions, ['operation','=',$request->operation]);
         }
-        if($parameter <> 'date' and $parameter <> 'user'){
-            $entries = Entrie::where($parameter, 'LIKE', '%' . $query . '%')->get();
+        if($request->has('type')){
+            array_push($conditions, ['type','=',$request->type]);
+        }
+        if($request->has('company')){
+            array_push($conditions, ['company','=',$request->company]);
+        }
+
+        $entries = Entrie::where($conditions)->get();
+
+        $date = '';
+        Session::put('entries', $entries);
+        return view('entries.index', compact('entries','date'));
+    }
+
+    public function test()
+    {
+        # code...
+        $entries = Session::get('entries');
+        //dd($entries);
+
+        if ($entries->isEmpty()) {            
+            Session::flash('flash_message_info', 'No hay datos para imprimir.');
+            return back();
+        } else {
+            $pdf = PDF::loadView('entries.print', compact('entries'));
+            return $pdf->download('Registros.pdf');
+
+            Session::forget('entries');
         }
         
-        if($entries->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
-        }
-        else {
-           //$date = ($parameter == 'date') ? $query : '' ;
-            $search = 'Parámetro = '.$query;
-            $date = '';
-            return view('entries.index', compact('entries','date'));
-        }
+        
     }
 }

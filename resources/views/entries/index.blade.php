@@ -84,13 +84,16 @@
 						<td>{{ $entrie->vehicle }}</td>
 						<td>{{ $entrie->vehicle_plate }}</td>
 						<td>{{ $entrie->driver_name}}  {{ $entrie->driver_id}}</td>
-						<td align="right"><a href="entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td align="right"><a href="/entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
                			<td align="right"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>
 					</tr>
 				@endforeach
 			</tbody>
-		</table>		
+		</table>
+		<div class="form-group col-xs-2 col-sm-12" align="right">
+	        <a href="/entry/print" class="btn btn-info btn-xs" role="button"><span class="glyphicon glyphicon-print"></a>
+	    </div>
 	</div>
 @stop
 

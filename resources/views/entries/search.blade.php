@@ -9,33 +9,67 @@
       <div class="col-sm-10">
         <h4>Búsqueda de registros:</h4>
         <form method="GET" action="/entry/searching">
-          	<div class="form-group col-xs-2 col-sm-8 {{ $errors->has('search') ? ' has-error' : '' }}">
-            	<label>Buscar por:</label>
-              <select  id="search" class="form-control input-sm" name="search" required>
-                  <option value="0" selected disabled>Seleccione el parámetro de búsqueda</option>
-                  <option value="date">Fecha</option>
-                  <option value="user">Usuario</option>
-                  <option value="operation">Movimiento</option>
-                  <option value="type">Categoría</option>
-                  <option value="company">Empresa</option>
-                  <option value="destination">Destino / Origen</option>
-              </select>
-              @if ($errors->has('search'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('search') }}</strong>
-                </span>
-              @endif                  
-          	</div>
-
-          	<div class="form-group col-xs-2 col-sm-8" id="input-text" style="display: none">
-                <input type="text" class="form-control" name="value_text" placeholder="Buscar..."> 
+          {{ csrf_field()}}
+          <div class="form-group col-md-10">
+            <label class="control-label col-md-3">Fecha:</label>
+            <div class="col-md-4">
+              <input type="date" name="date_from" value="2017-01-01" class="form-control">
             </div>
-            
-            <div class="form-group col-xs-2 col-sm-8" id="input-date" style="display: none">
-                <input type="date" class="form-control" name="value_date" id="date">
+            <div class="col-md-4">
+              <input type="date" name="date_to" value="{{ $date }}" class="form-control">
             </div>
+          </div>
 
-          <div class="form-group col-xs-2 col-sm-8" align="right">
+          <div class="form-group col-md-10">
+            <label class="control-label col-md-3">Usuario:</label>
+            <div class="col-md-8">
+              <select  id="user" class="form-control input-sm" name="user">
+                <option selected disabled>Seleccione el usuario</option>
+                @foreach($users as $user)
+                   <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
+              </select>         
+            </div>
+          </div>
+
+          <div class="form-group col-md-10">
+            <label class="control-label col-md-3">Tipo de Movimiento:</label>
+            <div class="col-md-8">
+              <select  id="operation" class="form-control input-sm" name="operation">
+                <option selected disabled>Seleccione el tipo de movimiento</option>
+                @foreach($operations as $operation)
+                  <option value="{{ $operation->name }}">{{ $operation->name }}</option>
+                @endforeach
+              </select>         
+            </div>
+          </div>
+
+          <div class="form-group col-md-10">
+            <label class="control-label col-md-3">Categoría:</label>
+            <div class="col-md-8">
+                <select id="type" class="form-control input-sm" name="type" >
+                  <option selected disabled>Seleccione la categoría</option>                    
+                  @foreach($categories as $category)
+                     <option value="{{ $category->name }}">{{ $category->name }}</option>
+                  @endforeach
+                  <option value="Persona-Material">Persona-Material</option>                     
+                </select>  
+            </div>
+          </div>
+
+          <div class="form-group col-md-10">
+            <label class="control-label col-md-3">Empresa causante de Mov.:</label>
+            <div class="col-md-8">
+              <select id="company" class="form-control input-sm" name="company">
+                <option selected disabled>Seleccione la empresa</option>
+                @foreach($companies as $company)
+                   <option value="{{ $company->name }}">{{ $company->name }}</option>
+                @endforeach                     
+              </select>  
+            </div>
+          </div>
+
+          <div class="form-group col-xs-2 col-sm-10" align="right">
             <button type="submit" class="btn btn-primary">Buscar</button>
           </div>
         </form>
