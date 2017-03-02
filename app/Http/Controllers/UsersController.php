@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use Response;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -83,7 +84,7 @@ class UsersController extends Controller
         {
             return Redirect::route('users.index');
         }
-        return \Response::json($user);
+        return Response::json($user);
     }
 
     /**
@@ -174,5 +175,35 @@ class UsersController extends Controller
             return view('users.index', compact('users'));
         }
         
+    }
+
+    public function resetForm()
+    {
+        return view('users.reset');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        //dd($request);
+        $this->validate($request,[
+            'password' => 'required|min:5|max:20|confirmed',
+            'password_confirmation' => 'required'
+        ]);
+
+        $password = bcrypt($request->password);
+        $user_id = Auth::id();
+        $user = User::find($user_id);
+        $user->password = $password;
+
+        $saved = $user->save();
+
+        if ($saved) {
+            $request->session()->flash('flash_message', 'Contraseña modificada.');
+        }
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo modificar la contraseña.');
+        }
+
+        return redirect('entry');
     }
 }

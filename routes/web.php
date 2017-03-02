@@ -1,5 +1,5 @@
 <?php
-
+use Knp\Snappy\Pdf;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,10 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/home', function () {
-    return view('home');
-});
 
 Auth::routes();
 
@@ -27,6 +23,8 @@ Route::get('user/search', 'UsersController@search');
 Route::get('user/searching', 'UsersController@searching');
 Route::patch('user/{user}', 'UsersController@update');
 Route::delete('user/{user}', 'UsersController@destroy');
+Route::get('user/reset', 'UsersController@resetForm');
+Route::post('user/reset','UsersController@updatePassword');
 
 Route::get('entry', 'EntriesController@index');
 Route::get('entry/add', 'EntriesController@add');
@@ -37,6 +35,7 @@ Route::get('entry/search', 'EntriesController@search');
 Route::get('entry/searching', 'EntriesController@searching');
 Route::patch('entry/{entry}', 'EntriesController@update');
 Route::delete('entry/{entry}', 'EntriesController@destroy');
+Route::get('entry/print', 'EntriesController@test');
 
 Route::get('operation', 'OperationsController@index');
 Route::get('operation/add', 'OperationsController@add');

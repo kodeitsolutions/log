@@ -114,6 +114,9 @@ return [
         ],
         'name' => [
             'unique'   => 'Este nombre ya se encuentra registrado.',
+        ],
+        'password' => [
+            'confirmed' => 'La confirmación de la contraseña no coincide.'
         ]
     ],
 
