@@ -7,7 +7,7 @@
         </div>
         <ul class="nav navbar-nav">
           <li class="{{ setActive('entry')}}"><a href="/entry">Log</a></li>
-          <li class="{{ setActive('entry/add')}}"><a href="entry/add">Agregar registro</a></li>
+          <li class="{{ setActive('entry/add')}}"><a href="/entry/add">Agregar registro</a></li>
           <li class="{{ setActive('entry/search')}} {{ setActive('entry/searching')}}"><a href="/entry/search">Buscar registro</a></li>          
         </ul>
       </div>
