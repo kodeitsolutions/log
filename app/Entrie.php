@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Entrie extends Model
 {
     //
+    use SoftDeletes;
+
+    protected $softDelete = true;
 
     protected $fillable = ['operation', 'type', 'company', 'destination','time', 'date', 'person_name', 'person_id','person_occupation', 'person_company', 'vehicle', 'vehicle_plate', 'driver_name', 'driver_id', 'material_type','material_quantity', 'material_unit','user_id'];
 

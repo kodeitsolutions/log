@@ -34,6 +34,7 @@ class CreateEntriesTable extends Migration
             $table->string('material_unit')->nullable();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                   ->references('id')->on('users')
