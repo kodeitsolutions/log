@@ -58,10 +58,10 @@
 						<td>{{ $entrie->time }}</td>
 						<td>{{ $entrie->user->name }}</td>
 						<td>{{ $entrie->operation }}</td>
-						<td>{{ $entrie->type }}</td>
+						<td>{{ $entrie->category }}</td>
 						<td>{{ $entrie->company}}</td>
 						<td>{{ $entrie->destination }}</td>						
-						@if( $entrie->type == 'Persona' or $entrie->type == 'Persona-Material')
+						@if( $entrie->category == 'Persona' or $entrie->category == 'Persona-Material')
 							<td>{{ $entrie->person_name }}</td>
 							<td>{{ $entrie->person_id }}</td>
 							<td>{{ $entrie->person_occupation }}</td>
@@ -72,7 +72,7 @@
 							<td>N/A</td>
 							<td>N/A</td>
 						@endif
-						@if( $entrie->type == 'Material' or $entrie->type == 'Persona-Material')
+						@if( $entrie->category == 'Material' or $entrie->category == 'Persona-Material')
 							<td>{{ $entrie->material_type }}</td>
 							<td>{{ $entrie->material_quantity }}</td>
 							<td>{{ $entrie->material_unit}}</td>
