@@ -117,6 +117,9 @@ return [
         ],
         'password' => [
             'confirmed' => 'La confirmación de la contraseña no coincide.'
+        ],
+        'vehicle_plate' => [
+            'alpha_num' => 'La placa del vehículo solo debe contener números y letras.'
         ]
     ],
 
