@@ -57,11 +57,11 @@
 						<td>{{ $entrie->date->format('d/m/Y')}}</td>
 						<td>{{ $entrie->time }}</td>
 						<td>{{ $entrie->user->name }}</td>
-						<td>{{ $entrie->operation }}</td>
-						<td>{{ $entrie->category }}</td>
-						<td>{{ $entrie->company}}</td>
+						<td>{{ $entrie->operation->name }}</td>
+						<td>{{ $entrie->category->name }}</td>
+						<td>{{ $entrie->company->name }}</td>
 						<td>{{ $entrie->destination }}</td>						
-						@if( $entrie->category == 'Persona' or $entrie->category == 'Persona-Material')
+						@if( $entrie->category->name == 'Persona' or $entrie->category->name == 'Persona-Material')
 							<td>{{ $entrie->person_name }}</td>
 							<td>{{ $entrie->person_id }}</td>
 							<td>{{ $entrie->person_occupation }}</td>
@@ -72,10 +72,10 @@
 							<td>N/A</td>
 							<td>N/A</td>
 						@endif
-						@if( $entrie->category == 'Material' or $entrie->category == 'Persona-Material')
+						@if( $entrie->category->name == 'Material' or $entrie->category->name == 'Persona-Material')
 							<td>{{ $entrie->material_type }}</td>
 							<td>{{ $entrie->material_quantity }}</td>
-							<td>{{ $entrie->material_unit}}</td>
+							<td>{{ $entrie->unit->code }}</td>
 						@else
 							<td>N/A</td>
 							<td>N/A</td>

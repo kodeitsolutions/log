@@ -4,36 +4,35 @@
   <div class=" col-md-12">
         <form method="POST" action="/entry/add">
           {{ csrf_field()}}
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('operation') ? ' has-error' : '' }} row" >
+          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('operation_id') ? ' has-error' : '' }} row" >
             <label class="control-label col-md-2">Tipo de Movimiento:</label>
             <div class="col-md-10">
-                <select  id="operation" class="form-control input-sm" name="operation" required>
+                <select  id="operation_id" class="form-control input-sm" name="operation_id" required>
                     <option selected disabled>Seleccione el tipo de movimiento</option>
                     @foreach($operations as $operation)
-                       <option value="{{ $operation->name }}">{{ $operation->name }}</option>
+                       <option value="{{ $operation->id }}">{{ $operation->name }}</option>
                     @endforeach
                 </select>
             </div>                          
           </div>
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('type') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('categorie_id') ? ' has-error' : '' }} row">
               <label class="control-label col-md-2">Categoría:</label>
               <div class="col-md-10">
-                  <select id="type" class="form-control input-sm" name="type" required>
+                  <select id="categorie_id" class="form-control input-sm" name="categorie_id" required>
                     <option selected disabled>Seleccione la categoría</option>                    
                     @foreach($categories as $category)
-                       <option value="{{ $category->name }}">{{ $category->name }}</option>
-                    @endforeach
-                    <option value="Persona-Material">Persona-Material</option>                     
+                      <option value="{{ $category->id }}" name="{{ $category->name }}">{{ $category->name }}</option>
+                    @endforeach                   
                   </select>  
               </div>
           </div>
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('company') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('companie_id') ? ' has-error' : '' }} row">
               <label class="control-label col-md-2">Empresa causante de Mov.:</label>
               <div class="col-md-10">
-                  <select id="company" class="form-control input-sm" name="company" required>
+                  <select id="companie_id" class="form-control input-sm" name="companie_id" required>
                     <option selected disabled>Seleccione la empresa</option>
                     @foreach($companies as $company)
-                       <option value="{{ $company->name }}">{{ $company->name }}</option>
+                      <option value="{{ $company->id }}">{{ $company->name }}</option>
                     @endforeach                     
                   </select>  
               </div>
@@ -117,16 +116,16 @@
               </div>
             </div>
             <div class="row">
-              <div class="{{ $errors->has('material_quantity') ? ' has-error' : '' }} col-md-12 row" >
+              <div class="{{ $errors->has('unit_id') ? ' has-error' : '' }} col-md-12 row" >
                 <label class="control-label col-md-2">Cantidad de material:</label>
                 <div class="col-md-5"> 
                   <input type="numeric" class="form-control" name="material_quantity" id="material_quantity" placeholder="Ingrese la cantidad de material." value="{{ old('material_quantity') }}" >
                 </div>
                 <div class="col-md-4"> 
-                  <select id="material_unit" class="form-control input-sm" name="material_unit" required>
+                  <select id="unit_id" class="form-control input-sm" name="unit_id" required>
                     <option selected disabled>Seleccione la unidad</option>
                     @foreach($units as $unit)
-                      <option value="{{ $unit->code }}">{{ $unit->code }}</option>
+                      <option value="{{ $unit->id }}">{{ $unit->code }}</option>
                     @endforeach                     
                   </select>
                 </div>
@@ -184,30 +183,31 @@
 
 @section('script')
 	<script type="text/javascript">
-		$('#type').on('change',function(){
+		$('#categorie_id').on('change',function(){
 
-			selection = $(this).val()
-		    switch(selection)
-		    {
-		       	case 'Persona':
-		       		$("#vehicle").hide()
-		        	$("#person").show()
-		           	$("#vehicle").show()
-		           	$('#material').hide()		           	
-		           	break;
-		       	case 'Material':
-		       		$("#vehicle").hide()
-		           	$('#material').show()
-		           	$("#vehicle").show()
-		           	$("#person").hide()		           	
-		           	break;
-		        case 'Persona-Material':
-		        	$("#vehicle").hide()
-		        	$("#person").show()
-		       	 	$('#material').show()
-		        	$("#vehicle").show()
-		        	break;
-		   	}
+			selection = $('#categorie_id option:selected').text()
+      
+	    switch(selection)
+	    {
+       	case 'Persona':
+       		$("#vehicle").hide()
+        	$("#person").show()
+          $("#vehicle").show()
+          $('#material').hide()		           	
+          break;
+       	case 'Material':
+       		$("#vehicle").hide()
+          $('#material').show()
+          $("#vehicle").show()
+          $("#person").hide()		           	
+          break;
+        case 'Persona-Material':
+        	$("#vehicle").hide()
+        	$("#person").show()
+       	 	$('#material').show()
+        	$("#vehicle").show()
+        	break;
+   	  }
 		});
 	</script>
 @stop

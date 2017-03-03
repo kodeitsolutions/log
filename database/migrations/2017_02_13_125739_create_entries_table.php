@@ -15,9 +15,9 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('operation');
-            $table->string('category');
-            $table->string('company');
+            $table->integer('operation_id')->unsigned();
+            $table->integer('categorie_id')->unsigned();
+            $table->integer('companie_id')->unsigned();
             $table->string('destination');
             $table->string('time');
             $table->date('date');
@@ -31,7 +31,7 @@ class CreateEntriesTable extends Migration
             $table->string('driver_id')->nullable();
             $table->string('material_type')->nullable();
             $table->decimal('material_quantity',9,2)->nullable()->default(0);
-            $table->string('material_unit')->nullable();
+            $table->integer('unit_id')->nullable()->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();

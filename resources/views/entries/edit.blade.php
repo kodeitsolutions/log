@@ -24,7 +24,7 @@
 		<div class="form-group col-xs-2 col-sm-9" >
             <label class="control-label col-md-3">Usuario:</label>
             <div class="col-md-6">
-                <select  id="user_id" class="form-control input-sm" name="user">
+                <select  id="user_id" class="form-control input-sm" name="user_id">
                     @foreach($users as $user)
                     	@if( $user->id  ==  $entry->user_id )
                        		<option selected value="{{ $user->id }}">{{ $user->name }}</option>
@@ -39,12 +39,12 @@
 		<div class="form-group col-xs-2 col-sm-9" >
             <label class="control-label col-md-3">Tipo de Movimiento:</label>
             <div class="col-md-6">
-                <select  id="operation" class="form-control input-sm" name="operation">
+                <select  id="operation_id" class="form-control input-sm" name="operation_id">
                     @foreach($operations as $operation)
-                    	@if( $operation->name  ==  $entry->operation )
-                       		<option selected value="{{ $operation->name }}">{{ $operation->name }}</option>
+                    	@if( $operation->id  ==  $entry->operation_id )
+                       		<option selected value="{{ $operation->id }}">{{ $operation->name }}</option>
                        	@else
-                       		<option value="{{ $operation->name }}">{{ $operation->name }}</option>
+                       		<option value="{{ $operation->id }}">{{ $operation->name }}</option>
                        	@endif
                     @endforeach
                 </select>
@@ -54,12 +54,12 @@
         <div class="form-group col-xs-2 col-sm-9" >
             <label class="control-label col-md-3">Categoría:</label>
             <div class="col-md-6">
-                <select  id="type" class="form-control input-sm" name="type">
+                <select  id="categorie_id" class="form-control input-sm" name="categorie_id">
                     @foreach($categories as $category)
-                    	@if( $category->name  ==  $entry->type )
-                       		<option selected value="{{ $category->name }}">{{ $category->name }}</option>
+                    	@if( $category->id  ==  $entry->categorie_id )
+                       		<option selected value="{{ $category->id }}">{{ $category->name }}</option>
                        	@else
-                       		<option value="{{ $category->name }}">{{ $category->name }}</option>
+                       		<option value="{{ $category->id }}">{{ $category->name }}</option>
                        	@endif
                     @endforeach
                 </select>
@@ -69,12 +69,12 @@
         <div class="form-group col-xs-2 col-sm-9" >
             <label class="control-label col-md-3">Empresa:</label>
             <div class="col-md-6">
-                <select  id="company" class="form-control input-sm" name="company">
+                <select  id="companie_id" class="form-control input-sm" name="companie_id">
                     @foreach($companies as $company)
-                    	@if( $company->name  ==  $entry->company )
-                       		<option selected value="{{ $company->name }}">{{ $company->name }}</option>
+                    	@if( $company->id  ==  $entry->companie_id )
+                       		<option selected value="{{ $company->id }}">{{ $company->name }}</option>
                        	@else
-                       		<option value="{{ $company->name }}">{{ $company->name }}</option>
+                       		<option value="{{ $company->id }}">{{ $company->name }}</option>
                        	@endif
                     @endforeach
                 </select>
@@ -165,15 +165,15 @@
 		<div class="form-group col-xs-2 col-sm-9">
 			<label class="control-label col-md-3">Unidad:</label>
 			<div class="col-md-6">				
-				<select  id="material_unit" class="form-control input-sm" name="material_unit">
+				<select  id="unit_id" class="form-control input-sm" name="unit_id">
 	                @foreach($units as $unit)
-	                	@if ( $entry->material_unit == '')
+	                	@if ( is_null($entry->unit))
 							<option selected disabled>Seleccione la unidad</option>
 						@else
-	                		@if( $unit->code  ==  $entry->material_unit )
-	                   			<option selected value="{{ $unit->code }}">{{ $unit->name }}</option>
+	                		@if( $unit->id  ==  $entry->unit_id )
+	                   			<option selected value="{{ $unit->id }}">{{ $unit->code }}</option>
 	                   		@else
-	                   			<option value="{{ $unit->code }}">{{ $unit->name }}</option>
+	                   			<option value="{{ $unit->id }}">{{ $unit->code }}</option>
 	                   		@endif
 	                   	@endif
 	                @endforeach

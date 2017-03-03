@@ -55,8 +55,8 @@ class EntriesController extends Controller
     {
         //dd($request);
         $this->validate($request, [
-            'operation' => 'required',
-            'type' => 'required',
+            'operation_id' => 'required',
+            'categorie_id' => 'required',
             'destination' => 'required|max:255',
             'hour' => 'required',
             'minute' =>  'required',
