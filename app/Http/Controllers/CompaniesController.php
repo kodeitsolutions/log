@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Response;
 use App\User;
 use App\Companie;
+use App\Entrie;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
@@ -73,7 +75,7 @@ class CompaniesController extends Controller
         {
             return Redirect::route('companies.index');
         }
-        return \Response::json($companie);
+        return Response::json($companie);
     }
 
     /**
@@ -115,18 +117,23 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Companie $companie)
+    public function destroy(Request $request, Companie $company)
     {
         //
-
-        $deleted = $companie->delete();
-
-        if ($deleted) {
-            $request->session()->flash('flash_message', 'Empresa eliminada.');
-        }
-        else{
-            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Empresa.');   
-        }
+        $entries = Entrie::where('companie_id','=',$company->id)->get();
+        
+        if ($entries->isEmpty()) {
+            $deleted = $company->delete();
+            if ($deleted) {
+                $request->session()->flash('flash_message', 'Empresa eliminada.');
+            }
+            else{
+                $request->session()->flash('flash_message_not', 'No se pudo eliminar la Empresa.');   
+            }
+        } else {
+            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Empresa ya que existen registros asociados a esta.');
+        }       
+        
 
         return redirect('/company');
     }

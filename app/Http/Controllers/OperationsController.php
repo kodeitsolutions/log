@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Response;
 use App\User;
 use App\Operation;
+use App\Entrie;
 use Illuminate\Http\Request;
 
 class OperationsController extends Controller
@@ -43,7 +45,7 @@ class OperationsController extends Controller
     {
         //
         $this->validate($request, [
-            'name' => 'required|max:255|unique:operations'
+            'name' => 'required|max:255|unique:operations,deleted_at,NULL'
         ]);
         
         $operation = new Operation($request->all());
@@ -75,7 +77,7 @@ class OperationsController extends Controller
         {
             return Redirect::route('operations.index');
         }
-        return \Response::json($operation);
+        return Response::json($operation);
     }
 
     /**
@@ -120,15 +122,21 @@ class OperationsController extends Controller
     public function destroy(Request $request, Operation $operation)
     {
         //
+        dd($operation->id);
+        $entries = Entrie::where('operation_id', $operation->id)->get();
 
-        $deleted = $operation->delete();
-
-        if ($deleted) {
-            $request->session()->flash('flash_message', 'Movimiento eliminado.');
+        if ($entries->isEmpty()) {
+            $deleted = $operation->delete();
+            if ($deleted) {
+                $request->session()->flash('flash_message', 'Movimiento eliminado.');
+            }
+            else{
+                $request->session()->flash('flash_message_not', 'No se pudo eliminar el Movimiento.');   
+            }
         }
-        else{
-            $request->session()->flash('flash_message_not', 'No se pudo eliminar el Movimiento.');   
-        }
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo eliminar el Movimiento ya que existen registros asociados a este.');  
+        }             
 
         return redirect('/operation');
     }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Response;
 use App\User;
 use App\Categorie;
+use App\Entrie;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -43,7 +45,7 @@ class CategoriesController extends Controller
     {
         //dd($request);
         $this->validate($request, [
-            'name' => 'required|max:255|unique:categories',
+            'name' => 'required|max:255|unique:categories,deleted_at,NULL',
             'description' => 'required|max:255'
         ]);
         
@@ -75,7 +77,7 @@ class CategoriesController extends Controller
         {
             return Redirect::route('categories.index');
         }
-        return \Response::json($category);
+        return Response::json($category);
     }
 
     /**
@@ -120,13 +122,19 @@ class CategoriesController extends Controller
     public function destroy(Request $request, Categorie $category)
     {
         //
-        $deleted = $category->delete();
+        $entries = Entrie::where('categorie_id',$category->id)->get();
 
-        if ($deleted) {
-            $request->session()->flash('flash_message', 'Categoría eliminada.');
+        if ($entries->isEmpty()) {
+            $deleted = $category->delete();
+            if ($deleted) {
+                $request->session()->flash('flash_message', 'Categoría eliminada.');
+            }
+            else{
+                $request->session()->flash('flash_message_not', 'No se pudo eliminar la Categoría.');   
+            }
         }
-        else{
-            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Categoría.');   
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Categoría ya que existen registros asociados a este.');
         }
 
         return redirect('/category');

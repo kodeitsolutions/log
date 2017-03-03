@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Response;
 use App\User;
 use App\Unit;
+use App\Entrie;
 use Illuminate\Http\Request;
 
 class UnitsController extends Controller
@@ -74,7 +76,7 @@ class UnitsController extends Controller
         {
             return Redirect::route('units.index');
         }
-        return \Response::json($unit);
+        return Response::json($unit);
     }
 
     /**
@@ -119,13 +121,20 @@ class UnitsController extends Controller
     public function destroy(Request $request, Unit $unit)
     {
         //
-        $deleted = $unit->delete();
+        //dd($unit->id);
+        $entries = Entrie::where('unit_id', $unit->id)->get();
 
-        if ($deleted) {
-            $request->session()->flash('flash_message', 'Unidad eliminada.');
+        if ($entries->isEmpty()) {
+            $deleted = $unit->delete();
+            if ($deleted) {
+                $request->session()->flash('flash_message', 'Unidad eliminada.');
+            }
+            else{
+                $request->session()->flash('flash_message_not', 'No se pudo eliminar la Unidad.');   
+            }
         }
-        else{
-            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Unidad.');   
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo eliminar la Unidad ya que existen registros asociados a esta.');  
         }
 
         return redirect('/unit');
