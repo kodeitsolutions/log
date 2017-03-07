@@ -98,6 +98,7 @@
 						@endif
 						<td align="right"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button>
 			        	<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+			        	<a href="/user/reset/{{$user->id}}" class="btn btn-info btn-xs" role="button"><span class="glyphicon glyphicon-lock"></a>
 			        	</td>
 		     		</tr>
 		     	@endforeach	     

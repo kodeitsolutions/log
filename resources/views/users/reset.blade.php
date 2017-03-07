@@ -4,10 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-8 col-md-offset-3">
+                    <h4>Cambiar contraseña al usuario {{ $user->name }}:</h4>
+                </div>
             
-                <form class="form-horizontal" role="form" method="POST" action="/user/reset">
-                    {{ csrf_field() }}
-                    
+                <form class="form-horizontal" role="form" method="POST" action="/user/reset/{{ $user->id }}">
+                    {{ csrf_field() }}                    
 
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <label for="password" class="col-md-4 control-label">Contraseña:</label>

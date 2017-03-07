@@ -58,7 +58,7 @@
                                         </form>
                                     </li> 
                                     <li>
-                                        <a href="/user/reset">Cambiar contraseña</a>
+                                        <a href="/user/reset/{{ Auth::user()->id }}">Cambiar contraseña</a>
                                     </li>                                   
                                 </ul>
                             </li>

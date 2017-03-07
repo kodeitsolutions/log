@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use Response;
 use App\User;
+use App\Entrie;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -130,9 +131,10 @@ class UsersController extends Controller
     public function destroy(Request $request, User $user)
     {
         //dd($user);
+        $entries = Entrie::where('user_id', $user->id)->get();
 
         $authenticated = Auth::id();
-        if ($authenticated != $user->id) {
+        if ($authenticated != $user->id and $entries->isEmpty()) {
             $deleted = $user->delete();
 
             if ($deleted) {
@@ -143,7 +145,7 @@ class UsersController extends Controller
             }
         } 
         else {
-            $request->session()->flash('flash_message_not', 'No se puede eliminar a sí mismo.');
+            $request->session()->flash('flash_message_not', 'No se puede eliminar a sí mismo o a un usuario que tenga registros asociados.');
         }
         
         return redirect('user');
@@ -177,12 +179,12 @@ class UsersController extends Controller
         
     }
 
-    public function resetForm()
+    public function resetForm(User $user)
     {
-        return view('users.reset');
+        return view('users.reset', compact('user'));
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request, User $user)
     {
         //dd($request);
         $this->validate($request,[
@@ -191,8 +193,6 @@ class UsersController extends Controller
         ]);
 
         $password = bcrypt($request->password);
-        $user_id = Auth::id();
-        $user = User::find($user_id);
         $user->password = $password;
 
         $saved = $user->save();

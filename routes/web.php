@@ -23,8 +23,8 @@ Route::get('user/search', 'UsersController@search');
 Route::get('user/searching', 'UsersController@searching');
 Route::patch('user/{user}', 'UsersController@update');
 Route::delete('user/{user}', 'UsersController@destroy');
-Route::get('user/reset', 'UsersController@resetForm');
-Route::post('user/reset','UsersController@updatePassword');
+Route::get('user/reset/{user}', 'UsersController@resetForm');
+Route::post('user/reset/{user}','UsersController@updatePassword');
 
 Route::get('entry', 'EntriesController@index');
 Route::get('entry/add', 'EntriesController@add');
