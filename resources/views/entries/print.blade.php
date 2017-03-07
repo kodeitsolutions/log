@@ -56,13 +56,13 @@
 
                 <h5><u>Datos del movimiento</u></h5>
                 <ul>
-                    <li><strong>Movimiento: </strong>{{ $entry->operation }}</li>
-                    <li><strong>Categoría: </strong>{{ $entry->type }}</li>
-                    <li><strong>Empresa: </strong>{{ $entry->company }}</li>
+                    <li><strong>Movimiento: </strong>{{ $entry->operation->name }}</li>
+                    <li><strong>Categoría: </strong>{{ $entry->category->name }}</li>
+                    <li><strong>Empresa: </strong>{{ $entry->company->name }}</li>
                     <li><strong>Destino / Origen: </strong>{{ $entry->destination }}</li>
                 </ul>
 
-                @if( $entry->type == 'Persona' or $entry->type == 'Persona-Material')
+                @if( $entry->category->name == 'Persona' or $entry->category->name == 'Persona-Material')
                     <h5><u>Datos de la persona</u></h5>
                     <ul>
                         <li><strong>Nombre: </strong>{{ $entry->person_name }}</li>
@@ -72,12 +72,12 @@
                     </ul>           
                 @endif 
 
-                @if( $entry->type == 'Material' or $entry->type == 'Persona-Material')
+                @if( $entry->category->name == 'Material' or $entry->category->name == 'Persona-Material')
                     <h5><u>Datos del material</u></h5>
                     <ul>
                         <li><strong>Material: </strong>{{ $entry->material_type }}</li>
                         <li><strong>Cantidad: </strong>{{ $entry->material_quantity }}</li>
-                        <li><strong>Unidad: </strong>{{ $entry->material_unit }}</li>
+                        <li><strong>Unidad: </strong>{{ $entry->unit->code }}</li>
                     </ul>
                 @endif  
 
