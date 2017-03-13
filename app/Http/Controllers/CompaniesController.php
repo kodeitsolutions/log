@@ -47,18 +47,18 @@ class CompaniesController extends Controller
             'name' => 'required|max:255|unique:companies'
         ]);
         
-        $companie = new Companie($request->all());
-        $companie->user_id = Auth::id();
-        $saved = $companie->save();
+        $company = new Companie($request->all());
+        $company->user_id = Auth::id();
+        $saved = $company->save();
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Empresa creada.');
+            $request->session()->flash('flash_message', 'Empresa '.$company->name.' creada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear la empresa.');
         }
         
-        return back();
+        return redirect('/company');
     }
 
     /**
@@ -70,12 +70,12 @@ class CompaniesController extends Controller
     public function show($id)
     {
         //
-        $companie = Companie::find($id);
-        if (is_null($companie))
+        $company = Companie::find($id);
+        if (is_null($company))
         {
             return Redirect::route('companies.index');
         }
-        return Response::json($companie);
+        return Response::json($company);
     }
 
     /**
@@ -102,7 +102,7 @@ class CompaniesController extends Controller
         $saved = $company->update($request->all());
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Empresa modificada.');
+            $request->session()->flash('flash_message', 'Empresa '.$company->name.' modificada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo modificar la Empresa.');
@@ -125,7 +125,7 @@ class CompaniesController extends Controller
         if ($entries->isEmpty()) {
             $deleted = $company->delete();
             if ($deleted) {
-                $request->session()->flash('flash_message', 'Empresa eliminada.');
+                $request->session()->flash('flash_message', 'Empresa '.$company->name.' eliminada.');
             }
             else{
                 $request->session()->flash('flash_message_not', 'No se pudo eliminar la Empresa.');   

@@ -45,7 +45,7 @@
 
           	<div class="form-group col-xs-2 col-sm-8 {{ $errors->has('telephone') ? ' has-error' : '' }}">
             	<label class="control-label">Teléfono:</label>
-              	<input type="text" class="form-control" name="telephone" value="{{ old('telephone') }}" placeholder="Ingrese el teléfono sin guión ni espacio." required>
+              	<input type="text" class="form-control" name="telephone" value="{{ old('telephone') }}" placeholder="Ingrese el teléfono sin guión ni espacio.">
 
               	@if ($errors->has('telephone'))
                     <span class="help-block">
@@ -59,7 +59,7 @@
 			      </div>
 
           	<div class="form-group col-xs-2 col-sm-8" align="right">
-            	<button type="submit" class="btn btn-primary">Agregar</button>
+            	<button type="submit" class="btn btn-primary">Aceptar</button>
           	</div>
         </form>
       </div>

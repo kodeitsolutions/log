@@ -69,7 +69,10 @@
 
 @section('content')
   <div class="col-md-11">
-    <table class="table table-striped">
+    <table class="table table-striped" width="100%">
+        <col style="width: 40%">
+        <col style="width: 40%">
+        <col style="width: 20%">
         <thead>
             <tr>
               <th>Código</th>
@@ -81,9 +84,10 @@
               <tr id="unit{{ $unit->id }}">
                 <td><span id="{{ $unit->id }}">{{ $unit->code }}</span></td>
                 <td><span id="{{ $unit->id }}">{{ $unit->name }}</span></td>
-                <td>{{ $unit->description }}</td>              
-                <td align="right"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button>
-                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+                <td>{{ $unit->description }}</td>
+                <td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
                 </td>   
             </tr>
           @endforeach      
@@ -94,6 +98,10 @@
 
 @section('script')
   <script type="text/javascript">   
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    }); 
+
     $('#myModalDelete').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var unit_id = button.data('id')

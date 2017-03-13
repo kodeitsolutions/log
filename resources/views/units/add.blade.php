@@ -32,7 +32,7 @@
           </div>
 
           <div class="form-group col-xs-2 col-sm-8" align="right">
-            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="submit" class="btn btn-primary">Aceptar</button>
           </div>
         </form>
       </div>

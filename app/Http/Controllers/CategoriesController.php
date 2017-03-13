@@ -54,13 +54,13 @@ class CategoriesController extends Controller
         $saved = $category->save();
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Categoría creada.');
+            $request->session()->flash('flash_message', 'Categoría '.$category->name.' creada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear la Categoría.');
         }
         
-        return back();
+        return redirect('/category');
     }
 
     /**
@@ -104,7 +104,7 @@ class CategoriesController extends Controller
         $saved = $category->update($request->all());
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Categoría modificada.');
+            $request->session()->flash('flash_message', 'Categoría '.$category->name.' modificada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo modificar la Categoría.');
@@ -127,7 +127,7 @@ class CategoriesController extends Controller
         if ($entries->isEmpty()) {
             $deleted = $category->delete();
             if ($deleted) {
-                $request->session()->flash('flash_message', 'Categoría eliminada.');
+                $request->session()->flash('flash_message', 'Categoría '.$category->name.' eliminada.');
             }
             else{
                 $request->session()->flash('flash_message_not', 'No se pudo eliminar la Categoría.');   

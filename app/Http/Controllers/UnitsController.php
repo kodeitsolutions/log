@@ -53,13 +53,13 @@ class UnitsController extends Controller
         $saved = $unit->save();
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Unidad creada.');
+            $request->session()->flash('flash_message', 'Unidad '.$unit->name.' creada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear la Unidad.');
         }
         
-        return back();
+        return redirect('/unit');
     }
 
     /**
@@ -103,7 +103,7 @@ class UnitsController extends Controller
         $saved = $unit->update($request->all());
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Unidad modificada.');
+            $request->session()->flash('flash_message', 'Unidad '.$unit->name.' modificada.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo modificar la Unidad.');
@@ -127,7 +127,7 @@ class UnitsController extends Controller
         if ($entries->isEmpty()) {
             $deleted = $unit->delete();
             if ($deleted) {
-                $request->session()->flash('flash_message', 'Unidad eliminada.');
+                $request->session()->flash('flash_message', 'Unidad '.$unit->name.' eliminada.');
             }
             else{
                 $request->session()->flash('flash_message_not', 'No se pudo eliminar la Unidad.');   

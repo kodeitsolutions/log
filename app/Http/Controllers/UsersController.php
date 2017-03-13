@@ -49,8 +49,7 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'password' => 'required|min:5|max:20',
-            'email' => 'required|email|unique:users',
-            'telephone' => 'required|numeric'
+            'email' => 'required|email|unique:users'
         ]);
         
         $user = new User($request->all());
@@ -63,13 +62,13 @@ class UsersController extends Controller
         $saved = $user->save();
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Usuario creado.');
+            $request->session()->flash('flash_message', 'Usuario '.$user->name.' creado.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear el Usuario.');
         }
         
-        return back();
+        return redirect('user');
     }
 
     /**
@@ -113,7 +112,7 @@ class UsersController extends Controller
         $saved = $user->update($request->all());
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Usuario editado.');
+            $request->session()->flash('flash_message', 'Usuario '.$user->name.' editado.');
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo editar el Usuario.');
@@ -138,7 +137,7 @@ class UsersController extends Controller
             $deleted = $user->delete();
 
             if ($deleted) {
-                $request->session()->flash('flash_message', 'Usuario eliminado.');
+                $request->session()->flash('flash_message', 'Usuario '.$user->name.' eliminado.');
             }
             else {
                 $request->session()->flash('flash_message_not', 'No se pudo eliminar el usuario.');
@@ -204,6 +203,6 @@ class UsersController extends Controller
             $request->session()->flash('flash_message_not', 'No se pudo modificar la contraseña.');
         }
 
-        return redirect('entry');
+        return redirect('user');
     }
 }

@@ -60,7 +60,9 @@
 
 @section('content')
   <div class="col-md-11">
-    <table class="table table-striped">
+    <table class="table table-striped" width="100%">
+        <col style="width: 80%">
+        <col style="width: 20%">
         <thead>
           <tr>
             <th>Nombre</th>
@@ -69,9 +71,10 @@
         <tbody>
           @foreach($companies as $company)
             <tr id="company{{ $company->id }}">
-              <td><span id="{{ $company->id }}">{{ $company->name }}</span></td>              
-              <td align="right"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$company->id}}"><span class="glyphicon glyphicon-pencil"></span></button>
-              <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$company->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>   
+              <td><span id="{{ $company->id }}">{{ $company->name }}</span></td>  
+              <td>
+              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$company->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+              <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$company->id}}"><span class="glyphicon glyphicon-trash"></span></button></td> </td>
             </tr>
           @endforeach      
         </tbody>
@@ -81,6 +84,10 @@
 
 @section('script')
   <script type="text/javascript">   
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });  
+
     $('#myModalDelete').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var company_id = button.data('id')

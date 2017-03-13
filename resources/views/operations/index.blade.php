@@ -59,18 +59,21 @@
 
 @section('content')
   <div class="col-md-11">
-    <table class="table table-striped">
+    <table class="table table-striped"width="100%">
+        <col style="width: 80%">
+        <col style="width: 20%">
         <thead>
-            <tr>
-              <th>Nombre</th>
-            </tr>
+          <tr>
+            <th>Nombre</th>
+          </tr>
         </thead>
         <tbody>
           @foreach($operations as $operation)
               <tr id="operation{{ $operation->id }}">
                 <td><span id="{{ $operation->id }}">{{ $operation->name }}</span></td>              
-                <td align="right"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-pencil"></span></button>
-                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+                <td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-trash"></span></button> </td>
                 </td>   
             </tr>
           @endforeach      
@@ -81,6 +84,10 @@
 
 @section('script')
   <script type="text/javascript">   
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+
     $('#myModalDelete').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var operation_id = button.data('id')
