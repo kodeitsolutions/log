@@ -120,6 +120,9 @@ return [
         ],
         'vehicle_plate' => [
             'alpha_num' => 'La placa del vehículo solo debe contener números y letras.'
+        ],
+        'email' => [
+            'unique' => 'Este email ya se encuentra registrado.'
         ]
     ],
 
