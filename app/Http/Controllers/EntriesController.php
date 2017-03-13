@@ -81,7 +81,7 @@ class EntriesController extends Controller
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
         }
 
-        return back();
+        return redirect('/entry');
     }
 
     /**

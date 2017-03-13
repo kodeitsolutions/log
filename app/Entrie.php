@@ -12,9 +12,9 @@ class Entrie extends Model
 
     protected $softDelete = true;
 
-    protected $fillable = ['operation_id', 'categorie_id', 'companie_id', 'destination','time', 'date', 'person_name', 'person_id','person_occupation', 'person_company', 'vehicle', 'vehicle_plate', 'driver_name', 'driver_id', 'material_type','material_quantity', 'unit_id','user_id'];
+    protected $fillable = ['operation_id', 'categorie_id', 'companie_id', 'destination','time', 'date', 'person_name', 'person_id','person_occupation', 'person_company', 'vehicle', 'vehicle_plate', 'driver_name', 'driver_id', 'material_type','material_quantity', 'unit_id','user_id', 'observation'];
 
-    protected $guarded = ['']; //opposite from fillable
+    //protected $guarded = ['id','created_at','updated_at', 'deleted_at']; //opposite from fillable
  
     protected $dates = ['date'];
 

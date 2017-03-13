@@ -78,6 +78,7 @@
                         <li><strong>Material: </strong>{{ $entry->material_type }}</li>
                         <li><strong>Cantidad: </strong>{{ $entry->material_quantity }}</li>
                         <li><strong>Unidad: </strong>{{ $entry->unit->code }}</li>
+                        <li><strong>Observaciones: </strong>{{ $entry->observation }}</li>
                     </ul>
                 @endif  
 

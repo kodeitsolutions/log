@@ -44,10 +44,10 @@
 					<th>Ocupación</th>
 					<th>Empresa</th>
 					<th>Material</th>
-					<th>Cantidad</th>
+					<th>Cantidad</th>					
 					<th>Unidad</th>
+					<th>Observaciones</th>
 					<th>Vehículo</th>
-					<th>Placa</th>
 					<th>Chofer</th>
 				</tr>
 			</thead>
@@ -76,29 +76,34 @@
 							<td>{{ $entrie->material_type }}</td>
 							<td>{{ $entrie->material_quantity }}</td>
 							<td>{{ $entrie->unit->code }}</td>
+							<td>{{ $entrie->observation }}</td>
 						@else
 							<td>N/A</td>
 							<td>N/A</td>
 							<td>N/A</td>
+							<td>N/A</td>
 						@endif
-						<td>{{ $entrie->vehicle }}</td>
-						<td>{{ $entrie->vehicle_plate }}</td>
+						<td>{{ $entrie->vehicle }} {{ $entrie->vehicle_plate }}</td>
 						<td>{{ $entrie->driver_name}}  {{ $entrie->driver_id}}</td>
-						<td align="right"><a href="/entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
-               			<td align="right"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
+               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>
 					</tr>
 				@endforeach
 			</tbody>
 		</table>
 		<div class="form-group col-xs-2 col-sm-12" align="right">
-	        <a href="/entry/print" class="btn btn-info btn-xs" role="button"><span class="glyphicon glyphicon-print"></a>
+	        <a href="/entry/print" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
 	    </div>
 	</div>
 @stop
 
 @section('script')
 	<script type="text/javascript">
+		$(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip(); 
+		});
+
 		$('#myModalDelete').on('show.bs.modal', function (event) {
 		  var button = $(event.relatedTarget) // Button that triggered the modal
 		  var entry_id = button.data('id')

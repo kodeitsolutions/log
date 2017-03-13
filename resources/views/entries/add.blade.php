@@ -84,21 +84,21 @@
                 <input type="text" class="form-control" name="person_name" id="person_name" placeholder="Ingrese el nombre de la persona." value="{{ old('person_name') }}" >
               </div>
             </div>
-            
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Cédula:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="person_id" id="person_id" placeholder="Ingrese la cédula de la persona (solo números)." value="{{ old('person_id') }}" >
               </div>
             </div>
-            
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Ocupación:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="person_occupation" id="person_occupation" placeholder="Ingrese la ocupación de la persona." value="{{ old('person_occupation') }}" >
               </div>
             </div> 
-
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Empresa:</label>
               <div class="col-md-10"> 
@@ -110,19 +110,20 @@
           <div class="form-group col-xs-2 col-sm-12" id="material" style="display: none">
             <h4><span class="label label-default">Datos del material</span></h4>
             <div class="row">
-              <label class="control-label col-md-2">Descripción del material:</label>
+              <label class="control-label col-md-2">Descripción:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="material_type" id="material_type" placeholder="Ingrese la descripción del material." value="{{ old('material_type') }}" >                       
               </div>
-            </div>
+            </div>      
+            <br>     
             <div class="row">
               <div class="{{ $errors->has('unit_id') ? ' has-error' : '' }} col-md-12 row" >
-                <label class="control-label col-md-2">Cantidad de material:</label>
-                <div class="col-md-5"> 
-                  <input type="numeric" class="form-control" name="material_quantity" id="material_quantity" placeholder="Ingrese la cantidad de material." value="{{ old('material_quantity') }}" >
+                <label class="control-label col-md-2">Cantidad:</label>
+                <div class="col-md-6"> 
+                  <input type="numeric" class="form-control" name="material_quantity" id="material_quantity" placeholder="Ingrese la cantidad de material." value="{{ old('material_quantity') }}" align="right">
                 </div>
                 <div class="col-md-4"> 
-                  <select id="unit_id" class="form-control input-sm" name="unit_id" required>
+                  <select id="unit_id" class="form-control input-sm" name="unit_id">
                     <option selected disabled>Seleccione la unidad</option>
                     @foreach($units as $unit)
                       <option value="{{ $unit->id }}">{{ $unit->code }}</option>
@@ -131,31 +132,39 @@
                 </div>
               </div>              
             </div>
+            <br>
+            <div class="row">
+              <label class="control-label col-md-2">Observaciones:</label>
+              <div class="col-md-10">
+                <textarea class="form-control input-sm" name="observation" id="observation"></textarea>
+              </div>
+            </div>
+            
           </div>
 
           <div class="form-group col-xs-2 col-sm-12" id="vehicle" style="display: none">
             <h4><span class="label label-default">Datos del vehículo</span></h4>
             <div class="row">
-              <label class="control-label col-md-2">Descripción del vehículo:</label>
+              <label class="control-label col-md-2">Descripción:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="vehicle" id="vehicle" placeholder="Ingrese la descripción del vehículo." value="{{ old('vehicle') }}" >
               </div>
             </div>
-            
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Placa:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="vehicle_plate" id="vehicle_plate" placeholder="Ingrese la placa del vehículo." value="{{ old('vehicle_plate') }}" >
               </div>
             </div>        
-
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Nombre del Chofer:</label>
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="driver_name" id="driver_name" placeholder="Ingrese el nombre del chofer." value="{{ old('driver_name') }}" >
               </div>
             </div>      
-
+            <br>
             <div class="row">
               <label class="control-label col-md-2">Cédula del Chofer:</label>
               <div class="col-md-10"> 

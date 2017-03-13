@@ -160,7 +160,7 @@
 					<input type="text" name="material_quantity" class="form-control" value="{{ $entry->material_quantity }}">
 				@endif					
 			</div>			
-		</div>
+		</div>		
 
 		<div class="form-group col-xs-2 col-sm-9">
 			<label class="control-label col-md-3">Unidad:</label>
@@ -178,6 +178,17 @@
 	                   	@endif
 	                @endforeach
                 </select>
+			</div>			
+		</div>
+
+		<div class="form-group col-xs-2 col-sm-9">
+			<label class="control-label col-md-3">Observaciones:</label>
+			<div class="col-md-6">
+				@if ( $entry->observation == '')
+					<textarea class="form-control" name="observation"></textarea>
+				@else
+					<textarea class="form-control" name="observation">{{ $entry->observation }}</textarea>
+				@endif
 			</div>			
 		</div>
 
