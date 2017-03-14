@@ -171,24 +171,30 @@ class EntriesController extends Controller
         $conditions = [['date', '>=',$request->date_from],
                        ['date', '<=',$request->date_to]];
 
-        if($request->has('user')){
+       if($request->has('user')){
             array_push($conditions, ['user_id','=',$request->user]);
         }
         if($request->has('operation')){
-            array_push($conditions, ['operation','=',$request->operation]);
+            array_push($conditions, ['operation_id','=',$request->operation]);
         }
-        if($request->has('type')){
-            array_push($conditions, ['type','=',$request->type]);
+        if($request->has('category')){
+            array_push($conditions, ['categorie_id','=',$request->type]);
         }
         if($request->has('company')){
-            array_push($conditions, ['company','=',$request->company]);
+            array_push($conditions, ['companie_id','=',$request->company]);
         }
 
-        $entries = Entrie::where($conditions)->get();
+        $entries = Entrie::where($conditions)->get();        
 
-        $date = '';
-        Session::put('entries', $entries);
-        return view('entries.index', compact('entries','date'));
+        if($entries->isEmpty()) {
+            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
+            return redirect()->back()->withInput();
+        }
+        else {
+            $date = '';
+            Session::put('entries', $entries);
+            return view('entries.index', compact('entries','date'));
+        }
     }
 
     public function test()

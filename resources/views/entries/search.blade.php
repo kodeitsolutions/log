@@ -38,7 +38,7 @@
               <select  id="operation" class="form-control input-sm" name="operation">
                 <option selected disabled>Seleccione el tipo de movimiento</option>
                 @foreach($operations as $operation)
-                  <option value="{{ $operation->name }}">{{ $operation->name }}</option>
+                  <option value="{{ $operation->id }}">{{ $operation->name }}</option>
                 @endforeach
               </select>         
             </div>
@@ -47,12 +47,11 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Categoría:</label>
             <div class="col-md-8">
-                <select id="type" class="form-control input-sm" name="type" >
+                <select id="category" class="form-control input-sm" name="category" >
                   <option selected disabled>Seleccione la categoría</option>                    
                   @foreach($categories as $category)
-                     <option value="{{ $category->name }}">{{ $category->name }}</option>
-                  @endforeach
-                  <option value="Persona-Material">Persona-Material</option>                     
+                     <option value="{{ old('category') }}">{{ $category->name }}</option>
+                  @endforeach                  
                 </select>  
             </div>
           </div>
@@ -63,7 +62,7 @@
               <select id="company" class="form-control input-sm" name="company">
                 <option selected disabled>Seleccione la empresa</option>
                 @foreach($companies as $company)
-                   <option value="{{ $company->name }}">{{ $company->name }}</option>
+                   <option value="{{ $company->id }}">{{ $company->name }}</option>
                 @endforeach                     
               </select>  
             </div>
