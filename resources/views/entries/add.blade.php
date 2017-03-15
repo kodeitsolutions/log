@@ -194,28 +194,28 @@
 	<script type="text/javascript">
 		$('#categorie_id').on('change',function(){
 
-      selection  = $('#categorie_id option:selected').val()
+      selection  = $('#categorie_id option:selected').val()      
 
-      $.get('/category/getCategory/' + selection, function(response){
-        console.log(response)
+      $.get('/category/getCategory/' + selection, function(response){        
         if(response.combined){
           $("#vehicle").hide()
           $("#person").show()
           $('#material').show()
           $("#vehicle").show()
+        }        
       })
 			
       selection_name = $('#categorie_id option:selected').text()
       
 	    switch(selection_name)
 	    {
-       	case 'Persona':
+       	case 'PERSONA':
        		$("#vehicle").hide()
           $("#person").show()
           $("#vehicle").show()
           $('#material').hide()		           	
           break;
-       	case 'Material':
+       	case 'MATERIAL':
        		$("#vehicle").hide()
           $('#material').show()
           $("#vehicle").show()
