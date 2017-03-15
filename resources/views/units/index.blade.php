@@ -45,14 +45,14 @@
               <div class="form-group">
                 <label class="control-label">Código:</label>
                 <div class="form-group">
-                  <textarea name="code" id="code" class="form-control"></textarea>
+                  <input type="text" class="form-control" name="code" id="code" value="" autofocus>
                 </div>
               </div>
             
               <div class="form-group">
                 <label class="control-label">Nombre:</label>
                 <div class="form-group">
-                  <textarea name="name" id="name" class="form-control" autofocus></textarea>
+                  <input type="text" class="form-control" name="name" id="name" value="">
                 </div>
               </div>
             </div>
@@ -117,8 +117,8 @@
         var unit_id = button.data('id')
 
         $.get('/unit/getUnit/' + unit_id, function(response){
-          $('textarea[id="code"]').text(response.code)
-          $('textarea[id="name"]').text(response.name)
+          $('input[id="code"]').val(response.code)
+          $('input[id="name"]').val(response.name)
         })
         $('form[id="edit"]').attr('action','unit/' + unit_id)
     });    

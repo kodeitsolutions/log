@@ -44,7 +44,7 @@
             <div class="modal-body form-group">              
               <div class="form-group">
                 <label class="control-label">Nombre:</label>
-                <textarea name="name" id="name" class="form-control" autofocus></textarea>
+                <input type="text" class="form-control" name="name" id="name" value="" autofocus>
               </div>
 
               <div class="form-group">
@@ -111,7 +111,7 @@
         var category_id = button.data('id')
 
         $.get('/category/getCategory/' + category_id, function(response){
-          $('textarea[id="name"]').text(response.name)
+          $('input[id="name"]').val(response.name)
           $('textarea[id="description"]').text(response.description)
         })
         $('form[id="edit"]').attr('action','category/' + category_id)

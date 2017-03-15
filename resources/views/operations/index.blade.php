@@ -44,7 +44,7 @@
             <div class="modal-body form-group">
               <label class="control-label">Nombre:</label>
                 <div class="form-group">
-                  <textarea name="name" id="name" class="form-control" autofocus></textarea>
+                  <input type="text" class="form-control" name="name" id="name" value="" autofocus>
                 </div>
             </div>
             <div class="modal-footer form-group">
@@ -103,7 +103,7 @@
         var operation_id = button.data('id')
 
         $.get('/operation/getOperation/' + operation_id, function(response){
-          $('textarea[id="name"]').text(response.name)
+          $('input[id="name"]').val(response.name)
         })
         $('form[id="edit"]').attr('action','operation/' + operation_id)
     });    

@@ -45,19 +45,19 @@
 							<div class="form-group">
 					            <label class="control-label">Nombre:</label>
 					            <div class="form-group">
-					                <textarea name="name" id="name" class="form-control" autofocus></textarea>
+					                <input type="text" class="form-control" name="name" id="name" value="" autofocus>
 					            </div>
 					        </div>
 					        <div class="form-group">
 					            <label class="control-label">E-Mail:</label>
 					            <div class="form-group">
-					                <textarea name="email" id="email" class="form-control"></textarea>
+					                <input type="text" class="form-control" name="email" id="email" value="">
 					            </div>
 					        </div>
 					        <div class="form-group">
 					            <label class="control-label">Teléfono:</label>
 					            <div class="form-group">
-					                <textarea name="telephone" id="telephone" class="form-control"></textarea>
+					                <input type="text" class="form-control" name="telephone" id="telephone" value="">
 					            </div>
 					        </div>
 					        <div class=" form-group checkbox">
@@ -134,9 +134,9 @@
 		  var user_id = button.data('id')
 
 		  $.get('/user/getUser/' + user_id, function(response){
-  			$('textarea[id="name"]').text(response.name)
-  			$('textarea[id="email"]').text(response.email)
-  			$('textarea[id="telephone"]').text(response.telephone)
+  			$('input[id="name"]').val(response.name)
+  			$('input[id="email"]').val(response.email)
+  			$('input[id="telephone"]').val(response.telephone)
   			if (response.isAdmin) {
 			    $('input[name="isAdmin"]').prop('checked', true);
 			} else {
