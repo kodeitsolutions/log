@@ -116,13 +116,15 @@ return [
             'unique'   => 'Este nombre ya se encuentra registrado.',
         ],
         'password' => [
-            'confirmed' => 'La confirmación de la contraseña no coincide.'
+            'confirmed' => 'La confirmación de la contraseña no coincide.',
+            'min' => 'La contraseña debe tener mínimo :min caracteres.'
         ],
         'vehicle_plate' => [
             'alpha_num' => 'La placa del vehículo solo debe contener números y letras.'
         ],
         'email' => [
-            'unique' => 'Este email ya se encuentra registrado.'
+            'unique' => 'Este email ya se encuentra registrado.',
+            'email' => 'Debe ingresar una dirección de correo electrónico válida.'
         ]
     ],
 
