@@ -51,7 +51,12 @@
                 <label class="control-label">Descripción:</label>
                 <textarea name="description" id="description" class="form-control"></textarea>
               </div>
-            </div>
+
+              <div class=" form-group checkbox">
+                <label class="control-label"><input type="checkbox" name="combined">Combinado</label>
+              </div>
+            </div>            
+
             <div class="modal-footer form-group">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
               <button type="submit" class="btn btn-primary btn-edit">Guardar</button>
@@ -72,13 +77,19 @@
         <tr>
           <th>Nombre</th>
           <th>Descripción</th>
+          <th style="text-align:center">Combinado</th>
         </tr>
       </thead>
       <tbody>
         @foreach($categories as $category)
           <tr id="category{{ $category->id }}">
             <td><span id="{{ $category->id }}">{{ $category->name }}</span></td>
-            <td>{{ $category->description }}</td>              
+            <td>{{ $category->description }}</td>
+            @if ( $category->combined == 1)
+              <td style="text-align:center"><input type="checkbox" checked disabled></td>
+            @else
+              <td style="text-align:center"><input type="checkbox" unchecked disabled></td>
+            @endif              
             <td>
             <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$category->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
             <td data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body">
@@ -113,6 +124,11 @@
         $.get('/category/getCategory/' + category_id, function(response){
           $('input[id="name"]').val(response.name)
           $('textarea[id="description"]').text(response.description)
+          if (response.combined) {
+            $('input[name="combined"]').prop('checked', true);
+          } else {
+              $('input[name="combined"]').prop('checked', false);
+          }
         })
         $('form[id="edit"]').attr('action','category/' + category_id)
     });    

@@ -48,8 +48,13 @@ class CategoriesController extends Controller
             'name' => 'required|max:255|unique:categories,deleted_at,NULL',
             'description' => 'required|max:255'
         ]);
-        
+
         $category = new Categorie($request->all());
+        
+        if($request->has('combined')){
+            $category->combined = 1;
+        }
+        
         $category->user_id = Auth::id();
         $saved = $category->save();
 
@@ -100,8 +105,11 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Categorie $category)
     {
-        //
-        $saved = $category->update($request->all());
+        //dd($request);
+        $category->combined = ($request->has('combined')) ? 1 : 0 ;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $saved = $category->update();
 
         if ($saved) {
             $request->session()->flash('flash_message', 'Categoría '.$category->name.' modificada.');

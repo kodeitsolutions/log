@@ -49,7 +49,7 @@
               <div class="col-md-10"> 
                   <input type="date" class="form-control" name="date" id="date" value="{{ $date }}" required>
               </div>
-          </div>
+          </div>          
 
           <div class="form-group col-xs-2 col-sm-12 row">
             <label class="control-label col-md-2">Hora:</label>
@@ -194,13 +194,24 @@
 	<script type="text/javascript">
 		$('#categorie_id').on('change',function(){
 
-			selection = $('#categorie_id option:selected').text()
+      selection  = $('#categorie_id option:selected').val()
+
+      $.get('/category/getCategory/' + selection, function(response){
+        console.log(response)
+        if(response.combined){
+          $("#vehicle").hide()
+          $("#person").show()
+          $('#material').show()
+          $("#vehicle").show()
+      })
+			
+      selection_name = $('#categorie_id option:selected').text()
       
-	    switch(selection)
+	    switch(selection_name)
 	    {
        	case 'Persona':
        		$("#vehicle").hide()
-        	$("#person").show()
+          $("#person").show()
           $("#vehicle").show()
           $('#material').hide()		           	
           break;
@@ -209,13 +220,7 @@
           $('#material').show()
           $("#vehicle").show()
           $("#person").hide()		           	
-          break;
-        case 'Persona-Material':
-        	$("#vehicle").hide()
-        	$("#person").show()
-       	 	$('#material').show()
-        	$("#vehicle").show()
-        	break;
+          break;      
    	  }
 		});
 	</script>
