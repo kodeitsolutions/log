@@ -6,10 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--meta name="csrf-token" content="{{ csrf_token() }}"-->
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->  
+
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.css') }}">  
+        <script type="text/javascript" src="{{ URL::asset('assets/js/jquery-3.2.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>    
         
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -82,6 +86,7 @@
             @endif
         @endif
         <!--@yield('panel')        -->
+
         <div class="row">
             <div class="col-md-2">
                 @yield('sidebar')    
@@ -89,6 +94,17 @@
             @yield('modal-delete')
             @yield('modal-edit')
             @yield('modal-show')
+            <div class="col-md-6 col-md-offset-1">
+            @if(Session::has('flash_message'))
+                <div class="alert alert-success"><span class="glyphicon glyphicon-ok-sign"></span><em> {!! session('flash_message') !!}</em></div>
+            @endif
+            @if(Session::has('flash_message_not'))
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-remove-sign"></span><em> {!! session('flash_message_not') !!}</em></div>
+            @endif
+            @if(Session::has('flash_message_info'))
+                <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span><em> {!! session('flash_message_info') !!}</em></div>
+            @endif
+        </div>
             <div class=" container col-md-10">
                 @yield('content')    
             </div>            
@@ -108,16 +124,6 @@
             @yield('form')
         </div>
         @yield('script')
-        <div class="col-md-6 col-md-offset-3">
-            @if(Session::has('flash_message'))
-                <div class="alert alert-success"><span class="glyphicon glyphicon-ok-sign"></span><em> {!! session('flash_message') !!}</em></div>
-            @endif
-            @if(Session::has('flash_message_not'))
-                <div class="alert alert-danger"><span class="glyphicon glyphicon-remove-sign"></span><em> {!! session('flash_message_not') !!}</em></div>
-            @endif
-            @if(Session::has('flash_message_info'))
-                <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span><em> {!! session('flash_message_info') !!}</em></div>
-            @endif
-        </div>
+        
     </body>
 </html>

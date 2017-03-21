@@ -61,7 +61,7 @@
 					            </div>
 					        </div>
 					        <div class=" form-group checkbox">
-			  				    <label class="control-label"><input type="checkbox" name="isAdmin">Administrador</label>
+			  				    <label class="control-label"><input type="checkbox" name="isAdmin" id="isAdmin">Administrador</label>
 						    </div>
 				        </div>
 				        <div class="modal-footer form-group">
@@ -117,34 +117,38 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 	        $('[data-toggle="tooltip"]').tooltip(); 
+
+	        $('#myModalDelete').on('show.bs.modal', function (event) {
+			  var button = $(event.relatedTarget) // Button that triggered the modal
+			  var user_id = button.data('id')
+
+			  $.get('/user/getUser/' + user_id, function(response){
+	  			$('label[id="name"]').text(response.name)  			
+			  })
+			  $('form[id="delete"]').attr('action','user/' + user_id)
+			});
+
+			$('#myModalEdit').on('show.bs.modal', function (event) {
+			  var button = $(event.relatedTarget) // Button that triggered the modal
+			  var user_id = button.data('id')
+
+			  $.get('/user/getUser/' + user_id, function(response){
+	  			$('input[id="name"]').val(response.name)
+	  			$('input[id="email"]').val(response.email)
+	  			$('input[id="telephone"]').val(response.telephone)
+	  			console.log(response.isAdmin)
+	  			if (response.isAdmin == 1) {
+	  				console.log('Entra aquí true')
+				    $('input[id="isAdmin"]').prop('checked', true)				    
+				} else {
+					console.log('Entra aquí false')
+				    $('input[id="isAdmin"]').prop('checked', false)
+				}
+			  })
+			  $('form[id="edit"]').attr('action','user/' + user_id)
+			});
 	    }); 
 
-		$('#myModalDelete').on('show.bs.modal', function (event) {
-		  var button = $(event.relatedTarget) // Button that triggered the modal
-		  var user_id = button.data('id')
-
-		  $.get('/user/getUser/' + user_id, function(response){
-  			$('label[id="name"]').text(response.name)  			
-		  })
-		  $('form[id="delete"]').attr('action','user/' + user_id)
-		});
-
-		$('#myModalEdit').on('show.bs.modal', function (event) {
-		  var button = $(event.relatedTarget) // Button that triggered the modal
-		  var user_id = button.data('id')
-
-		  $.get('/user/getUser/' + user_id, function(response){
-  			$('input[id="name"]').val(response.name)
-  			$('input[id="email"]').val(response.email)
-  			$('input[id="telephone"]').val(response.telephone)
-  			console.log(response.isAdmin)
-  			if (response.isAdmin = 1) {
-			    $('input[name="isAdmin"]').prop('checked', true);
-			} else {
-			    $('input[name="isAdmin"]').prop('checked', false);
-			}
-		  })
-		  $('form[id="edit"]').attr('action','user/' + user_id)
-		});
+		
 	</script>
 @stop
