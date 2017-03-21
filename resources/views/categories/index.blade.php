@@ -53,7 +53,7 @@
               </div>
 
               <div class=" form-group checkbox">
-                <label class="control-label"><input type="checkbox" name="combined">Combinado</label>
+                <label class="control-label"><input type="checkbox" name="combined" id="combined">Combinado</label>
               </div>
             </div>            
 
@@ -124,10 +124,10 @@
         $.get('/category/getCategory/' + category_id, function(response){
           $('input[id="name"]').val(response.name)
           $('textarea[id="description"]').text(response.description)
-          if (response.combined) {
-            $('input[name="combined"]').prop('checked', true);
+          if (response.combined == 1) {
+            $('input[id="combined"]').prop('checked', true)
           } else {
-              $('input[name="combined"]').prop('checked', false);
+            $('input[id="combined"]').prop('checked', false)
           }
         })
         $('form[id="edit"]').attr('action','category/' + category_id)

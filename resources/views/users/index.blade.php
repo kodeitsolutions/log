@@ -136,12 +136,9 @@
 	  			$('input[id="name"]').val(response.name)
 	  			$('input[id="email"]').val(response.email)
 	  			$('input[id="telephone"]').val(response.telephone)
-	  			console.log(response.isAdmin)
 	  			if (response.isAdmin == 1) {
-	  				console.log('Entra aquí true')
 				    $('input[id="isAdmin"]').prop('checked', true)				    
 				} else {
-					console.log('Entra aquí false')
 				    $('input[id="isAdmin"]').prop('checked', false)
 				}
 			  })
