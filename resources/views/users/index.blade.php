@@ -137,7 +137,8 @@
   			$('input[id="name"]').val(response.name)
   			$('input[id="email"]').val(response.email)
   			$('input[id="telephone"]').val(response.telephone)
-  			if (response.isAdmin) {
+  			console.log(response.isAdmin)
+  			if (response.isAdmin = 1) {
 			    $('input[name="isAdmin"]').prop('checked', true);
 			} else {
 			    $('input[name="isAdmin"]').prop('checked', false);
