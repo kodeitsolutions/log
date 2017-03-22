@@ -104,6 +104,13 @@
               <div class="col-md-10"> 
                 <input type="text" class="form-control" name="person_company" id="person_company" placeholder="Ingrese la empresa a la que pertenece la persona." value="{{ old('person_company') }}" >
               </div>
+            </div>
+            <br>
+            <div class="row">
+              <label class="control-label col-md-2">Observaciones:</label>
+              <div class="col-md-10">
+                <textarea class="form-control input-sm" name="person_observations" id="person_observations"></textarea>
+              </div>
             </div>                            
           </div>          
 
@@ -136,7 +143,7 @@
             <div class="row">
               <label class="control-label col-md-2">Observaciones:</label>
               <div class="col-md-10">
-                <textarea class="form-control input-sm" name="observation" id="observation"></textarea>
+                <textarea class="form-control input-sm" name="material_observations" id="material_observations"></textarea>
               </div>
             </div>
             
@@ -171,7 +178,13 @@
                 <input type="text" class="form-control" name="driver_id" id="driver_id" placeholder="Ingrese la cédula del chofer." value="{{ old('driver_id') }}" >
               </div>
             </div>
-
+            <br>
+            <div class="row">
+              <label class="control-label col-md-2">Observaciones:</label>
+              <div class="col-md-10">
+                <textarea class="form-control input-sm" name="vehicle_observations" id="vehicle_observations"></textarea>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-10">

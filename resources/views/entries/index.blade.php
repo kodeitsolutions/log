@@ -45,10 +45,10 @@
 					<th>Empresa</th>
 					<th>Material</th>
 					<th>Cantidad</th>					
-					<th>Unidad</th>
-					<th>Observaciones</th>
+					<th>Unidad</th>					
 					<th>Vehículo</th>
 					<th>Chofer</th>
+					<th>Observaciones</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -76,15 +76,24 @@
 							<td>{{ $entrie->material_type }}</td>
 							<td>{{ $entrie->material_quantity }}</td>
 							<td>{{ $entrie->unit->code }}</td>
-							<td>{{ $entrie->observation }}</td>
 						@else
-							<td>N/A</td>
 							<td>N/A</td>
 							<td>N/A</td>
 							<td>N/A</td>
 						@endif
 						<td>{{ $entrie->vehicle }} {{ $entrie->vehicle_plate }}</td>
 						<td>{{ $entrie->driver_name}}  {{ $entrie->driver_id}}</td>
+						<td>
+							@if( $entrie->person_observations != '')
+								Persona: {{ $entrie->person_observations }}.
+							@endif
+							@if($entrie->material_observations != '')
+								Material: {{ $entrie->material_observations }}.
+							@endif
+							@if($entrie->vehicle_observations != '')
+								Vehículo: {{ $entrie->vehicle_observations }}.
+							@endif
+						</td>
 						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
                			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>

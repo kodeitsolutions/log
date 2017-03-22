@@ -62,23 +62,28 @@
                     <li><strong>Destino / Origen: </strong>{{ $entry->destination }}</li>
                 </ul>
 
-                @if( $entry->category->name == 'Persona' or $entry->category->name == 'Persona-Material')
+                @if( $entry->category->name == 'PERSONA' or $entry->category->name == 'PERSONA Y MATERIAL')
                     <h5><u>Datos de la persona</u></h5>
                     <ul>
                         <li><strong>Nombre: </strong>{{ $entry->person_name }}</li>
                         <li><strong>Cédula: </strong>{{ $entry->person_id }}</li>
                         <li><strong>Ocupación: </strong>{{ $entry->person_occupation }}</li>
                         <li><strong>Empresa: </strong>{{ $entry->person_company }}</li>
+                        @if( $entry->person_observations != '')
+                            <li><strong>Observaciones: </strong>{{ $entry->person_observations }}</li>
+                        @endif
                     </ul>           
                 @endif 
 
-                @if( $entry->category->name == 'Material' or $entry->category->name == 'Persona-Material')
+                @if( $entry->category->name == 'MATERIAL' or $entry->category->name == 'PERSONA Y MATERIAL')
                     <h5><u>Datos del material</u></h5>
                     <ul>
                         <li><strong>Material: </strong>{{ $entry->material_type }}</li>
                         <li><strong>Cantidad: </strong>{{ $entry->material_quantity }}</li>
                         <li><strong>Unidad: </strong>{{ $entry->unit->code }}</li>
-                        <li><strong>Observaciones: </strong>{{ $entry->observation }}</li>
+                        @if( $entry->material_observations != '')
+                            <li><strong>Observaciones: </strong>{{ $entry->material_observations }}</li>
+                        @endif
                     </ul>
                 @endif  
 
@@ -88,6 +93,9 @@
                     <li><strong>Placa: </strong>{{ $entry->vehicle_plate }}</li>
                     <li><strong>Nombre del Chofer: </strong>{{ $entry->driver_name }}</li>
                     <li><strong>Cédula del Chofer: </strong>{{ $entry->driver_id }}</li>
+                    @if( $entry->vehicle_observations != '')
+                        <li><strong>Observaciones: </strong>{{ $entry->vehicle_observations }}</li>
+                    @endif
                 </ul>       
                 
                 <br><br>
