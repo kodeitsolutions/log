@@ -206,37 +206,35 @@
 @section('script')
 	<script type="text/javascript">
     $(document).ready(function(){
-  		$('#categorie_id').on('change',function(){
+      $('#categorie_id').on('change',function(){
 
-        selection  = $('#categorie_id option:selected').val()      
-
+        var  selection  = $('#categorie_id option:selected').val()      
+         
         $.get('/category/getCategory/' + selection, function(response){        
-          if(response.combined){
+          if(response.combined == 1){
             $("#vehicle").hide()
             $("#person").show()
             $('#material').show()
             $("#vehicle").show()
           }                
         })
-  			
-        selection_name = $('#categorie_id option:selected').text()
         
-  	    switch(selection_name)
-  	    {
-         	case 'PERSONA':
-         		$("#vehicle").hide()
-            $("#person").show()
-            $("#vehicle").show()
-            $('#material').hide()		           	
-            break;
-         	case 'MATERIAL':
-         		$("#vehicle").hide()
-            $('#material').show()
-            $("#vehicle").show()
-            $("#person").hide()		           	
-            break;      
-     	  }
-  		});
+        var selection_name = $('#categorie_id option:selected').text()
+        if (selection_name == 'PERSONA')
+        {
+          $("#vehicle").hide()
+          $("#person").show()
+          $("#vehicle").show()
+          $('#material').hide()               
+        }
+        if(selection_name == 'MATERIAL'){
+          $("#vehicle").hide()
+          $('#material').show()
+          $("#vehicle").show()
+          $("#person").hide()               
+        }          
+      })
     });
+  
 	</script>
 @stop
