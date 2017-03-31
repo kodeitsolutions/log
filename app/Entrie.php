@@ -18,6 +18,17 @@ class Entrie extends Model
  
     protected $dates = ['date'];
 
+    protected $dateFormat = 'Y-m-d';
+
+    private function getDateValue() {
+        return date('d/m/Y', strtotime($this->attributes['date']));
+      }
+ 
+    private function setDateValue($value) {
+        $date_parts = explode('/', $value);
+        $this->attributes['date'] = $date_parts[2].'-'.$date_parts[1].'-'.$date_parts[0];
+    }
+
     public function user()
     {
     	return $this->belongsTo(User::class, 'user_id', 'id');
@@ -42,5 +53,4 @@ class Entrie extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
-        
 }

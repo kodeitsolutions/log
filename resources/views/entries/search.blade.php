@@ -13,10 +13,11 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Fecha:</label>
             <div class="col-md-4">
-              <input type="date" name="date_from" value="2017-01-01" class="form-control">
+              <input type="text" name="date_from" id="date_from" value="01/01/2017" class="form-control">
             </div>
             <div class="col-md-4">
-              <input type="date" name="date_to" value="{{ $date }}" class="form-control">
+              <input type="text" name="date_to" id="date_to" value="{{ $date }}" class="form-control">
+
             </div>
           </div>
 
@@ -26,7 +27,7 @@
               <select  id="user" class="form-control input-sm" name="user">
                 <option selected disabled>Seleccione el usuario</option>
                 @foreach($users as $user)
-                   <option value="{{ $user->id }}">{{ $user->name }}</option>
+                   <option value="{{ $user->id }}" @if (old('user_id') == $user->id) selected @endif>{{ $user->name }}</option>
                 @endforeach
               </select>         
             </div>
@@ -78,21 +79,38 @@
 
 @section('script')
   <script type="text/javascript">
-    $('#search').on('change',function(){
+    $(document).ready(function(){  
+      $.datepicker.regional['es'] = {
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+      };
+      $.datepicker.setDefaults($.datepicker.regional['es']);
+      $(function () {
+        $("#date_from").datepicker();
+        $("#date_to").datepicker();
+      });
 
-      selection = $(this).val()
-      console.log(selection)
+      $('#search').on('change',function(){
 
-      switch(selection)
-      {
-        case 'date':
-          $("#input-text").hide() 
-          $("#input-date").show()               
-          break
-        default:
-          $("#input-date").hide()
-          $("#input-text").show()
-      }    
+        selection = $(this).val()
+
+        switch(selection)
+        {
+          case 'date':
+            $("#input-text").hide() 
+            $("#input-date").show()               
+            break
+          default:
+            $("#input-date").hide()
+            $("#input-text").show()
+        }    
+      })
     });
   </script>
 @stop

@@ -10,7 +10,7 @@
 		<div class="form-group col-xs-2 col-sm-9">
 			<label class="control-label col-md-3">Fecha:</label>
 			<div class="col-md-6">
-				<input type="date" name="date" class="form-control" value="{{ $entry->date->format('Y-m-d') }}">	
+				<input type="text" name="date" id="date" class="form-control" value="{{ $entry->date->format('d/m/Y') }}">	
 			</div>	
 		</div>
 
@@ -136,6 +136,17 @@
 			</div>			
 		</div>
 
+		<div class="form-group col-xs-2 col-sm-9">
+			<label class="control-label col-md-3">Observaciones:</label>
+			<div class="col-md-6">
+				@if ( $entry->person_observations == '')
+					<textarea class="form-control" name="person_observations"></textarea>
+				@else
+					<textarea class="form-control" name="person_observations">{{ $entry->person_observations }}</textarea>
+				@endif
+			</div>			
+		</div>
+
 		<div class="col-xs-2 col-sm-9">
 			<h4><span class="label label-default">Datos del material</span></h4>
 		</div>
@@ -184,10 +195,10 @@
 		<div class="form-group col-xs-2 col-sm-9">
 			<label class="control-label col-md-3">Observaciones:</label>
 			<div class="col-md-6">
-				@if ( $entry->observation == '')
-					<textarea class="form-control" name="observation"></textarea>
+				@if ( $entry->material_observations == '')
+					<textarea class="form-control" name="material_observations"></textarea>
 				@else
-					<textarea class="form-control" name="observation">{{ $entry->observation }}</textarea>
+					<textarea class="form-control" name="material_observations">{{ $entry->material_observations }}</textarea>
 				@endif
 			</div>			
 		</div>
@@ -223,9 +234,43 @@
 				<input type="text" name="driver_id" class="form-control" value="{{ $entry->driver_id }}">	
 			</div>			
 		</div>
+
+		<div class="form-group col-xs-2 col-sm-9">
+			<label class="control-label col-md-3">Observaciones:</label>
+			<div class="col-md-6">
+				@if ( $entry->vehicle_observations == '')
+					<textarea class="form-control" name="vehicle_observations"></textarea>
+				@else
+					<textarea class="form-control" name="vehicle_observations">{{ $entry->vehicle_observations }}</textarea>
+				@endif
+			</div>			
+		</div>
 		
 		<div class="form-group col-xs-2 col-sm-9" align="right">
             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
 	</form>
+@stop
+
+@section('script')
+	<script type="text/javascript">
+		$(document).ready(function(){  
+      		$.datepicker.regional['es'] = {
+        		monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        		dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        		weekHeader: 'Sm',
+        		dateFormat: 'dd/mm/yy',
+        		firstDay: 1,
+        		isRTL: false,
+        		showMonthAfterYear: false,
+        		yearSuffix: ''
+      		}
+
+      		$.datepicker.setDefaults($.datepicker.regional['es'])
+
+      		$(function () {
+        		$("#date").datepicker();
+      		})
+		});
+	</script>
 @stop

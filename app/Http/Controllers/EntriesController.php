@@ -12,6 +12,7 @@ use App\Operation;
 use App\Categorie;
 use App\Companie;
 use App\Unit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EntriesController extends Controller
@@ -53,26 +54,31 @@ class EntriesController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
+        //dd($request);        
         $this->validate($request, [
             'operation_id' => 'required',
             'categorie_id' => 'required',
             'destination' => 'required|max:255',
             'hour' => 'required',
             'minute' =>  'required',
-            'ampm' => 'required',
-            'vehicle_plate' => 'alpha_num'
+            'ampm' => 'required'
         ]);
 
-        $entrie = new Entrie($request->all());
-        
-        $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;
-        $hour = ($request->hour < 10) ? '0'.$request->hour : $request->hour ;
-        $minute = ($request->minute < 10) ? '0'.$request->minute : $request->minute ;
-        
-        $entrie->time = $hour.':'.$minute.' '.$request->ampm;
-        $entrie->user_id = Auth::id();
+        $data = $request->all();
+        $date = $request->date;
+        $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        $data['date'] = $date;
 
+        $entrie = new Entrie($data);   
+
+        $hour = ($request->hour < 10) ? '0'.$request->hour : $request->hour ;
+        $minute = ($request->minute < 10) ? '0'.$request->minute : $request->minute ;        
+        $entrie->time = $hour.':'.$minute.' '.$request->ampm;
+
+        $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
+
+        $entrie->user_id = Auth::id();
+        
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
@@ -128,8 +134,12 @@ class EntriesController extends Controller
     public function update(Request $request, Entrie $entry)
     {
         //dd($request);
+        $data = $request->all();
+        $date = $request->date;
+        $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        $data['date'] = $date;
 
-        $saved = $entry->update($request->all());
+        $saved = $entry->update($data);
 
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro modificado.');
@@ -165,11 +175,14 @@ class EntriesController extends Controller
     public function searching(Request $request)
     {
         //dd($request);
-
         $input = $request->all();
+        $date_from = $request->date_from;
+        $date_from = date('Y-m-d', strtotime(str_replace('/', '-', $date_from)));
+        $date_to = $request->date_to;
+        $date_to = date('Y-m-d', strtotime(str_replace('/', '-', $date_to)));
 
-        $conditions = [['date', '>=',$request->date_from],
-                       ['date', '<=',$request->date_to]];
+        $conditions = [['date', '>=',$date_from],
+                       ['date', '<=',$date_to]];
 
        if($request->has('user')){
             array_push($conditions, ['user_id','=',$request->user]);
@@ -188,7 +201,8 @@ class EntriesController extends Controller
 
         if($entries->isEmpty()) {
             $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return redirect()->back()->withInput();
+            //dd($input);
+            return redirect()->back()->withInput($input);
         }
         else {
             $date = '';
@@ -202,7 +216,8 @@ class EntriesController extends Controller
         # code...
         $entries = Session::get('entries');
         //dd($entries);
-
+        //return view('entries.print', compact('entries'));
+        
         if ($entries->isEmpty()) {            
             Session::flash('flash_message_info', 'No hay datos para imprimir.');
             return back();

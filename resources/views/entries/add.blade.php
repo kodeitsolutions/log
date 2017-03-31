@@ -42,14 +42,14 @@
               <div class="col-md-10"> 
                   <input type="text" class="form-control" name="destination" id="destination" placeholder="Ingrese el destino." value="{{ old('destination') }}" required>
               </div>
-          </div>
+          </div>   
 
           <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('date') ? ' has-error' : '' }} row">
-              <label class="control-label col-md-2">Fecha:</label>
-              <div class="col-md-10"> 
-                  <input type="date" class="form-control" name="date" id="date" value="{{ $date }}" required>
-              </div>
-          </div>          
+            <label class="control-label col-md-2">Fecha:</label>
+            <div class="col-md-10"> 
+              <input type="text" class="form-control" name="date" id="date" value="{{ $date }}" required>
+            </div>
+          </div>      
 
           <div class="form-group col-xs-2 col-sm-12 row">
             <label class="control-label col-md-2">Hora:</label>
@@ -206,6 +206,21 @@
 @section('script')
 	<script type="text/javascript">
     $(document).ready(function(){
+      $.datepicker.regional['es'] = {
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+      };
+      $.datepicker.setDefaults($.datepicker.regional['es']);
+      $(function () {
+        $("#date").datepicker();
+      });
+
       $('#categorie_id').on('change',function(){
 
         var  selection  = $('#categorie_id option:selected').val()      
