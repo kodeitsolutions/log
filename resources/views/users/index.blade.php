@@ -95,12 +95,8 @@
 		      		<tr>
 		        		<td>{{ $user->name }}</td>
 		        		<td>{{ $user->email }}</td>
-		        		<td>{{ $user->telephone }}</td>						
-						@if ( $user->isAdmin == 1)
-		        			<td style="text-align:center"><input type="checkbox" checked disabled></td>
-						@else
-							<td style="text-align:center"><input type="checkbox" unchecked disabled></td>
-						@endif
+		        		<td>{{ $user->telephone }}</td>	
+		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
 						<td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
@@ -136,11 +132,7 @@
 	  			$('input[id="name"]').val(response.name)
 	  			$('input[id="email"]').val(response.email)
 	  			$('input[id="telephone"]').val(response.telephone)
-	  			if (response.isAdmin == 1) {
-				    $('input[id="isAdmin"]').prop('checked', true)				    
-				} else {
-				    $('input[id="isAdmin"]').prop('checked', false)
-				}
+	  			$('input[id="isAdmin"]').prop('checked', response.isAdmin)
 			  })
 			  $('form[id="edit"]').attr('action','user/' + user_id)
 			});
