@@ -51,10 +51,11 @@ class CategoriesController extends Controller
 
         $category = new Categorie($request->all());
         
-        if($request->has('combined')){
-            $category->combined = 1;
-        }
-        
+        $category->person = ($request->has('person')) ? 1 : 0 ;
+        $category->material = ($request->has('material')) ? 1 : 0 ;
+        $category->vehicle = ($request->has('vehicle')) ? 1 : 0 ;
+        $category->combined = ($request->has('combined')) ? 1 : 0 ;
+
         $category->user_id = Auth::id();
         $saved = $category->save();
 
@@ -106,9 +107,14 @@ class CategoriesController extends Controller
     public function update(Request $request, Categorie $category)
     {
         //dd($request);
-        $category->combined = ($request->has('combined')) ? 1 : 0 ;
         $category->name = $request->name;
         $category->description = $request->description;
+        
+        $category->person = ($request->has('person')) ? 1 : 0 ;
+        $category->material = ($request->has('material')) ? 1 : 0 ;
+        $category->vehicle = ($request->has('vehicle')) ? 1 : 0 ;
+        $category->combined = ($request->has('combined')) ? 1 : 0 ;
+        
         $saved = $category->update();
 
         if ($saved) {

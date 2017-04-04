@@ -32,6 +32,18 @@
           </div>
 
           <div class=" form-group checkbox col-xs-2 col-sm-8">
+            <label class="control-label"><input type="checkbox" name="person">Persona</label>
+          </div>
+
+          <div class=" form-group checkbox col-xs-2 col-sm-8">
+            <label class="control-label"><input type="checkbox" name="material">Material</label>
+          </div>
+
+          <div class=" form-group checkbox col-xs-2 col-sm-8">
+            <label class="control-label"><input type="checkbox" name="vehicle">Vehículo</label>
+          </div>
+
+          <div class=" form-group checkbox col-xs-2 col-sm-8">
             <label class="control-label"><input type="checkbox" name="combined">Combinado</label>
           </div>
 

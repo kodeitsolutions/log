@@ -62,7 +62,7 @@
                     <li><strong>Destino / Origen: </strong>{{ $entry->destination }}</li>
                 </ul>
 
-                @if( $entry->category->name == 'PERSONA' or $entry->category->name == 'PERSONA Y MATERIAL')
+                @if( $entry->category->person == 1 or $entry->category->combined == 1)
                     <h5><u>Datos de la persona</u></h5>
                     <ul>
                         <li><strong>Nombre: </strong>{{ $entry->person_name }}</li>
@@ -75,7 +75,7 @@
                     </ul>           
                 @endif 
 
-                @if( $entry->category->name == 'MATERIAL' or $entry->category->name == 'PERSONA Y MATERIAL')
+                @if( $entry->category->material == 1 or $entry->category->combined == 1)
                     <h5><u>Datos del material</u></h5>
                     <ul>
                         <li><strong>Material: </strong>{{ $entry->material_type }}</li>
@@ -85,18 +85,20 @@
                             <li><strong>Observaciones: </strong>{{ $entry->material_observations }}</li>
                         @endif
                     </ul>
-                @endif  
+                @endif
 
-                <h5><u>Datos del vehículo</u></h5>
-                <ul>
-                    <li><strong>Vehículo: </strong>{{ $entry->vehicle }}</li>
-                    <li><strong>Placa: </strong>{{ $entry->vehicle_plate }}</li>
-                    <li><strong>Nombre del Chofer: </strong>{{ $entry->driver_name }}</li>
-                    <li><strong>Cédula del Chofer: </strong>{{ $entry->driver_id }}</li>
-                    @if( $entry->vehicle_observations != '')
-                        <li><strong>Observaciones: </strong>{{ $entry->vehicle_observations }}</li>
-                    @endif
-                </ul>       
+                @if( $entry->category->vehicle == 1 or $entry->category->combined == 1)
+                    <h5><u>Datos del vehículo</u></h5>
+                    <ul>
+                        <li><strong>Vehículo: </strong>{{ $entry->vehicle }}</li>
+                        <li><strong>Placa: </strong>{{ $entry->vehicle_plate }}</li>
+                        <li><strong>Nombre del Chofer: </strong>{{ $entry->driver_name }}</li>
+                        <li><strong>Cédula del Chofer: </strong>{{ $entry->driver_id }}</li>
+                        @if( $entry->vehicle_observations != '')
+                            <li><strong>Observaciones: </strong>{{ $entry->vehicle_observations }}</li>
+                        @endif
+                    </ul>
+                @endif       
                 
                 <br><br>
             @endforeach

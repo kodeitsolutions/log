@@ -157,9 +157,17 @@ class EntriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Entrie $entry)
     {
         //
+        $deleted = $entry->delete();
+        if ($deleted) {
+            $request->session()->flash('flash_message', 'Registro eliminado.');
+        }
+        else{
+            $request->session()->flash('flash_message_not', 'No se pudo eliminar el Registro.');   
+        }
+        return redirect()->back();
     }
 
     public function search()
@@ -184,24 +192,23 @@ class EntriesController extends Controller
         $conditions = [['date', '>=',$date_from],
                        ['date', '<=',$date_to]];
 
-       if($request->has('user')){
-            array_push($conditions, ['user_id','=',$request->user]);
+       if($request->has('user_id')){
+            array_push($conditions, ['user_id','=',$request->user_id]);
         }
-        if($request->has('operation')){
-            array_push($conditions, ['operation_id','=',$request->operation]);
+        if($request->has('operation_id')){
+            array_push($conditions, ['operation_id','=',$request->operation_id]);
         }
-        if($request->has('category')){
-            array_push($conditions, ['categorie_id','=',$request->type]);
+        if($request->has('categorie_id')){
+            array_push($conditions, ['categorie_id','=',$request->categorie_id]);
         }
-        if($request->has('company')){
-            array_push($conditions, ['companie_id','=',$request->company]);
+        if($request->has('companie_id')){
+            array_push($conditions, ['companie_id','=',$request->companie_id]);
         }
-
+        
         $entries = Entrie::where($conditions)->get();        
 
         if($entries->isEmpty()) {
             $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            //dd($input);
             return redirect()->back()->withInput($input);
         }
         else {

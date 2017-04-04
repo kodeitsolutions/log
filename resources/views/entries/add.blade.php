@@ -226,6 +226,22 @@
         var  selection  = $('#categorie_id option:selected').val()      
          
         $.get('/category/getCategory/' + selection, function(response){        
+          if(response.person == 1){
+            $("#vehicle").hide()
+            $("#person").show()
+            $('#material').hide()
+          }
+
+          if(response.material == 1){
+            $("#vehicle").hide()
+            $('#material').show()
+            $("#person").hide()
+          }
+
+          if(response.vehicle == 1){           
+            $("#vehicle").show()
+          }  
+
           if(response.combined == 1){
             $("#vehicle").hide()
             $("#person").show()
@@ -233,21 +249,6 @@
             $("#vehicle").show()
           }                
         })
-        
-        var selection_name = $('#categorie_id option:selected').text()
-        if (selection_name == 'PERSONA')
-        {
-          $("#vehicle").hide()
-          $("#person").show()
-          $("#vehicle").show()
-          $('#material').hide()               
-        }
-        if(selection_name == 'MATERIAL'){
-          $("#vehicle").hide()
-          $('#material').show()
-          $("#vehicle").show()
-          $("#person").hide()               
-        }          
       })
     });
   

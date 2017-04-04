@@ -13,18 +13,17 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Fecha:</label>
             <div class="col-md-4">
-              <input type="text" name="date_from" id="date_from" value="01/01/2017" class="form-control">
+              <input type="text" name="date_from" id="date_from" value="01/01/2017" class="form-control" required>
             </div>
             <div class="col-md-4">
-              <input type="text" name="date_to" id="date_to" value="{{ $date }}" class="form-control">
-
+              <input type="text" name="date_to" id="date_to" value="{{ old('date_to') }}" class="form-control" placeholder="{{ $date }}" required>
             </div>
           </div>
 
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Usuario:</label>
             <div class="col-md-8">
-              <select  id="user" class="form-control input-sm" name="user">
+              <select  id="user" class="form-control input-sm" name="user_id">
                 <option selected disabled>Seleccione el usuario</option>
                 @foreach($users as $user)
                    <option value="{{ $user->id }}" @if (old('user_id') == $user->id) selected @endif>{{ $user->name }}</option>
@@ -36,10 +35,10 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Tipo de Movimiento:</label>
             <div class="col-md-8">
-              <select  id="operation" class="form-control input-sm" name="operation">
+              <select  id="operation" class="form-control input-sm" name="operation_id">
                 <option selected disabled>Seleccione el tipo de movimiento</option>
                 @foreach($operations as $operation)
-                  <option value="{{ $operation->id }}">{{ $operation->name }}</option>
+                  <option value="{{ $operation->id }}" @if (old('operation_id') == $operation->id) selected @endif>{{ $operation->name }}</option>
                 @endforeach
               </select>         
             </div>
@@ -48,10 +47,10 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Categoría:</label>
             <div class="col-md-8">
-                <select id="category" class="form-control input-sm" name="category" >
+                <select id="category" class="form-control input-sm" name="categorie_id" >
                   <option selected disabled>Seleccione la categoría</option>                    
                   @foreach($categories as $category)
-                     <option value="{{ old('category') }}">{{ $category->name }}</option>
+                     <option value="{{ $category->id }}" @if (old('categorie_id') == $category->id) selected @endif>{{ $category->name }}</option>
                   @endforeach                  
                 </select>  
             </div>
@@ -60,10 +59,10 @@
           <div class="form-group col-md-10">
             <label class="control-label col-md-3">Empresa causante de Mov.:</label>
             <div class="col-md-8">
-              <select id="company" class="form-control input-sm" name="company">
+              <select id="company" class="form-control input-sm" name="companie_id">
                 <option selected disabled>Seleccione la empresa</option>
                 @foreach($companies as $company)
-                   <option value="{{ $company->id }}">{{ $company->name }}</option>
+                   <option value="{{ $company->id }}" @if (old('companie_id') == $company->id) selected @endif>{{ $company->name }}</option>
                 @endforeach                     
               </select>  
             </div>
@@ -95,22 +94,6 @@
         $("#date_from").datepicker();
         $("#date_to").datepicker();
       });
-
-      $('#search').on('change',function(){
-
-        selection = $(this).val()
-
-        switch(selection)
-        {
-          case 'date':
-            $("#input-text").hide() 
-            $("#input-date").show()               
-            break
-          default:
-            $("#input-date").hide()
-            $("#input-text").show()
-        }    
-      })
     });
   </script>
 @stop

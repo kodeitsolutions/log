@@ -61,7 +61,7 @@
 						<td>{{ $entrie->category->name }}</td>
 						<td>{{ $entrie->company->name }}</td>
 						<td>{{ $entrie->destination }}</td>						
-						@if( $entrie->category->name == 'Persona' or $entrie->category->name == 'Persona-Material')
+						@if( $entrie->category->person == 1 or $entrie->category->combined == 1)
 							<td>{{ $entrie->person_name }}</td>
 							<td>{{ $entrie->person_id }}</td>
 							<td>{{ $entrie->person_occupation }}</td>
@@ -72,7 +72,7 @@
 							<td>N/A</td>
 							<td>N/A</td>
 						@endif
-						@if( $entrie->category->name == 'Material' or $entrie->category->name == 'Persona-Material')
+						@if( $entrie->category->material == 1 or $entrie->category->combined == 1)
 							<td>{{ $entrie->material_type }}</td>
 							<td>{{ $entrie->material_quantity }}</td>
 							<td>{{ $entrie->unit->code }}</td>
@@ -81,8 +81,13 @@
 							<td>N/A</td>
 							<td>N/A</td>
 						@endif
-						<td>{{ $entrie->vehicle }} {{ $entrie->vehicle_plate }}</td>
-						<td>{{ $entrie->driver_name}}  {{ $entrie->driver_id}}</td>
+						@if( $entrie->category->vehicle == 1 or $entrie->category->combined == 1)
+							<td>{{ $entrie->vehicle }} {{ $entrie->vehicle_plate }}</td>
+							<td>{{ $entrie->driver_name}}  {{ $entrie->driver_id}}</td>
+						@else
+							<td>N/A</td>
+							<td>N/A</td>
+						@endif
 						<td>
 							@if( $entrie->person_observations != '')
 								Persona: {{ $entrie->person_observations }}.
@@ -120,7 +125,7 @@
 		  $.get('/entry/getEntry/' + entry_id, function(response){
   			$('label[id="name"]').text(response.name)  			
 		  })
-		  $('form[id="delete"]').attr('action','entry/' + entry_id)
+		  $('form[id="delete"]').attr('action','/entry/' + entry_id)
 		});
 	</script>
 @stop

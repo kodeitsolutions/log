@@ -12,7 +12,7 @@ class Categorie extends Model
 
     protected $softDelete = true;
 
-    protected $fillable = ['name','user_id','description','combined'];
+    protected $fillable = ['name','user_id','description','combined','person','material','vehicle'];
 
     public function user()
     {
