@@ -103,7 +103,7 @@ return [
         ],
         'code' => [
             'max' => 'El código debe ser de :max caracteres.',
-            'alpha' => 'El código debe contener solo letras.',
+            'alpha_num' => 'El código debe contener solo letras y números.',
             'unique'   => 'Este código ya se encuentra registrado.',
         ],
         'search' => [
