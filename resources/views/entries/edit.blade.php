@@ -177,16 +177,13 @@
 			<label class="control-label col-md-3">Unidad:</label>
 			<div class="col-md-6">				
 				<select  id="unit_id" class="form-control input-sm" name="unit_id">
-	                @foreach($units as $unit)
-	                	@if ( is_null($entry->unit))
-							<option selected disabled>Seleccione la unidad</option>
-						@else
-	                		@if( $unit->id  ==  $entry->unit_id )
-	                   			<option selected value="{{ $unit->id }}">{{ $unit->code }}</option>
-	                   		@else
-	                   			<option value="{{ $unit->id }}">{{ $unit->code }}</option>
-	                   		@endif
-	                   	@endif
+					<option selected disabled="">Seleccione la unidad</option>
+	                @foreach($units as $unit)	                	
+                		@if( $unit->id  ==  $entry->unit_id )
+                   			<option selected value="{{ $unit->id }}">{{ $unit->code }}</option>
+                   		@else
+                   			<option value="{{ $unit->id }}">{{ $unit->code }}</option>
+                   		@endif
 	                @endforeach
                 </select>
 			</div>			
