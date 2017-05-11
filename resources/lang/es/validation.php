@@ -100,9 +100,70 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'description' => [
+            'required' => 'Debe ingresar una descripción',
         ],
+        'code' => [
+            'max' => 'El código debe ser de :max caracteres.',
+            'alpha_num' => 'El código debe contener solo letras y números.',
+            'unique'   => 'Este código ya se encuentra registrado.',
+        ],
+        'search' => [
+            'required' => 'Debe seleccionar un parámetro de búsqueda.'
+        ],
+        'value' => [
+            'required' => 'Debe ingresar un dato para buscar.'
+        ],
+        'name' => [
+            'unique'   => 'Este nombre ya se encuentra registrado.',
+        ],
+        'password' => [
+            'confirmed' => 'La confirmación de la contraseña no coincide.',
+            'min' => 'La contraseña debe tener mínimo :min caracteres.'
+        ],
+        'vehicle_plate' => [
+            'alpha_num' => 'La placa del vehículo solo debe contener números y letras.'
+        ],
+        'email' => [
+            'unique' => 'Este email ya se encuentra registrado.',
+            'email' => 'Debe ingresar una dirección de correo electrónico válida.'
+        ],
+        'minute' => [
+            'required' => 'El campo minutos es obligatorio.',
+        ],
+        'hour' => [
+            'required' => 'El campo hora es obligatorio.',
+        ],
+        'operation_id' => [
+            'required' => 'El campo Tipo de Movimiento es obligatorio.',
+        ],
+        'categorie_id' => [
+            'required' => 'El campo Categoría es obligatorio.',
+        ],
+        'companie_id' => [
+            'required' => 'El campo Empresa es obligatorio.',
+        ],
+        'person_name' => [
+            'required_if' => 'El campo Nombre es obligatorio cuando la categoría incluye PERSONA.',
+        ],
+        'person_id' => [
+            'required_if' => 'El campo Cédula es obligatorio cuando la categoría incluye PERSONA.',
+        ],
+        'person_occupation' => [
+            'required_if' => 'El campo Ocupación es obligatorio cuando la categoría incluye PERSONA.',
+        ],
+        'person_company' => [
+            'required_if' => 'El campo Empresa es obligatorio cuando la categoría incluye PERSONA.',
+        ],
+        'material_type' => [
+            'required_if' => 'El campo Descripción es obligatorio cuando la categoría incluye MATERIAL.',
+        ],
+        'material_quantity' => [
+            'required_if' => 'El campo Cantidad es obligatorio cuando la categoría incluye MATERIAL.',
+        ],
+        'unit_id' => [
+            'required_if' => 'El campo Unidad es obligatorio cuando la categoría incluye MATERIAL.',
+        ]
     ],
 
     /*

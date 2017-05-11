@@ -58,10 +58,19 @@ class EntriesController extends Controller
         $this->validate($request, [
             'operation_id' => 'required',
             'categorie_id' => 'required',
-            'destination' => 'required|max:255',
+            'companie_id' => 'required',
+            'destination' => 'required|max:255',           
             'hour' => 'required',
             'minute' =>  'required',
-            'ampm' => 'required'
+            'ampm' => 'required',
+            'person_name' => 'required_if:categorie_id,1,3', 
+            'person_id' => 'required_if:categorie_id,1,3',
+            'person_occupation' => 'required_if:categorie_id,1,3', 
+            'person_company' => 'required_if:categorie_id,1,3', 
+            'material_type' => 'required_if:categorie_id,2,3',
+            'material_quantity' => 'required_if:categorie_id,2,3',
+            'unit_id' => 'required_if:categorie_id,2,3',
+
         ]);
 
         $data = $request->all();
@@ -212,7 +221,7 @@ class EntriesController extends Controller
             return redirect()->back()->withInput($input);
         }
         else {
-            $date = '';
+            $date = $date_to;
             Session::put('entries', $entries);
             return view('entries.index', compact('entries','date'));
         }

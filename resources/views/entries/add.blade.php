@@ -10,7 +10,7 @@
                 <select  id="operation_id" class="form-control input-sm" name="operation_id" required>
                     <option selected disabled>Seleccione el tipo de movimiento</option>
                     @foreach($operations as $operation)
-                       <option value="{{ $operation->id }}">{{ $operation->name }}</option>
+                       <option value="{{ $operation->id }}" @if (old('operation_id') == $operation->id) selected @endif>{{ $operation->name }}</option>
                     @endforeach
                 </select>
             </div>                          
@@ -21,7 +21,7 @@
                   <select id="categorie_id" class="form-control input-sm" name="categorie_id" required>
                     <option selected disabled>Seleccione la categoría</option>                    
                     @foreach($categories as $category)
-                      <option value="{{ $category->id }}" name="{{ $category->name }}">{{ $category->name }}</option>
+                      <option value="{{ $category->id }}" name="{{ $category->name }}"  @if (old('categorie_id') == $category->id) selected @endif>{{ $category->name }}</option>
                     @endforeach                   
                   </select>  
               </div>
@@ -30,10 +30,10 @@
               <label class="control-label col-md-2">Empresa causante de Mov.:</label>
               <div class="col-md-10">
                   <select id="companie_id" class="form-control input-sm" name="companie_id" required>
-                    <option selected disabled>Seleccione la empresa</option>
+                    <option selected disabled>Seleccione la empresa</option>                    
                     @foreach($companies as $company)
-                      <option value="{{ $company->id }}">{{ $company->name }}</option>
-                    @endforeach                     
+                      <option value="{{ $company->id }}" name="{{ $company->name }}"  @if (old('companie_id') == $company->id) selected @endif>{{ $company->name }}</option>
+                    @endforeach                   
                   </select>  
               </div>
           </div>
@@ -57,7 +57,7 @@
               <select name="hour" class="form-control input-sm">
                 <option selected disabled>Hora</option>
                 @for($i = 1; $i <= 12; $i++)
-                  <option value="{{ $i }}">{{ $i }}</option>
+                  <option value="{{ $i }}" @if (old('hour') == $i) selected @endif>{{ $i }}</option>
                 @endfor
               </select>                   
             </div>
@@ -65,7 +65,12 @@
               <select name="minute" class="form-control input-sm">
                 <option selected disabled>Minutos</option>
                 @for($i = 0; $i <=59 ; $i++)
-                  <option value="{{ $i }}">{{ $i }}</option>
+                  <option value="{{ $i }}" @if (old('minute') == $i) selected @endif>
+                  @if ($i < 10)
+                    0{{ $i }}
+                  @else
+                    {{ $i }}
+                  @endif</option>
                 @endfor
               </select>                   
             </div>
@@ -87,21 +92,21 @@
             <br>
             <div class="row">
               <label class="control-label col-md-2">Cédula:</label>
-              <div class="col-md-10"> 
+              <div class="col-md-10 {{ $errors->has('person_id') ? ' has-error' : '' }}"> 
                 <input type="text" class="form-control" name="person_id" id="person_id" placeholder="Ingrese la cédula de la persona (solo números)." value="{{ old('person_id') }}" >
               </div>
             </div>
             <br>
             <div class="row">
               <label class="control-label col-md-2">Ocupación:</label>
-              <div class="col-md-10"> 
+              <div class="col-md-10 {{ $errors->has('person_occupation') ? ' has-error' : '' }}"> 
                 <input type="text" class="form-control" name="person_occupation" id="person_occupation" placeholder="Ingrese la ocupación de la persona." value="{{ old('person_occupation') }}" >
               </div>
             </div> 
             <br>
             <div class="row">
               <label class="control-label col-md-2">Empresa:</label>
-              <div class="col-md-10"> 
+              <div class="col-md-10 {{ $errors->has('person_company') ? ' has-error' : '' }}"> 
                 <input type="text" class="form-control" name="person_company" id="person_company" placeholder="Ingrese la empresa a la que pertenece la persona." value="{{ old('person_company') }}" >
               </div>
             </div>
@@ -115,21 +120,21 @@
           </div>          
 
           <div class="form-group col-xs-2 col-sm-12" id="material" style="display: none">
-            <h4><span class="label label-default">Datos del material</span></h4>
+            <h4><span class="label label-default ">Datos del material</span></h4>
             <div class="row">
               <label class="control-label col-md-2">Descripción:</label>
-              <div class="col-md-10"> 
+              <div class="col-md-10 {{ $errors->has('material_type') ? ' has-error' : '' }}"> 
                 <input type="text" class="form-control" name="material_type" id="material_type" placeholder="Ingrese la descripción del material." value="{{ old('material_type') }}" >                       
               </div>
             </div>      
             <br>     
             <div class="row">
-              <div class="{{ $errors->has('unit_id') ? ' has-error' : '' }} col-md-12 row" >
+              <div class="col-md-12 row" >
                 <label class="control-label col-md-2">Cantidad:</label>
-                <div class="col-md-6"> 
+                <div class="col-md-6 {{ $errors->has('material_quantity') ? ' has-error' : '' }}"> 
                   <input type="numeric" class="form-control" name="material_quantity" id="material_quantity" placeholder="Ingrese la cantidad de material." value="{{ old('material_quantity') }}" align="right">
                 </div>
-                <div class="col-md-4"> 
+                <div class="col-md-4 {{ $errors->has('unit_id') ? ' has-error' : '' }}"> 
                   <select id="unit_id" class="form-control input-sm" name="unit_id">
                     <option selected disabled>Seleccione la unidad</option>
                     @foreach($units as $unit)
