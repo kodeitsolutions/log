@@ -46,10 +46,13 @@
                         @if (Auth::check())
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    Bienvenido {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="/user/reset/{{ Auth::user()->id }}">Cambiar contraseña</a>
+                                    </li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
@@ -61,9 +64,7 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li> 
-                                    <li>
-                                        <a href="/user/reset/{{ Auth::user()->id }}">Cambiar contraseña</a>
-                                    </li>                                   
+                                                                       
                                 </ul>
                             </li>
                         @endif
