@@ -4,10 +4,10 @@
   <div class=" col-md-12">
         <form method="POST" action="/entry/add">
           {{ csrf_field()}}
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('operation_id') ? ' has-error' : '' }} row" >
+          <div class="form-group col-xs-2 col-sm-12 row" >
             <label class="control-label col-md-2">Tipo de Movimiento:</label>
-            <div class="col-md-10">
-                <select  id="operation_id" class="form-control input-sm" name="operation_id" required>
+            <div class="col-md-10 {{ $errors->has('operation_id') ? ' has-error' : '' }} ">
+                <select  id="operation_id" class="form-control input-sm" name="operation_id" >
                     <option selected disabled>Seleccione el tipo de movimiento</option>
                     @foreach($operations as $operation)
                        <option value="{{ $operation->id }}" @if (old('operation_id') == $operation->id) selected @endif>{{ $operation->name }}</option>
@@ -15,10 +15,10 @@
                 </select>
             </div>                          
           </div>
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('categorie_id') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 row">
               <label class="control-label col-md-2">Categoría:</label>
-              <div class="col-md-10">
-                  <select id="categorie_id" class="form-control input-sm" name="categorie_id" required>
+              <div class="col-md-10 {{ $errors->has('categorie_id') ? ' has-error' : '' }}">
+                  <select id="categorie_id" class="form-control input-sm" name="categorie_id">
                     <option selected disabled>Seleccione la categoría</option>                    
                     @foreach($categories as $category)
                       <option value="{{ $category->id }}" name="{{ $category->name }}"  @if (old('categorie_id') == $category->id) selected @endif>{{ $category->name }}</option>
@@ -26,10 +26,10 @@
                   </select>  
               </div>
           </div>
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('companie_id') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 row">
               <label class="control-label col-md-2">Empresa causante de Mov.:</label>
-              <div class="col-md-10">
-                  <select id="companie_id" class="form-control input-sm" name="companie_id" required>
+              <div class="col-md-10 {{ $errors->has('companie_id') ? ' has-error' : '' }}">
+                  <select id="companie_id" class="form-control input-sm" name="companie_id">
                     <option selected disabled>Seleccione la empresa</option>                    
                     @foreach($companies as $company)
                       <option value="{{ $company->id }}" name="{{ $company->name }}"  @if (old('companie_id') == $company->id) selected @endif>{{ $company->name }}</option>
@@ -37,23 +37,23 @@
                   </select>  
               </div>
           </div>
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('destination') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 row">
               <label class="control-label col-md-2">Destino / Origen:</label>
-              <div class="col-md-10"> 
-                  <input type="text" class="form-control" name="destination" id="destination" placeholder="Ingrese el destino." value="{{ old('destination') }}" required>
+              <div class="col-md-10 {{ $errors->has('destination') ? ' has-error' : '' }}"> 
+                  <input type="text" class="form-control" name="destination" id="destination" placeholder="Ingrese el destino." value="{{ old('destination') }}">
               </div>
           </div>   
 
-          <div class="form-group col-xs-2 col-sm-12 {{ $errors->has('date') ? ' has-error' : '' }} row">
+          <div class="form-group col-xs-2 col-sm-12 row">
             <label class="control-label col-md-2">Fecha:</label>
-            <div class="col-md-10"> 
-              <input type="text" class="form-control" name="date" id="date" value="{{ $date }}" required>
+            <div class="col-md-10 {{ $errors->has('date') ? ' has-error' : '' }}"> 
+              <input type="text" class="form-control" name="date" id="date" value="{{ $date }}">
             </div>
           </div>      
 
           <div class="form-group col-xs-2 col-sm-12 row">
             <label class="control-label col-md-2">Hora:</label>
-            <div class="col-md-2">
+            <div class="col-md-2 {{ $errors->has('hour') ? ' has-error' : '' }}">
               <select name="hour" class="form-control input-sm">
                 <option selected disabled>Hora</option>
                 @for($i = 1; $i <= 12; $i++)
@@ -61,7 +61,7 @@
                 @endfor
               </select>                   
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 {{ $errors->has('minute') ? ' has-error' : '' }}">
               <select name="minute" class="form-control input-sm">
                 <option selected disabled>Minutos</option>
                 @for($i = 0; $i <=59 ; $i++)
@@ -195,10 +195,39 @@
           <div class="col-md-10">
             @if($errors->any())
               <div class="alert alert-danger">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </div>
+                <strong>Campos requeridos</strong>
+                <script type="text/javascript">
+                  $(document).ready(function(){
+                    var  selection  = $('#categorie_id option:selected').val()      
+           
+                    $.get('/category/getCategory/' + selection, function(response){  
+                      if(response.person == 1){
+                        $("#vehicle").hide()
+                        $("#person").show()
+                        $('#material').hide()
+                      }
+
+                      if(response.material == 1){
+                        $("#vehicle").hide()
+                        $('#material').show()
+                        $("#person").hide()
+                      }
+
+                      if(response.vehicle == 1){           
+                        $("#vehicle").show()
+                      }  
+
+                      if(response.combined == 1){
+                        $("#vehicle").hide()
+                        $("#person").show()
+                        $('#material').show()
+                        $("#vehicle").show()
+                      }
+                                           
+                    })                
+                  });
+                </script>
+              </div>
             @endif
           </div>
           <div class="form-group col-xs-2 col-sm-12" align="right">
