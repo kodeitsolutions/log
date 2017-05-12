@@ -16,7 +16,7 @@
               <input type="text" name="date_from" id="date_from" value="01/01/2017" class="form-control" required>
             </div>
             <div class="col-md-4">
-              <input type="text" name="date_to" id="date_to" value="{{ old('date_to') }}" class="form-control" placeholder="{{ $date }}" required>
+              <input type="text" name="date_to" id="date_to" value="{{ $date }}" class="form-control" required>
             </div>
           </div>
 
