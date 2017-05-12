@@ -74,7 +74,7 @@
                 @endfor
               </select>                   
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 {{ $errors->has('ampm') ? ' has-error' : '' }}">
               <select name="ampm" class="form-control input-sm">
                 <option value="AM">AM</option>
                 <option value="PM">PM</option>                    
