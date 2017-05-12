@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer form-group">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary btn-edit">Guardar</button>
+              <button type="submit" class="btn btn-primary btn-edit" id="submit">Guardar</button>
             </div>
           </form>     
       </div>      
@@ -69,12 +69,12 @@
         </thead>
         <tbody>
           @foreach($operations as $operation)
-              <tr id="operation{{ $operation->id }}">
-                <td><span id="{{ $operation->id }}">{{ $operation->name }}</span></td>              
-                <td>
+            <tr id="{{ $operation->id }}">
+              <td><span id="{{ $operation->id }}">{{ $operation->name }}</span></td>              
+              <td>
                 <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
                 <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$operation->id}}"><span class="glyphicon glyphicon-trash"></span></button> </td>
-                </td>   
+              </td>   
             </tr>
           @endforeach      
         </tbody>
@@ -105,7 +105,7 @@
         $.get('/operation/getOperation/' + operation_id, function(response){
           $('input[id="name"]').val(response.name)
         })
-        $('form[id="edit"]').attr('action','operation/' + operation_id)
+        $('form[id="edit"]').attr('action','operation/' + operation_id)        
     });    
   </script>
 @stop
