@@ -96,7 +96,7 @@
             </div>
             @yield('modal-delete')
             @yield('modal-edit')
-            @yield('modal-show')
+            @yield('modal-info')
             <div class="col-md-6 col-md-offset-1">
             @if(Session::has('flash_message'))
                 <div class="alert alert-success"><span class="glyphicon glyphicon-ok-sign"></span><em> {!! session('flash_message') !!}</em></div>

@@ -221,7 +221,7 @@ class EntriesController extends Controller
             return redirect()->back()->withInput($input);
         }
         else {
-            $date = $date_to;
+            $date = $request->date_to;
             Session::put('entries', $entries);
             return view('entries.index', compact('entries','date'));
         }

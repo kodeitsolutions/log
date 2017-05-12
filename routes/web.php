@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::delete('entry/{entry}', 'EntriesController@destroy');
 	Route::get('entry/print', 'EntriesController@test');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
+	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 });
 
 Route::group(['middleware' => ['auth','user']], function(){
@@ -69,8 +70,7 @@ Route::group(['middleware' => ['auth','user']], function(){
 
 	Route::get('unit', 'UnitsController@index');
 	Route::get('unit/add', 'UnitsController@add');
-	Route::post('unit/add', 'UnitsController@store');
-	Route::get('unit/getUnit/{id}', 'UnitsController@show');
+	Route::post('unit/add', 'UnitsController@store');	
 	Route::patch('unit/{unit}', 'UnitsController@update');
 	Route::get('unit/search', 'UnitsController@search');
 	Route::get('unit/searching', 'UnitsController@searching');
