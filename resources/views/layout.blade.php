@@ -127,6 +127,13 @@
             @yield('form')
         </div>
         @yield('script')
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function() {
+                  $('.alert').fadeOut('fast');
+                }, 5000); 
+            });
+        </script>
         
     </body>
 </html>
