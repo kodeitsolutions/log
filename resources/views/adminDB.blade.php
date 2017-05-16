@@ -14,9 +14,14 @@
               <li><a href="/user">Usuarios</a></li>
             </ul>
           </li>
-          <li class="{{ setActive('entry')}}"><a href="/entry">Log</a></li>
-          <li class="{{ setActive('entry/add')}}"><a href="/entry/add">Agregar Log</a></li>
-          <li class="{{ setActive('entry/search')}} {{ setActive('entry/searching')}}"><a href="/entry/search">Buscar registro</a></li>
+          <li class="dropdown {{ setActive('entry')}} {{ setActive('entry/add')}} {{ setActive('entry/search')}} {{ setActive('entry/searching')}}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Log <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/entry">Ver</a></li>
+              <li><a href="/entry/add">Agregar Log</a></li>
+              <li ><a href="/entry/search">Buscar registro</a></li>
+            </ul>
+          </li>          
         </ul>
       </div>
     </nav>       
