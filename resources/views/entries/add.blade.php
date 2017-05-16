@@ -172,14 +172,14 @@
           <div class="row">
             <div class="col-md-12 row" >
               <label class="control-label col-md-2 {{ $errors->has('material_quantity') || $errors->has('unit_id') ? ' has-error' : '' }}">Cantidad:</label>
-              <div class="col-md-6 {{ $errors->has('material_quantity') ? ' has-error' : '' }}"> 
+              <div class="col-md-7 {{ $errors->has('material_quantity') ? ' has-error' : '' }}"> 
                 <input type="numeric" class="form-control" name="material_quantity" id="material_quantity" placeholder="Ingrese la cantidad de material." value="{{ old('material_quantity') }}" align="right">
               </div>
-              <div class="col-md-4 {{ $errors->has('unit_id') ? ' has-error' : '' }}"> 
+              <div class="col-md-3 {{ $errors->has('unit_id') ? ' has-error' : '' }}" align="right"> 
                 <select id="unit_id" class="form-control input-sm" name="unit_id">
                   <option selected disabled>Seleccione la unidad</option>
                   @foreach($units as $unit)
-                    <option value="{{ $unit->id }}" @if (old('unit_id') == $unit->id) selected @endif>{{ $unit->code }}</option>
+                    <option value="{{ $unit->id }}" @if (old('unit_id') == $unit->id) selected @endif>{{ $unit->code }} - {{ $unit->name }}</option>
                   @endforeach                     
                 </select>
               </div>
