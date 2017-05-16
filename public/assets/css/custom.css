@@ -1,0 +1,16 @@
+.has-error .form-control{
+    border-color: red;
+}
+
+.has-error,
+.alert-danger {
+	color: red;
+}
+
+div.conditional {
+	display: none;
+}
+
+table.log{
+	font-size: 12px
+}
