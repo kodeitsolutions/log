@@ -147,6 +147,9 @@
 		<div class="form-group col-xs-2 col-sm-12" align="right">
 	        <a href="/entry/print" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
 	    </div>
+	    <div class="pagination-centered">
+	    	{{ $entries->links() }}
+	    </div>
 	</div>
 @stop
 
