@@ -2,7 +2,7 @@
 
 @section('form')    
   <div class="col-md-12">
-    <h3 class="text-info" align="center">BÚSQUEDA DE REGISTROS </h3>
+    <h3 class="text-info" align="center">BUSCAR REGISTROS</h3>
     <br>
     <form method="GET" action="/entry/searching">
       {{ csrf_field()}}
