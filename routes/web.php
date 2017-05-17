@@ -14,8 +14,14 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
+Route::get('pruebasCompany', function(){
+	    /*$entries = new Entrie();
+	    $entries = Entrie::where('companie_id','1')->get();*/
+	    $entries = App\Entrie::company()->get();
+        dd($entries);
+    });
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
 	Route::get('entry/add', 'EntriesController@add');
 	Route::post('entry/add', 'EntriesController@store');
@@ -30,7 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 });
 
-Route::group(['middleware' => ['auth','user']], function(){
+Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('user', 'UsersController@index');
 	Route::get('user/add', 'UsersController@add');
 	Route::post('user/add', 'UsersController@store');
