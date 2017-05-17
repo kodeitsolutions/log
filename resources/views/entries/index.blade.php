@@ -92,7 +92,11 @@
 
 @section('table')
 	<div class="col-md-12">
-		<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
+		@if(!empty($date_from))
+			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>
+		@else
+			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
+		@endif
 		<table class="table table-striped log">
 			<thead>
 				<tr>
@@ -146,10 +150,12 @@
                			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>
 					</tr>
-				@endforeach
-
-			</tbody>
-		</table>
+				@endforeach				
+			</tbody>			
+		</table>		
+		<div class="text-center">
+			{{ $entries->appends(Request::except('page'))->render() }}
+		</div>
 		<div class="form-group col-xs-2 col-sm-12" align="right">
 	        <a href="/entry/print" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
 	    </div>

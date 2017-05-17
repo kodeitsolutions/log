@@ -26,7 +26,7 @@ class EntriesController extends Controller
     {
         //
         $date = date('d/m/Y');
-        $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->get();
+        $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->paginate(20);
         Session::put('entries', $entries);
         return view('entries.index', compact('entries', 'date'));
     }
@@ -214,19 +214,20 @@ class EntriesController extends Controller
             array_push($conditions, ['companie_id','=',$request->companie_id]);
         }
         
-        $entries = Entrie::where($conditions)->get();        
+        $entries = Entrie::where($conditions)->paginate(20);
 
         if($entries->isEmpty()) {
             $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
             return redirect()->back()->withInput($input);
         }
         else {
-            $date = $request->date_to;
+            $date_from = $request->date_from;
+            $date_to = $request->date_to;
             Session::put('entries', $entries);
-            return view('entries.index', compact('entries','date'));
+            return view('entries.index', compact('entries','date_from','date_to'));
         }
     }
-
+    
     public function test()
     {
         # code...
