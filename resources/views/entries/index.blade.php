@@ -134,13 +134,13 @@
 							Material: {{ $entrie->material_type }}</td>
 						@endif						
 						<td>
-							@if( $entrie->person_observations != '')
+							@if( !empty($entrie->person_observations))
 								Persona: {{ $entrie->person_observations }}.<br>
 							@endif
-							@if($entrie->material_observations != '')
+							@if( !empty($entrie->material_observations))
 								Material: {{ $entrie->material_observations }}.<br>
 							@endif
-							@if($entrie->vehicle_observations != '')
+							@if( !empty($entrie->vehicle_observations))
 								Vehículo: {{ $entrie->vehicle_observations }}.<br>
 							@endif
 						</td>
@@ -157,7 +157,7 @@
 			{{ $entries->appends(Request::except('page'))->render() }}
 		</div>
 		<div class="form-group col-xs-2 col-sm-12" align="right">
-	        <a href="/entry/print" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
+	        <a href="/entry/print" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
 	    </div>
 	</div>
 @stop
