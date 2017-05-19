@@ -4,105 +4,88 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!--meta name="csrf-token" content="{{ csrf_token() }}"-->
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-        <!--link rel="stylesheet" type="text/css" href="/css/print.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->
+        @if(PHP_OS == 'WINNT')
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        @else
+            <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.css') }}">
+        @endif
         
-        <style type="text/css">
-            h4 {
-                color: #5F9EA0;
-                font-family: Tahoma, Geneva, sans-serif;
-            }
-
-            h5,h2 {
-                font-family: Tahoma, Geneva, sans-serif;
-            }
-
-            div.border {
-                width: 700px;
-                border:1px solid gray;
-                border-radius: 2px;
-            }
-
-            p {
-                margin-left: 20px;
-                font-family: Tahoma, Geneva, sans-serif;
-                font-size: 11px;
-            }
-
-            li {
-                font-family: Tahoma, Geneva, sans-serif;
-                font-size: 11px;
-            }            
-        </style>
-        
-        <h2 align="center"> Listado de registros</h2>
+        <h3 class="text-info" align="center">LISTADO DE REGISTROS</h3>
     </head>
-    <body>
-        <div class="container col-md-10">
-            @foreach($entries as $entry)
-                <div class="border">
-                    <h4>Registro N° {{ $entry->id }}</h4>
-                    <p>
-                        <strong>Fecha:</strong> {{ $entry->date->format('d/m/Y') }}
-                        <br><strong>Hora:</strong> {{ $entry->time }}
-                        <br><strong>Usuario:</strong> {{ $entry->user->name }}</p>
-                    </p>
-                </div>
 
-                <h5><u>Datos del movimiento</u></h5>
-                <ul>
-                    <li><strong>Movimiento: </strong>{{ $entry->operation->name }}</li>
-                    <li><strong>Categoría: </strong>{{ $entry->category->name }}</li>
-                    <li><strong>Empresa: </strong>{{ $entry->company->name }}</li>
-                    <li><strong>Destino / Origen: </strong>{{ $entry->destination }}</li>
-                </ul>
+    <style type="text/css">
+        thead { display: table-header-group }
+        tr { page-break-inside: avoid }
+    </style>
 
-                @if( $entry->category->person == 1 or $entry->category->combined == 1)
-                    <h5><u>Datos de la persona</u></h5>
-                    <ul>
-                        <li><strong>Nombre: </strong>{{ $entry->person_name }}</li>
-                        <li><strong>Cédula: </strong>{{ $entry->person_id }}</li>
-                        <li><strong>Ocupación: </strong>{{ $entry->person_occupation }}</li>
-                        <li><strong>Empresa: </strong>{{ $entry->person_company }}</li>
-                        @if( $entry->person_observations != '')
-                            <li><strong>Observaciones: </strong>{{ $entry->person_observations }}</li>
+    <body>        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Movimiento</th>
+                    <th>Categoría</th>
+                    <th>Empresa</th>
+                    <th>Destino / Origen</th>
+                    <th>Persona</th>
+                    <th>Material</th>
+                    <th>Vehículo</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($entries as $index => $entrie)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $entrie->date->format('d/m/Y')}}</td>
+                        <td>{{ $entrie->time }}</td>
+                        <td>{{ $entrie->operation->name }}</td>
+                        <td>{{ $entrie->category->name }}</td>
+                        <td>{{ $entrie->company->name }}</td>
+                        <td>{{ $entrie->destination }}</td>                     
+                        @if( $entrie->category->person == 1 )
+                            <td>Nombre: {{ $entrie->person_name }}.<br>
+                            C.I: {{ $entrie->person_id}}.<br>
+                            Empresa: {{ $entrie->person_company }}.<br>
+                            Ocupación: {{ $entrie->person_occupation}}.
+                            </td>
+                        @else
+                            <td>-</td>
                         @endif
-                    </ul>           
-                @endif 
-
-                @if( $entry->category->material == 1 or $entry->category->combined == 1)
-                    <h5><u>Datos del material</u></h5>
-                    <ul>
-                        <li><strong>Material: </strong>{{ $entry->material_type }}</li>
-                        <li><strong>Cantidad: </strong>{{ $entry->material_quantity }}</li>
-                        <li><strong>Unidad: </strong>{{ $entry->unit->code }}</li>
-                        @if( $entry->material_observations != '')
-                            <li><strong>Observaciones: </strong>{{ $entry->material_observations }}</li>
+                        @if( $entrie->category->material == 1)
+                            <td>Descripción: {{ $entrie->material_type }}.<br>
+                            Cantidad: {{ $entrie->material_quantity }} {{ $entrie->unit->code }}.<br>
+                            </td> 
+                        @else
+                            <td>-</td>                          
                         @endif
-                    </ul>
-                @endif
-
-                @if( $entry->category->vehicle == 1 or $entry->category->combined == 1)
-                    <h5><u>Datos del vehículo</u></h5>
-                    <ul>
-                        <li><strong>Vehículo: </strong>{{ $entry->vehicle }}</li>
-                        <li><strong>Placa: </strong>{{ $entry->vehicle_plate }}</li>
-                        <li><strong>Nombre del Chofer: </strong>{{ $entry->driver_name }}</li>
-                        <li><strong>Cédula del Chofer: </strong>{{ $entry->driver_id }}</li>
-                        @if( $entry->vehicle_observations != '')
-                            <li><strong>Observaciones: </strong>{{ $entry->vehicle_observations }}</li>
-                        @endif
-                    </ul>
-                @endif       
-                
-                <br><br>
-            @endforeach
-        </div>
+                        <td>Descripción: {{ $entrie->vehicle }}.<br>
+                        Placa: {{ $entrie->vehicle_plate }}.<br>
+                        Chofer: {{ $entrie->driver_name }}.<br>
+                        C.I: {{$entrie->driver_id }}.
+                        </td>
+                        @if( $entrie->category->combined == 1)
+                            <td>Persona: {{ $entrie->person_name }}. <br>
+                            Material: {{ $entrie->material_type }}</td>
+                        @endif                      
+                        <td>
+                            @if( $entrie->person_observations != '')
+                                Persona: {{ $entrie->person_observations }}.<br>
+                            @endif
+                            @if($entrie->material_observations != '')
+                                Material: {{ $entrie->material_observations }}.<br>
+                            @endif
+                            @if($entrie->vehicle_observations != '')
+                                Vehículo: {{ $entrie->vehicle_observations }}.<br>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach             
+            </tbody>            
+        </table>
                
     </body>
 </html>
