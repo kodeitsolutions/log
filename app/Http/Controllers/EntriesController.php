@@ -25,10 +25,9 @@ class EntriesController extends Controller
     public function index()
     {
         //
-        $date = date('d/m/Y');
         $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->paginate(20);
         Session::put('entries', $entries);
-        return view('entries.index', compact('entries', 'date'));
+        return view('entries.index', compact('entries'));
     }
 
     /**
@@ -74,9 +73,7 @@ class EntriesController extends Controller
         ]);
 
         $data = $request->all();
-        $date = $request->date;
-        $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
-        $data['date'] = $date;
+        $data['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date)));
 
         $entrie = new Entrie($data);   
 
@@ -144,9 +141,7 @@ class EntriesController extends Controller
     {
         //dd($request);
         $data = $request->all();
-        $date = $request->date;
-        $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
-        $data['date'] = $date;
+        $data['date'] = $entry->getFormatDate($request->date);
 
         $saved = $entry->update($data);
 
@@ -193,13 +188,9 @@ class EntriesController extends Controller
     {
         //dd($request);
         $input = $request->all();
-        $date_from = $request->date_from;
-        $date_from = date('Y-m-d', strtotime(str_replace('/', '-', $date_from)));
-        $date_to = $request->date_to;
-        $date_to = date('Y-m-d', strtotime(str_replace('/', '-', $date_to)));
 
-        $conditions = [['date', '>=',$date_from],
-                       ['date', '<=',$date_to]];
+        $conditions = [['date', '>=',date('Y-m-d', strtotime(str_replace('/', '-', $request->date_from)))],
+                       ['date', '<=',date('Y-m-d', strtotime(str_replace('/', '-', $request->date_to)))]];
 
        if($request->has('user_id')){
             array_push($conditions, ['user_id','=',$request->user_id]);
@@ -232,7 +223,7 @@ class EntriesController extends Controller
     {
         # code...
         $entries = Session::get('entries');
-        //dd($entries);
+        $today = date('d/m/Y');
         //return view('entries.print', compact('entries'));
         
         if ($entries->isEmpty()) {            
@@ -240,7 +231,7 @@ class EntriesController extends Controller
             return back();
         } else {
             $pdf = PDF::loadView('entries.print', compact('entries'));
-            return $pdf->download('Registros.pdf');
+            return $pdf->inline('ListadoRegistros-'.$today.'.pdf');
 
             Session::forget('entries');
         }

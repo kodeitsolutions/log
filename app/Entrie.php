@@ -42,4 +42,15 @@ class Entrie extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
+
+    public function getFormatDate($value)
+    {
+        return date('Y-m-d', strtotime(str_replace('/', '-', $value)));
+    }
+
+    public function setFormatDate($value)
+    {
+        # code...
+        $this->attributes['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $value)));
+    }
 }
