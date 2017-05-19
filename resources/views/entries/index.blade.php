@@ -75,7 +75,7 @@
 							<dt class="col-sm-3">Chofer:</dt>
 							<dd class="col-sm-9" id="driver_name"></dd><br>
 							<dt class="col-sm-3">Cédula:</dt>
-							<dd class="col-sm-9" id="driver_id"></dd>
+							<dd class="col-sm-9" id="driver_id"></dd><br>
 							<dt class="col-sm-3">Observaciones:</dt>
 							<dd class="col-sm-9" id="vehicle_observations"></dd>
 						</dl>
