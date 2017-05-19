@@ -14,12 +14,6 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
-Route::get('pruebasCompany', function(){
-	    /*$entries = new Entrie();
-	    $entries = Entrie::where('companie_id','1')->get();*/
-	    $entries = App\Entrie::company()->get();
-        dd($entries);
-    });
 
 Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
