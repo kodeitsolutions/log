@@ -25,7 +25,7 @@ class EntriesController extends Controller
     public function index()
     {
         //
-        $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('date','time')->paginate(20);
+        $entries = Entrie::whereDate('date', '=', date('Y-m-d'))->orderBy('time')->paginate(20);
         Session::put('entries', $entries);
         return view('entries.index', compact('entries'));
     }
@@ -200,7 +200,7 @@ class EntriesController extends Controller
             array_push($conditions, ['companie_id','=',$request->companie_id]);
         }
         
-        $entries = Entrie::where($conditions)->paginate(20);
+        $entries = Entrie::where($conditions)->orderBy('date')->orderBy('time')->paginate(20);
 
         if($entries->isEmpty()) {
             $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
