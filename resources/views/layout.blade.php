@@ -13,11 +13,14 @@
 
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.css') }}"> 
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/jquery-ui.css') }}"> 
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}"> 
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/timepicki.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">  
+
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery-3.2.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>  
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery-ui.min.js') }}"></script>  
-        
+        <script type="text/javascript" src="{{ URL::asset('assets/js/timepicki.js') }}"></script>
+
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">

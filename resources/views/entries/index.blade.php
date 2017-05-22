@@ -117,7 +117,7 @@
 					<tr id="{{ $index + 1 }}">
 						<td>{{ $index + 1 }}</td>
 						<td>{{ $entrie->date->format('d/m/Y')}}</td>
-						<td>{{ $entrie->time }}</td>
+						<td>{{ date("g:i a", strtotime($entrie->time)) }}</td>
 						<td>{{ $entrie->user->name }}</td>
 						<td>{{ $entrie->operation->name }}</td>
 						<td>{{ $entrie->category->name }}</td>

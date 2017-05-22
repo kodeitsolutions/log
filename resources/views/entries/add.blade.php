@@ -51,38 +51,14 @@
           <div class="col-md-10"> 
             <input type="text" class="form-control" name="date" id="date" value="{{ $date }}">
           </div>
-        </div>      
+        </div>            
 
         <div class="form-group col-xs-2 col-sm-12 row">
-          <label class="control-label col-md-2  {{ $errors->has('hour') ? ' has-error' : '' }}">Hora:</label>
-          <div class="col-md-2 {{ $errors->has('hour') ? ' has-error' : '' }}">
-            <select name="hour" class="form-control input-sm">
-              <option selected disabled>Hora</option>
-              @for($i = 1; $i <= 12; $i++)
-                <option value="{{ $i }}" @if (old('hour') == $i) selected @endif>{{ $i }}</option>
-              @endfor
-            </select>                   
+          <label class="control-label col-md-2  ">Hora:</label>
+          <div class="col-md-4">
+            <input type="text" name="time"  value="{{ old('time') }}" class="form-control time_element"/>
           </div>
-          <div class="col-md-2">
-            <select name="minute" class="form-control input-sm">
-              <option selected disabled>Minutos</option>
-              @for($i = 0; $i <=59 ; $i++)
-                <option value="{{ $i }}" @if (old('minute') == $i) selected @endif>
-                @if ($i < 10)
-                  0{{ $i }}
-                @else
-                  {{ $i }}
-                @endif</option>
-              @endfor
-            </select>                   
-          </div>
-          <div class="col-md-2">
-            <select name="ampm" class="form-control input-sm">
-              <option value="AM">AM</option>
-              <option value="PM">PM</option>                    
-            </select>                   
-          </div>                
-        </div> 
+        </div>
 
         <div class="col-md-10">
           @if($errors->any())
@@ -256,6 +232,7 @@
       $(function () {
         $("#date").datepicker();
       });
+      $(".time_element").timepicki();
 
       $('#categorie_id').on('change',function(){
 

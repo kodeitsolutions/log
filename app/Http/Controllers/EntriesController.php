@@ -58,10 +58,8 @@ class EntriesController extends Controller
             'operation_id' => 'required',
             'categorie_id' => 'required',
             'companie_id' => 'required',
-            'destination' => 'required|max:255',           
-            'hour' => 'required',
-            'minute' =>  'required',
-            'ampm' => 'required',
+            'destination' => 'required|max:255',   
+            'time' => 'required',
             'person_name' => 'required_if:categorie_id,1,3', 
             'person_id' => 'required_if:categorie_id,1,3',
             'person_occupation' => 'required_if:categorie_id,1,3', 
@@ -74,12 +72,9 @@ class EntriesController extends Controller
 
         $data = $request->all();
         $data['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date)));
+        $data['time'] = date("H:i", strtotime($request->time));
 
         $entrie = new Entrie($data);   
-
-        $hour = ($request->hour < 10) ? '0'.$request->hour : $request->hour ;
-        $minute = ($request->minute < 10) ? '0'.$request->minute : $request->minute ;        
-        $entrie->time = $hour.':'.$minute.' '.$request->ampm;
 
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
