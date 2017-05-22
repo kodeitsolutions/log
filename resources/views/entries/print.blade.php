@@ -26,7 +26,7 @@
                     <th>#</th>
                     <th>Fecha</th>
                     <th>Hora</th>
-                    <th>Movimiento</th>
+                    <th>Mov.</th>
                     <th>Categoría</th>
                     <th>Empresa</th>
                     <th>Destino / Origen</th>
@@ -37,49 +37,49 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($entries as $index => $entrie)
+                @foreach($entries as $index => $entry)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $entrie->date->format('d/m/Y')}}</td>
-                        <td>{{ $entrie->time }}</td>
-                        <td>{{ $entrie->operation->name }}</td>
-                        <td>{{ $entrie->category->name }}</td>
-                        <td>{{ $entrie->company->name }}</td>
-                        <td>{{ $entrie->destination }}</td>                     
-                        @if( $entrie->category->person == 1 )
-                            <td>Nombre: {{ $entrie->person_name }}.<br>
-                            C.I: {{ $entrie->person_id}}.<br>
-                            Empresa: {{ $entrie->person_company }}.<br>
-                            Ocupación: {{ $entrie->person_occupation}}.
+                        <td>{{ $entry->date->format('d/m/Y')}}</td>
+                        <td>{{ date("g:i a", strtotime($entry->time)) }}</td>
+                        <td>{{ $entry->operation->name }}</td>
+                        <td>{{ $entry->category->name }}</td>
+                        <td>{{ $entry->company->name }}</td>
+                        <td>{{ $entry->destination }}</td>                     
+                        @if( $entry->category->person == 1 or $entry->category->combined == 1)
+                            <td>
+                                Nombre: {{ $entry->person_name }}.<br>
+                                C.I: {{ $entry->person_id}}.<br>
+                                Empresa: {{ $entry->person_company }}.<br>
+                                Ocupación: {{ $entry->person_occupation}}.
                             </td>
                         @else
                             <td>-</td>
                         @endif
-                        @if( $entrie->category->material == 1)
-                            <td>Descripción: {{ $entrie->material_type }}.<br>
-                            Cantidad: {{ $entrie->material_quantity }} {{ $entrie->unit->code }}.<br>
+                        @if( $entry->category->material == 1 or $entry->category->combined == 1)
+                            <td>
+                                Descripción: {{ $entry->material_type }}.<br>
+                                Tipo de material: {{ $entry->material->name }}.<br>
+                                Cantidad: {{ $entry->material_quantity }} {{ $entry->unit->code }}.<br>
                             </td> 
                         @else
                             <td>-</td>                          
                         @endif
-                        <td>Descripción: {{ $entrie->vehicle }}.<br>
-                        Placa: {{ $entrie->vehicle_plate }}.<br>
-                        Chofer: {{ $entrie->driver_name }}.<br>
-                        C.I: {{$entrie->driver_id }}.
-                        </td>
-                        @if( $entrie->category->combined == 1)
-                            <td>Persona: {{ $entrie->person_name }}. <br>
-                            Material: {{ $entrie->material_type }}</td>
-                        @endif                      
                         <td>
-                            @if( $entrie->person_observations != '')
-                                Persona: {{ $entrie->person_observations }}.<br>
+                            Descripción: {{ $entry->vehicle }}.<br>
+                            Placa: {{ $entry->vehicle_plate }}.<br>
+                            Chofer: {{ $entry->driver_name }}.<br>
+                            C.I: {{$entry->driver_id }}.
+                        </td>                   
+                        <td>
+                            @if(!empty($entry->person_observations))
+                                Persona: {{ $entry->person_observations }}.<br>
                             @endif
-                            @if($entrie->material_observations != '')
-                                Material: {{ $entrie->material_observations }}.<br>
+                            @if(!empty($entry->material_observations))
+                                Material: {{ $entry->material_observations }}.<br>
                             @endif
-                            @if($entrie->vehicle_observations != '')
-                                Vehículo: {{ $entrie->vehicle_observations }}.<br>
+                            @if(!empty($entry->vehicle_observations))
+                                Vehículo: {{ $entry->vehicle_observations }}.<br>
                             @endif
                         </td>
                     </tr>
