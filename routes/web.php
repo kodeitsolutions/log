@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry/print', 'EntriesController@test');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
+	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -75,4 +76,12 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('unit/search', 'UnitsController@search');
 	Route::get('unit/searching', 'UnitsController@searching');
 	Route::delete('unit/{unit}','UnitsController@destroy');
+
+	Route::get('material', 'MaterialsController@index');
+	Route::get('material/add', 'MaterialsController@add');
+	Route::post('material/add', 'MaterialsController@store');	
+	Route::patch('material/{material}', 'MaterialsController@update');
+	Route::get('material/search', 'MaterialsController@search');
+	Route::get('material/searching', 'MaterialsController@searching');
+	Route::delete('material/{material}','MaterialsController@destroy');
 }) ;	
