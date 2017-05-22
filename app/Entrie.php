@@ -12,7 +12,7 @@ class Entrie extends Model
 
     protected $softDelete = true;
 
-    protected $fillable = ['operation_id', 'categorie_id', 'companie_id', 'destination','time', 'date', 'person_name', 'person_id','person_occupation', 'person_company', 'vehicle', 'vehicle_plate', 'driver_name', 'driver_id', 'material_type','material_quantity', 'unit_id','user_id', 'material_observations', 'person_observations', 'vehicle_observations'];
+    protected $fillable = ['operation_id', 'categorie_id', 'companie_id', 'destination','time', 'date', 'person_name', 'person_id','person_occupation', 'person_company', 'vehicle', 'vehicle_plate', 'driver_name', 'driver_id', 'material_type','material_quantity', 'unit_id','user_id', 'material_observations', 'person_observations', 'vehicle_observations', 'material_id'];
 
     //protected $guarded = ['id','created_at','updated_at', 'deleted_at']; //opposite from fillable
  
@@ -41,6 +41,11 @@ class Entrie extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class, 'material_id', 'id');
     }
 
     public function getFormatDate($value)

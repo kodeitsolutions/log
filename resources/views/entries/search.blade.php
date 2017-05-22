@@ -46,7 +46,7 @@
             <select id="category" class="form-control input-sm" name="categorie_id" >
               <option selected disabled>Seleccione la categoría</option>                    
               @foreach($categories as $category)
-                 <option value="{{ $category->id }}" @if (old('categorie_id') == $category->id) selected @endif>{{ $category->name }}</option>
+                <option value="{{ $category->id }}" @if (old('categorie_id') == $category->id) selected @endif>{{ $category->name }}</option>
               @endforeach                  
             </select>  
         </div>
@@ -58,9 +58,21 @@
           <select id="company" class="form-control input-sm" name="companie_id">
             <option selected disabled>Seleccione la empresa</option>
             @foreach($companies as $company)
-               <option value="{{ $company->id }}" @if (old('companie_id') == $company->id) selected @endif>{{ $company->name }}</option>
+              <option value="{{ $company->id }}" @if (old('companie_id') == $company->id) selected @endif>{{ $company->name }}</option>
             @endforeach                     
           </select>  
+        </div>
+      </div>
+
+      <div class="form-group col-md-10">
+        <label class="control-label col-md-3">Tipo de Material:</label>
+        <div class="col-md-8">
+            <select id="material" class="form-control input-sm" name="material_id" >
+              <option selected disabled>Seleccione el tipo de material</option>                    
+              @foreach($materials as $material)
+                <option value="{{ $material->id }}" @if (old('material_id') == $material->id) selected @endif>{{ $material->name }}</option>
+              @endforeach                  
+            </select>  
         </div>
       </div>
 

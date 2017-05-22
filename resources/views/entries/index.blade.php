@@ -56,6 +56,8 @@
 						<dl class="row">
 							<dt class="col-sm-3">Descripción:</dt>
 							<dd class="col-sm-9" id="material_type"></dd><br>
+							<dt class="col-sm-3">Tipo de Material:</dt>
+							<dd class="col-sm-9" id="material"></dd><br>
 							<dt class="col-sm-3">Cantidad:</dt>
 							<dd class="col-sm-9" id="material_quantity"></dd><br>
 							<dt class="col-sm-3">Unidad</dt>
@@ -194,10 +196,13 @@
 	          	$('dd[id="person_observations').text(response.person_observations)  
 
 	          	$('dd[id="material_type').text(response.material_type)
+	          	var material_id = response.material_id
+	          	$.get('/material/getMaterial/' + material_id, function(material){
+	          		$('dd[id="material').text(material.code + ' - ' + material.name)
+	          	})
 	          	$('dd[id="material_quantity').text(response.material_quantity)
 	          	var unit_id = response.unit_id
 	          	$.get('/unit/getUnit/' + unit_id, function(unit){
-	          		console.log(unit)
 	          		$('dd[id="unit').text(unit.code + ' - ' + unit.name)
 	          	})
 	          	$('dd[id="material_observations').text(response.material_observations)

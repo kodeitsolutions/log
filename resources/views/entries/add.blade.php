@@ -144,6 +144,18 @@
               <input type="text" class="form-control" name="material_type" id="material_type" placeholder="Ingrese la descripción del material." value="{{ old('material_type') }}" >                       
             </div>
           </div>      
+          <br>
+          <div class="row">
+            <label class="control-label col-md-2 {{ $errors->has('material_type') ? ' has-error' : '' }}">Tipo de material:</label>
+            <div class="col-md-10 {{ $errors->has('material_type') ? ' has-error' : '' }}"> 
+              <select id="material_id" class="form-control input-sm" name="material_id">
+                  <option selected disabled>Seleccione el tipo de material</option>
+                  @foreach($materials as $material)
+                    <option value="{{ $material->id }}" @if (old('material_id') == $material->id) selected @endif>{{ $material->code }} - {{ $material->name }}</option>
+                  @endforeach                     
+                </select>                       
+            </div>
+          </div>      
           <br>     
           <div class="row">
             <div class="col-md-12 row" >

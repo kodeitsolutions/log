@@ -12,6 +12,7 @@ use App\Operation;
 use App\Categorie;
 use App\Companie;
 use App\Unit;
+use App\Material;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,8 @@ class EntriesController extends Controller
         $categories = Categorie::all();
         $companies = Companie::all();
         $units = Unit::orderBy('code')->get();
-        return view('entries.add', compact('operations','categories','companies','units'));
+        $materials = Material::all();
+        return view('entries.add', compact('operations','categories','companies','units','materials'));
     }
 
     /**
@@ -65,6 +67,7 @@ class EntriesController extends Controller
             'person_occupation' => 'required_if:categorie_id,1,3', 
             'person_company' => 'required_if:categorie_id,1,3', 
             'material_type' => 'required_if:categorie_id,2,3',
+            'material_id' => 'required_if:categorie_id,2,3',
             'material_quantity' => 'required_if:categorie_id,2,3',
             'unit_id' => 'required_if:categorie_id,2,3',
 
@@ -122,7 +125,8 @@ class EntriesController extends Controller
         $categories = Categorie::all();
         $companies = Companie::all();
         $units = Unit::all();
-        return view('entries.edit', compact('entry','operations','categories','companies','units','users'));
+        $materials = Material::all();
+        return view('entries.edit', compact('entry','operations','categories','companies','units','users','materials'));
     }
 
     /**
@@ -176,7 +180,8 @@ class EntriesController extends Controller
         $companies = Companie::all();
         $units = Unit::orderBy('code')->get();
         $users = User::all();
-        return view('entries.search',compact('operations','categories','companies','units','users'));
+        $materials = Material::all();
+        return view('entries.search',compact('operations','categories','companies','units','users','materials'));
     }
 
     public function searching(Request $request)
@@ -198,6 +203,9 @@ class EntriesController extends Controller
         }
         if($request->has('companie_id')){
             array_push($conditions, ['companie_id','=',$request->companie_id]);
+        }
+        if($request->has('material_id')){
+            array_push($conditions, ['material_id','=',$request->material_id]);
         }
         
         $entries = Entrie::where($conditions)->orderBy('date')->orderBy('time')->paginate(20);
