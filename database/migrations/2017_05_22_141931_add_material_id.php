@@ -15,7 +15,7 @@ class AddMaterialId extends Migration
     {
         Schema::table('entries', function (Blueprint $table) {
             //
-            $table->integer('material_id')->unsigned();
+            $table->integer('material_id')->unsigned()->nullable();
         });
     }
 
