@@ -73,7 +73,7 @@ class CompaniesController extends Controller
         $company = Companie::find($id);
         if (is_null($company))
         {
-            return Redirect::route('companies.index');
+            return redirect('/company');
         }
         return Response::json($company);
     }

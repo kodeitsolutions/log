@@ -81,7 +81,7 @@ class CategoriesController extends Controller
         $category = Categorie::find($id);
         if (is_null($category))
         {
-            return Redirect::route('categories.index');
+            return redirect('/category');
         }
         return Response::json($category);
     }

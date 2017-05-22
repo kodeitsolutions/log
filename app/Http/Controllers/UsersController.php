@@ -82,7 +82,7 @@ class UsersController extends Controller
         $user = User::find($id);
         if (is_null($user))
         {
-            return Redirect::route('users.index');
+            return redirect('/user');;
         }
         return Response::json($user);
     }

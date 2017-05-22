@@ -103,7 +103,7 @@ class EntriesController extends Controller
         $entry = Entrie::find($id);
         if (is_null($entry))
         {
-            return Redirect::route('entries.index');
+            return redirect('/entry');;
         }
         return Response::json($entry);
     }

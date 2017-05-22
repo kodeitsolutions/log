@@ -74,7 +74,7 @@ class UnitsController extends Controller
         $unit = Unit::find($id);
         if (is_null($unit))
         {
-            return Redirect::route('units.index');
+            return redirect('/unit');
         }
         return Response::json($unit);
     }

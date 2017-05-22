@@ -75,7 +75,7 @@ class OperationsController extends Controller
         $operation = Operation::find($id);
         if (is_null($operation))
         {
-            return Redirect::route('operations.index');
+            return redirect('/operation');;
         }
         return Response::json($operation);
     }
