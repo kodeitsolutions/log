@@ -14,3 +14,27 @@ div.conditional {
 table.log{
 	font-size: 12px
 }
+
+
+body.error {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    color: #2F4F4F;
+    display: table;
+    font-weight: 100;
+    font-family: 'Lato';
+}
+div.error {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+.content {
+    text-align: center;
+    display: inline-block;
+}
+.title {
+    font-size: 55px;
+    margin-bottom: 40px;
+}

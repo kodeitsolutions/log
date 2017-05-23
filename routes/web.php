@@ -14,6 +14,9 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
+Route::get('error', function(){
+	abort(401);
+});
 
 Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
