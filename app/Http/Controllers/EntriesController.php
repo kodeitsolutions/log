@@ -44,7 +44,9 @@ class EntriesController extends Controller
         $companies = Companie::all();
         $units = Unit::orderBy('code')->get();
         $materials = Material::all();
-        return view('entries.add', compact('operations','categories','companies','units','materials'));
+
+        $entry = new Entrie();
+        return view('entries.add', compact('entry','operations','categories','companies','units','materials'));
     }
 
     /**
@@ -79,6 +81,7 @@ class EntriesController extends Controller
 
         $entrie = new Entrie($data);   
 
+        $entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
         $entrie->user_id = Auth::id();
@@ -117,7 +120,7 @@ class EntriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Entrie $entry)
+    public function edit(Request $request, Entrie $entry)
     {
         //dd($entry);
         $users = User::all();
@@ -126,7 +129,7 @@ class EntriesController extends Controller
         $companies = Companie::all();
         $units = Unit::all();
         $materials = Material::all();
-        return view('entries.edit', compact('entry','operations','categories','companies','units','users','materials'));
+        return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'));
     }
 
     /**

@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-        			<h4 class="modal-title">Eliminar registro</h4>
+        			<h4 class="modal-title" id="info">Eliminar registro</h4>
 				</div>
 				<div class="modal-body">
 					<p>¿Está seguro que desea eliminar este registro?</p>					
@@ -115,41 +115,41 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($entries as $index => $entrie)
+				@foreach($entries as $index => $entry)
 					<tr id="{{ $index + 1 }}">
 						<td>{{ $index + 1 }}</td>
-						<td>{{ $entrie->date->format('d/m/Y')}}</td>
-						<td>{{ date("g:i a", strtotime($entrie->time)) }}</td>
-						<td>{{ $entrie->user->name }}</td>
-						<td>{{ $entrie->operation->name }}</td>
-						<td>{{ $entrie->category->name }}</td>
-						<td>{{ $entrie->company->name }}</td>
-						<td>{{ $entrie->destination }}</td>						
-						@if( $entrie->category->person == 1 )
-							<td>{{ $entrie->person_name }}</td>
+						<td>{{ $entry->date->format('d/m/Y')}}</td>
+						<td>{{ date("g:i a", strtotime($entry->time)) }}</td>
+						<td>{{ $entry->user->name }}</td>
+						<td>{{ $entry->operation->name }}</td>
+						<td>{{ $entry->category->name }}</td>
+						<td>{{ $entry->company->name }}</td>
+						<td>{{ $entry->destination }}</td>						
+						@if( $entry->category->person == 1 )
+							<td>{{ $entry->person_name }}</td>
 						@endif
-						@if( $entrie->category->material == 1)
-							<td>{{ $entrie->material_type }}</td>							
+						@if( $entry->category->material == 1)
+							<td>{{ $entry->material_type }}</td>							
 						@endif
-						@if( $entrie->category->combined == 1)
-							<td>Persona: {{ $entrie->person_name }}. <br>
-							Material: {{ $entrie->material_type }}</td>
+						@if( $entry->category->combined == 1)
+							<td>Persona: {{ $entry->person_name }}. <br>
+							Material: {{ $entry->material_type }}</td>
 						@endif						
 						<td>
-							@if( !empty($entrie->person_observations))
-								Persona: {{ $entrie->person_observations }}.<br>
+							@if( !empty($entry->person_observations))
+								Persona: {{ $entry->person_observations }}.<br>
 							@endif
-							@if( !empty($entrie->material_observations))
-								Material: {{ $entrie->material_observations }}.<br>
+							@if( !empty($entry->material_observations))
+								Material: {{ $entry->material_observations }}.<br>
 							@endif
-							@if( !empty($entrie->vehicle_observations))
-								Vehículo: {{ $entrie->vehicle_observations }}.<br>
+							@if( !empty($entry->vehicle_observations))
+								Vehículo: {{ $entry->vehicle_observations }}.<br>
 							@endif
 						</td>
-						<td align="right" data-toggle="tooltip" data-placement="top" title="Ver mas" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-eye-open"></span></button>
+						<td align="right" data-toggle="tooltip" data-placement="top" title="Ver mas" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-eye-open"></span></button>
                 		</td>
-						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entrie->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
-               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entrie->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
+               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>
 					</tr>
 				@endforeach				
@@ -171,13 +171,15 @@
 		});
 
 		$('#myModalDelete').on('show.bs.modal', function (event) {
-		  var button = $(event.relatedTarget) // Button that triggered the modal
-		  var entry_id = button.data('id')
+		  	var button = $(event.relatedTarget) // Button that triggered the modal
+		  	var entry_id = button.data('id')
+		  	var tr = button.closest('tr').attr('id')
+        	$('h4[id="info').text('Eliminar registro N° ' + tr)
 
-		  $.get('/entry/getEntry/' + entry_id, function(response){
-  			$('label[id="name"]').text(response.name)  			
-		  })
-		  $('form[id="delete"]').attr('action','/entry/' + entry_id)
+		 	$.get('/entry/getEntry/' + entry_id, function(response){
+  				$('label[id="name"]').text(response.name)  			
+		  	})
+		  	$('form[id="delete"]').attr('action','/entry/' + entry_id)
 		});
 
 		$('#myModalInfo').on('show.bs.modal', function (event) {
@@ -187,51 +189,54 @@
         	$('h4[id="info').text('Datos del registro N° ' + tr)
         	
 
-        	$.get('/entry/getEntry/' + entry_id, function(response){      
-
-        		$('dd[id="person_name').text(response.person_name)
-	          	$('dd[id="person_id').text(response.person_id)
-	          	$('dd[id="person_occupation').text(response.person_occupation)
-	          	$('dd[id="person_company').text(response.person_company)  
-	          	$('dd[id="person_observations').text(response.person_observations)  
-
-	          	$('dd[id="material_type').text(response.material_type)
-	          	var material_id = response.material_id
-	          	$.get('/material/getMaterial/' + material_id, function(material){
-	          		$('dd[id="material').text(material.code + ' - ' + material.name)
-	          	})
-	          	$('dd[id="material_quantity').text(response.material_quantity)
-	          	var unit_id = response.unit_id
-	          	$.get('/unit/getUnit/' + unit_id, function(unit){
-	          		$('dd[id="unit').text(unit.code + ' - ' + unit.name)
-	          	})
-	          	$('dd[id="material_observations').text(response.material_observations)
-
-	          	$('dd[id="vehicle').text(response.vehicle)
-	          	$('dd[id="vehicle_plate').text(response.vehicle_plate)
-	          	$('dd[id="driver_name').text(response.driver_name)
-	          	$('dd[id="driver_id').text(response.driver_id)
-	          	$('dd[id="vehicle_observations').text(response.vehicle_observations)
+        	$.get('/entry/getEntry/' + entry_id, function(response){    
 
         		$.get('/category/getCategory/' + response.categorie_id, function(category){
-        			if(category.person == 1){
-			        	$("#vehicle").hide()
-			            $("#person").show()
-			            $('#material').hide()
+        			if(category.person == 1 || category.combined == 1){
+        				$('dd[id="person_name').text(response.person_name)
+			          	$('dd[id="person_id').text(response.person_id)
+			          	$('dd[id="person_occupation').text(response.person_occupation)
+			          	$('dd[id="person_company').text(response.person_company)  
+			          	$('dd[id="person_observations').text(response.person_observations)		            
+			        }
+
+			        if(category.material == 1 || category.combined == 1){
+			        	$('dd[id="material_type').text(response.material_type)
+			          	var material_id = response.material_id
+			          	$.get('/material/getMaterial/' + material_id, function(material){
+			          		$('dd[id="material').text(material.code + ' - ' + material.name)
+			          	})
+			          	$('dd[id="material_quantity').text(response.material_quantity)
+			          	var unit_id = response.unit_id
+			          	$.get('/unit/getUnit/' + unit_id, function(unit){
+			          		$('dd[id="unit').text(unit.code + ' - ' + unit.name)
+			          	})
+			          	$('dd[id="material_observations').text(response.material_observations)
+			        }
+
+			        if(category.vehicle == 1 || category.combined == 1){ 
+			        	$('dd[id="vehicle').text(response.vehicle)
+			          	$('dd[id="vehicle_plate').text(response.vehicle_plate)
+			          	$('dd[id="driver_name').text(response.driver_name)
+			          	$('dd[id="driver_id').text(response.driver_id)
+			          	$('dd[id="vehicle_observations').text(response.vehicle_observations)
+			        }  
+
+			        if(category.person == 1){            
+			        	$('#material').hide()
+			            $("#person").show()            
 			        }
 
 			        if(category.material == 1){
-			        	$("#vehicle").hide()
-			            $('#material').show()
 			            $("#person").hide()
+			            $('#material').show()            
 			        }
 
 			        if(category.vehicle == 1){           
-			            $("#vehicle").show()
+			        	$("#vehicle").show()
 			        }  
 
 			        if(category.combined == 1){
-			            $("#vehicle").hide()
 			            $("#person").show()
 			            $('#material').show()
 			            $("#vehicle").show()
