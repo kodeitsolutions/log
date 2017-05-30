@@ -146,7 +146,7 @@
 								Vehículo: {{ $entry->vehicle_observations }}.<br>
 							@endif
 						</td>
-						<td align="right" data-toggle="tooltip" data-placement="top" title="Ver mas" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-eye-open"></span></button>
+						<td align="right" data-toggle="tooltip" data-placement="top" title="Ver más" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-eye-open"></span></button>
                 		</td>
 						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
                			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
