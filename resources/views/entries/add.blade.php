@@ -206,8 +206,9 @@
     </div>
         
       <div class="form-group col-xs-2 col-sm-12" align="right">
+        <a href="/entry" class="btn btn-danger" role="button">Cancelar</a>
         <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
+      </div>      
     </form>
   </div>
 @stop
