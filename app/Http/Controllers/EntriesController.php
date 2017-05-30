@@ -142,6 +142,20 @@ class EntriesController extends Controller
     public function update(Request $request, Entrie $entry)
     {
         //dd($request);
+        $this->validate($request, [
+            'destination' => 'required|max:255',   
+            'time' => 'required',
+            'person_name' => 'required_if:categorie_id,1,3', 
+            'person_id' => 'required_if:categorie_id,1,3',
+            'person_occupation' => 'required_if:categorie_id,1,3', 
+            'person_company' => 'required_if:categorie_id,1,3', 
+            'material_type' => 'required_if:categorie_id,2,3',
+            'material_id' => 'required_if:categorie_id,2,3',
+            'material_quantity' => 'required_if:categorie_id,2,3',
+            'unit_id' => 'required_if:categorie_id,2,3',
+
+        ]);
+
         $data = $request->all();
         $data['date'] = $entry->getFormatDate($request->date);
         $data['time'] = date("H:i", strtotime($request->time));
