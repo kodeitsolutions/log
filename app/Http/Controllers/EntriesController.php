@@ -144,6 +144,7 @@ class EntriesController extends Controller
         //dd($request);
         $data = $request->all();
         $data['date'] = $entry->getFormatDate($request->date);
+        $data['time'] = date("H:i", strtotime($request->time));
 
         $saved = $entry->update($data);
 
