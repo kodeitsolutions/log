@@ -18,6 +18,25 @@ Route::get('error', function(){
 	abort(401);
 });
 
+Route::get('/send', 'EmailController@send');
+Route::get('sendemail', function () {
+
+    $data = array(
+        'name' => "Learning Laravel",
+    );
+
+    Mail::send('send', $data, function ($message) {
+
+        $message->from('yourEmail@domain.com', 'Learning Laravel');
+
+        $message->to('yourEmail@domain.com')->subject('Learning Laravel test email');
+
+    });
+
+    return "Your email has been sent successfully";
+
+});
+
 Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
 	Route::get('entry/add', 'EntriesController@add');
