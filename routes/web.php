@@ -18,25 +18,6 @@ Route::get('error', function(){
 	abort(401);
 });
 
-Route::get('/send', 'EmailController@send');
-Route::get('sendemail', function () {
-
-    $data = array(
-        'name' => "Learning Laravel",
-    );
-
-    Mail::send('send', $data, function ($message) {
-
-        $message->from('yourEmail@domain.com', 'Learning Laravel');
-
-        $message->to('yourEmail@domain.com')->subject('Learning Laravel test email');
-
-    });
-
-    return "Your email has been sent successfully";
-
-});
-
 Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
 	Route::get('entry/add', 'EntriesController@add');
@@ -48,6 +29,7 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::patch('entry/{entry}', 'EntriesController@update');
 	Route::delete('entry/{entry}', 'EntriesController@destroy');
 	Route::get('entry/print', 'EntriesController@test');
+	Route::post('entry/send', 'EntriesController@sendEmail');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');

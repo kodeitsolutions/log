@@ -6,6 +6,7 @@ use Auth;
 use Session;
 use PDF;
 use Response;
+use Mail;
 use App\User;
 use App\Entrie;
 use App\Operation;
@@ -84,11 +85,23 @@ class EntriesController extends Controller
         $entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
-        $entrie->user_id = Auth::id();
+        $entrie->user_id = Auth::id();        
         
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
+            $entries = Entrie::where('id', $entrie->id)->get();
+            $data = array(
+                'email' => 'gsanchez@kodeit.com.ve',
+                'subject' => 'Se ha creado un nuevo registro en ReMo.',
+                'entries' => $entries
+            );
+            
+            Mail::send('entries.print', $data, function ($message) use ($data){       
+
+                $message->to($data['email'])->subject($data['subject']);
+
+            });
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
@@ -255,8 +268,34 @@ class EntriesController extends Controller
             return $pdf->inline('ListadoRegistros-'.$today.'.pdf');
 
             Session::forget('entries');
-        }
+        }     
         
-        
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $entries = Session::get('entries');
+        $today = date('d/m/Y');
+
+        if ($entries->isEmpty()) {            
+            Session::flash('flash_message_info', 'No hay datos para enviar.');
+            return back();
+        } else {
+            $data = array(
+                'email' => $request->email,
+                'subject' => 'Listado de Registros.',
+                'entries' => $entries                
+            );
+            
+            Mail::send('entries.print', $data, function ($message) use ($data){       
+
+                $message->to($data['email'])->subject($data['subject']);
+
+            });
+
+            Session::flash('flash_message', 'Email enviado.');
+            return back();
+            Session::forget('entries');
+        }       
     }
 }

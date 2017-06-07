@@ -92,6 +92,33 @@
 	</div>
 @stop
 
+@section('modal-email')
+	<div id="myModalEmail" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+        			<h4 class="modal-title" id="email">Enviar por correo</h4>
+				</div>
+
+				<form method="POST" action="/entry/send" id="email">		        	
+		          	{{ csrf_field() }}
+		            <div class="modal-body form-group">
+		            	<label class="control-label">Ingrese el correo del destinatario:</label>
+		                <div class="form-group">
+		                	<input type="email" class="form-control" name="email" id="email" value="" autofocus required>
+		                </div>
+		            </div>
+		            <div class="modal-footer form-group">
+		             	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		              	<button type="submit" class="btn btn-primary btn-edit">Enviar</button>
+		            </div>
+		        </form>     
+			</div>			
+		</div>		
+	</div>
+@stop
+
 @section('table')
 	<div class="col-md-12">
 		@if(!empty($date_from))
@@ -160,6 +187,7 @@
 		</div>
 		<div class="form-group col-xs-2 col-sm-12" align="right">
 	        <a href="/entry/print" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
+	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body"><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
 	    </div>
 	</div>
 @stop

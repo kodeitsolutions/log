@@ -20,7 +20,7 @@
     </style>
 
     <body>        
-        <table class="table">
+        <table class="table" border="0">
             <thead>
                 <tr>
                     <th>#</th>
@@ -39,39 +39,39 @@
             <tbody>
                 @foreach($entries as $index => $entry)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $entry->date->format('d/m/Y')}}</td>
-                        <td>{{ date("g:i a", strtotime($entry->time)) }}</td>
-                        <td>{{ $entry->operation->name }}</td>
-                        <td>{{ $entry->category->name }}</td>
-                        <td>{{ $entry->company->name }}</td>
-                        <td>{{ $entry->destination }}</td>                     
+                        <td valign="top">{{ $index + 1 }}</td>
+                        <td valign="top">{{ $entry->date->format('d/m/Y')}}</td>
+                        <td valign="top">{{ date("g:i a", strtotime($entry->time)) }}</td>
+                        <td valign="top">{{ $entry->operation->name }}</td>
+                        <td valign="top">{{ $entry->category->name }}</td>
+                        <td valign="top">{{ $entry->company->name }}</td>
+                        <td valign="top">{{ $entry->destination }}</td>                     
                         @if( $entry->category->person == 1 or $entry->category->combined == 1)
-                            <td>
+                            <td valign="top">
                                 Nombre: {{ $entry->person_name }}.<br>
                                 C.I: {{ $entry->person_id}}.<br>
                                 Empresa: {{ $entry->person_company }}.<br>
                                 Ocupación: {{ $entry->person_occupation}}.
                             </td>
                         @else
-                            <td>-</td>
+                            <td valign="top">-</td>
                         @endif
                         @if( $entry->category->material == 1 or $entry->category->combined == 1)
-                            <td>
+                            <td valign="top">
                                 Descripción: {{ $entry->material_type }}.<br>
                                 Tipo de material: {{ $entry->material->name }}.<br>
                                 Cantidad: {{ $entry->material_quantity }} {{ $entry->unit->code }}.<br>
                             </td> 
                         @else
-                            <td>-</td>                          
+                            <td valign="top">-</td>                          
                         @endif
-                        <td>
+                        <td valign="top">
                             Descripción: {{ $entry->vehicle }}.<br>
                             Placa: {{ $entry->vehicle_plate }}.<br>
                             Chofer: {{ $entry->driver_name }}.<br>
                             C.I: {{$entry->driver_id }}.
                         </td>                   
-                        <td>
+                        <td valign="top">
                             @if(!empty($entry->person_observations))
                                 Persona: {{ $entry->person_observations }}.<br>
                             @endif
@@ -81,11 +81,10 @@
                             @if(!empty($entry->vehicle_observations))
                                 Vehículo: {{ $entry->vehicle_observations }}.<br>
                             @endif
-                        </td>
+                        </td>                        
                     </tr>
                 @endforeach             
-            </tbody>            
-        </table>
-               
+            </tbody>       
+        </table>               
     </body>
 </html>
