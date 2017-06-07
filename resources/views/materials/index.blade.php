@@ -67,8 +67,9 @@
   </div>
 @stop
 
-@section('content')
+@section('content')  
   <div class="col-md-11">
+    <h4 class="text-info" align="center">TIPOS DE MATERIAL</h4>
     <table class="table table-striped" width="100%">
         <col style="width: 40%">
         <col style="width: 40%">

@@ -76,6 +76,7 @@
 
 @section('content')
 	<div class="col-md-11">
+		<h4 class="text-info" align="center">USUARIOS</h4>
 		<table class="table table-striped" width="100%">
         <col style="width: 20%">
         <col style="width: 20%">

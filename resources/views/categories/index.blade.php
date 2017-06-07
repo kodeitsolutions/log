@@ -81,6 +81,7 @@
 
 @section('content')
   <div class="col-md-11">
+    <h4 class="text-info" align="center">CATEGORÍAS</h4>
     <table class="table table-striped" width="100%" id="index">
       <col style="width: 40%">
       <col style="width: 40%">
