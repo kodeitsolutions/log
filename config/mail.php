@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+    'host' => env('MAIL_HOST', 'smtp.zoho.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 465),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'gsanchez@kodeit.com.ve'),
-        'name' => env('MAIL_FROM_NAME', 'Gabriela Sanchez'),
+        'address' => env('MAIL_FROM_ADDRESS', 'remo@kodeit.info.ve'),
+        'name' => env('MAIL_FROM_NAME', 'Sistema ReMo'),
     ],
 
     /*
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('gsanchez@kodeit.com.ve'),
+    'username' => 'remo@kodeit.info.ve',
 
-    'password' => env('gcsm2190'),
+    'password' => 'kodeit123',
 
     /*
     |--------------------------------------------------------------------------
@@ -100,9 +100,9 @@ return [
     */
 
     
-    //'sendmail' => '\"C:\xampp\sendmail\sendmail.exe\" -t',
+    'sendmail' => '\"C:\xampp\sendmail\sendmail.exe\" -t',
     
-    'sendmail' => '/usr/sbin/sendmail -bs',
+    //'sendmail' => '/usr/sbin/sendmail -bs',
     
 
     
