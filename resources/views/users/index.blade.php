@@ -134,12 +134,13 @@
 	  			$('input[id="email"]').val(response.email)
 	  			$('input[id="telephone"]').val(response.telephone)
 
-	  			if (response.isAdmin == 1){
+	  			/*if (response.isAdmin == 1){
 	  				$('input[id="isAdmin"]').prop('checked', true)
 	  			}
 	  			else{
 	  				$('input[id="isAdmin"]').prop('checked', false)
-	  			}
+	  			}*/
+	  			$('input[id="isAdmin"]').prop('checked', response.isAdmin == 1 ? true : false)
 			  })
 			  $('form[id="edit"]').attr('action','user/' + user_id)
 			});

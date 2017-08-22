@@ -18,6 +18,7 @@ Route::get('error', function(){
 	abort(401);
 });
 
+
 Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry', 'EntriesController@index');
 	Route::get('entry/add', 'EntriesController@add');
@@ -28,11 +29,13 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry/searching', 'EntriesController@searching');
 	Route::patch('entry/{entry}', 'EntriesController@update');
 	Route::delete('entry/{entry}', 'EntriesController@destroy');
-	Route::get('entry/print', 'EntriesController@test');
-	Route::post('entry/send', 'EntriesController@sendEmail');
-	Route::get('category/getCategory/{id}', 'CategoriesController@show');
+	Route::get('entry/print', 'EntriesController@printPDF');
+	Route::post('entry/send', 'EntriesController@sendMail');
+	Route::get('entry/notify', 'EntriesController@notifications');
+	Route::get('entry/notification/{entry}', 'EntriesController@notificationStore');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
+	Route::get('category/getCategory/{id}', 'CategoriesController@show');
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -88,4 +91,16 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('material/search', 'MaterialsController@search');
 	Route::get('material/searching', 'MaterialsController@searching');
 	Route::delete('material/{material}','MaterialsController@destroy');
+
+	Route::get('notification', 'NotificationsController@index');
+	Route::get('notification/add', 'NotificationsController@add');
+	Route::post('notification/add', 'NotificationsController@store');
+	Route::get('notification/getNotification/{id}', 'NotificationsController@show');
+	Route::patch('notification/{notification}', 'NotificationsController@update');
+	Route::get('notification/search', 'NotificationsController@search');
+	Route::get('notification/searching', 'NotificationsController@searching');
+	Route::delete('notification/{notification}','NotificationsController@destroy');
+	Route::get('notification/notify', 'NotificationsController@notification');
 }) ;	
+
+

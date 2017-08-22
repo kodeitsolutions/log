@@ -23,4 +23,9 @@ class Categorie extends Model
     {
     	return $this->hasMany(Entrie::class);
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

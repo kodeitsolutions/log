@@ -18,7 +18,7 @@
         thead { display: table-header-group }
         tr { page-break-inside: avoid }
     </style>
-
+    
     <body>        
         <table class="table" border="0">
             <thead>
@@ -36,10 +36,11 @@
                     <th>Observaciones</th>
                 </tr>
             </thead>
+            {{--dd($entries)--}}
             <tbody>
                 @foreach($entries as $index => $entry)
                     <tr>
-                        <td valign="top">{{ $index + 1 }}</td>
+                        <td valign="top">{{ $index + 1 }}</td>                        
                         <td valign="top">{{ $entry->date->format('d/m/Y')}}</td>
                         <td valign="top">{{ date("g:i a", strtotime($entry->time)) }}</td>
                         <td valign="top">{{ $entry->operation->name }}</td>
@@ -81,7 +82,7 @@
                             @if(!empty($entry->vehicle_observations))
                                 Vehículo: {{ $entry->vehicle_observations }}.<br>
                             @endif
-                        </td>                        
+                        </td>          
                     </tr>
                 @endforeach             
             </tbody>       

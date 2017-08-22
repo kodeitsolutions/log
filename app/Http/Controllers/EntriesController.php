@@ -14,8 +14,12 @@ use App\Categorie;
 use App\Companie;
 use App\Unit;
 use App\Material;
+use App\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Jobs\SendEmail;
+use App\Mail\EntryCreated;
+use App\Mail\EntryCreatedMD;
 
 class EntriesController extends Controller
 {
@@ -85,23 +89,13 @@ class EntriesController extends Controller
         $entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
-        $entrie->user_id = Auth::id();        
+        $user = Auth::user();
+        $entrie->user_id = $user->id;       
         
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
-            $entries = Entrie::where('id', $entrie->id)->get();
-            $data = array(
-                'email' => 'gsanchez@kodeit.com.ve',
-                'subject' => 'Se ha creado un nuevo registro en ReMo.',
-                'entries' => $entries
-            );
-            
-            Mail::send('entries.print', $data, function ($message) use ($data){       
-
-                $message->to($data['email'])->subject($data['subject']);
-
-            });
+            $this->notificationStore($entrie);
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
@@ -253,7 +247,7 @@ class EntriesController extends Controller
         }
     }
     
-    public function test()
+    public function printPDF()
     {
         # code...
         $entries = Session::get('entries');
@@ -272,7 +266,7 @@ class EntriesController extends Controller
         
     }
 
-    public function sendEmail(Request $request)
+    public function sendMail(Request $request)
     {
         $entries = Session::get('entries');
         $today = date('d/m/Y');
@@ -283,7 +277,7 @@ class EntriesController extends Controller
         } else {
             $data = array(
                 'email' => $request->email,
-                'subject' => 'Listado de Registros.',
+                'subject' => 'ListadoRegistros-'.$today.'.pdf',
                 'entries' => $entries                
             );
             
@@ -297,5 +291,64 @@ class EntriesController extends Controller
             return back();
             Session::forget('entries');
         }       
+    }
+
+    public function notificationStore(Entrie $entry)
+    {
+        $notifications = Notification::where('status','A')
+                        ->where('conditions','LIKE','%"moment":[%"%store%"%]%')
+                        ->where('conditions','LIKE','%"operation":[%"%'.$entry->operation_id.'%"%]%')
+                        ->where('conditions','LIKE','%"category":[%"%'.$entry->categorie_id.'%"%]%')
+                        ->where('conditions','LIKE','%"company":[%"%'.$entry->companie_id.'%"%]%')
+                        ->when(($entry->category->material or $entry->category->combined), function($query) use ($entry){
+                            return $query->where('conditions','LIKE','%"material":[%"%'.$entry->material_id.'%"%]%');
+                        })                
+                        ->get();
+        foreach ($notifications as $notification) {   
+            $entryConditions = [];         
+            $conditions = json_decode($notification->conditions, true);
+            $recipients = explode(',', $conditions['recipient']); 
+
+            //Mail::to($recipients)->queue(new EntryCreatedMD($entry));  
+            Mail::to($recipients)->send(new EntryCreatedMD($entry));                     
+        }
+    }
+
+
+    public function notifications()
+    {
+        # code...
+        $notifications = Notification::where('status','A')
+                        ->where('conditions','LIKE','%cron%')
+                        ->get();
+
+        foreach ($notifications as $notification) {   
+            $entryConditions = [];         
+            $conditions = json_decode($notification->conditions, true);
+            $recipients = explode(',', $conditions['recipient']);
+            $entries = Entrie::
+                  whereIn('operation_id', $conditions['operation'])
+                ->whereIn('categorie_id', $conditions['category'])
+                ->whereIn('companie_id', $conditions['company'])
+                ->when(isset($conditions['material']), function($query) use ($conditions){
+                    return $query->whereIn('material_id', $conditions['material']);
+                })
+                ->orderBy('time')->paginate(20);
+            dd($entries);
+            if (!$entries->isEmpty()) {  
+                /*$data = array(
+                    'email' => $recipients,
+                    'subject' => 'Se ha creado un nuevo registro en ReMo.',
+                    'entries' => $entries
+                );
+                
+                Mail::send('entries.print', $data, function ($message) use ($data){       
+
+                    $message->to($data['email'])->subject($data['subject']);
+
+                });*/
+                Mail::to($recipients)->send(new EntryCreated($entries));
+            }            
+        }
     }
 }

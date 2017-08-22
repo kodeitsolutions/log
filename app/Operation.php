@@ -21,7 +21,11 @@ class Operation extends Model
 
     public function entries()
     {
-    	return $this->hasMany(Entrie::class);
+    	return $this->hasMany(Entrie::class,'operation_id');
     }
-    	
+    
+    public function getName()
+    {
+        return $this->name;
+    }
 }
