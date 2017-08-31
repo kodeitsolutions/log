@@ -49,6 +49,12 @@
 					            </div>
 					        </div>
 					        <div class="form-group">
+					            <label class="control-label">Usuario:</label>
+					            <div class="form-group">
+					                <input type="text" class="form-control" name="username" id="username" value="">
+					            </div>
+					        </div>
+					        <div class="form-group">
 					            <label class="control-label">E-Mail:</label>
 					            <div class="form-group">
 					                <input type="text" class="form-control" name="email" id="email" value="">
@@ -86,6 +92,7 @@
 		    <thead>
 		      <tr>
 		        <th>Nombre</th>
+		        <th>Usuario</th>
 		        <th>E-Mail</th>
 		        <th>Teléfono</th>
 		        <th style="text-align:center">Administrador</th>
@@ -95,6 +102,7 @@
 		    	@foreach($users as $user)
 		      		<tr>
 		        		<td>{{ $user->name }}</td>
+		        		<td>{{ $user->username }}</td>
 		        		<td>{{ $user->email }}</td>
 		        		<td>{{ $user->telephone }}</td>	
 		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
@@ -131,6 +139,7 @@
 
 			  $.get('/user/getUser/' + user_id, function(response){
 	  			$('input[id="name"]').val(response.name)
+	  			$('input[id="username"]').val(response.username)
 	  			$('input[id="email"]').val(response.email)
 	  			$('input[id="telephone"]').val(response.telephone)
 

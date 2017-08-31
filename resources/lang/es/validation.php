@@ -128,6 +128,10 @@ return [
             'unique' => 'Este email ya se encuentra registrado.',
             'email' => 'Debe ingresar una dirección de correo electrónico válida.'
         ],
+        'username' => [
+            'unique' => 'Este usuario ya se encuentra registrado.',
+            'email' => 'Debe ingresar una dirección de correo electrónico válida.'
+        ],
         'minute' => [
             'required' => 'El campo minutos es obligatorio.',
         ],

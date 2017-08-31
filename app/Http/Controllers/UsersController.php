@@ -53,7 +53,8 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'password' => 'required|min:5|max:20',
-            'email' => 'required|email|unique:users'
+            'email' => 'required|email',
+            'username' => 'required|unique:users'
         ]);
         
         $user = new User($request->all());
@@ -112,6 +113,12 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         //dd($request);
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'username' => 'required|unique:users'
+        ]);
+
         $user->isAdmin = ($request->has('isAdmin')) ? 1 : 0 ;
         $saved = $user->update($request->all());
 

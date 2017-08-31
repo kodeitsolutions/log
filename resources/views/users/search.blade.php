@@ -15,6 +15,7 @@
             	<select  id="search" class="form-control input-sm" name="search" required>
               		<option value="0" selected disabled>Seleccione el parámetro de búsqueda</option>
               		<option value="name">Nombre</option>
+                  <option value="username">Usuario</option>
                   <option value="email">E-Mail</option>
             	</select>
             	@if ($errors->has('search'))

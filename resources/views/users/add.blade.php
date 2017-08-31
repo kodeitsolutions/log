@@ -21,6 +21,17 @@
                 @endif
             </div>
 
+            <div class="form-group col-xs-2 col-sm-8 {{ $errors->has('username') ? ' has-error' : '' }}">
+                <label class="control-label">Usuario:</label>
+                <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Ingrese el usuario." required autofocus>
+
+                @if ($errors->has('username'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
+                @endif
+            </div>
+
             <div class="form-group col-xs-2 col-sm-8 {{ $errors->has('password') ? ' has-error' : '' }}">
                 <label class="control-label">Contraseña:</label>
                 <input type="password" class="form-control" name="password" placeholder="Ingrese la contraseña." required>
