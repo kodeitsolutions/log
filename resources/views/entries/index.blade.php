@@ -126,6 +126,9 @@
 		@else
 			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
 		@endif
+		<div class="form-group col-xs-2 col-sm-12" align="right">        	
+        	<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span>  Agregar</a>
+        </div>
 		<table class="table table-striped log">
 			<thead>
 				<tr>
@@ -178,6 +181,7 @@
 						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
                			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
                 		</td>
+                		<td align="right" data-toggle="tooltip" data-placement="top" title="Duplicar" data-container="body"><a href="/entry/{{$entry->id}}/duplicate" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-duplicate"></span></a></td>
 					</tr>
 				@endforeach				
 			</tbody>			
