@@ -2,8 +2,13 @@
 
 @section('form')
   <div class="col-md-12">      
-    @if($entry->exists)
+    @if($entry->exists && $route == 'edit')
       <h3 class="text-info" align="center">EDITAR REGISTRO</h3>
+      <br>
+      <form method="POST" action="/entry/{{ $entry->id }}">
+      {{ method_field('PATCH') }}
+    @elseif($route == 'duplicate')
+      <h3 class="text-info" align="center">AGREGAR REGISTRO</h3>
       <br>
       <form method="POST" action="/entry/{{ $entry->id }}">
       {{ method_field('PATCH') }}
@@ -206,7 +211,11 @@
     </div>
         
       <div class="form-group col-xs-2 col-sm-12" align="right">
-        <a href="/entry" class="btn btn-danger" role="button">Cancelar</a>
+        @if($route == 'duplicate')          
+          <a href="/entry/delete/{{ $entry->id }}" class="btn btn-danger" role="button">Cancelar</a>
+        @else
+          <a href="/entry" class="btn btn-danger" role="button">Cancelar</a>
+        @endif
         <button type="submit" class="btn btn-primary">Guardar</button>
       </div>      
     </form>

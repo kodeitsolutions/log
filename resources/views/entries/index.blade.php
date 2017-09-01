@@ -123,8 +123,14 @@
 	<div class="col-md-12">
 		@if(!empty($date_from))
 			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>
+			@php				
+				$string_date = str_replace("/","-",$date_from)."_".str_replace("/","-",$date_to)
+			@endphp
 		@else
 			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
+			@php
+				$string_date = str_replace("/","-",$date)
+			@endphp
 		@endif
 		<div class="form-group col-xs-2 col-sm-12" align="right">        	
         	<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span>  Agregar</a>
@@ -189,8 +195,9 @@
 		<div class="text-center">
 			{{ $entries->appends(Request::except('page'))->render() }}
 		</div>
+		
 		<div class="form-group col-xs-2 col-sm-12" align="right">
-	        <a href="/entry/print" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
+	        <a href="/entry/print/{{$string_date}}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
 	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body"><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
 	    </div>
 	</div>

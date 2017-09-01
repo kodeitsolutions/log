@@ -18,8 +18,8 @@ use App\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmail;
-use App\Mail\EntryCreated;
 use App\Mail\EntryCreatedMD;
+use App\Mail\DailyEntries;
 
 class EntriesController extends Controller
 {
@@ -51,7 +51,7 @@ class EntriesController extends Controller
         $materials = Material::all();
 
         $entry = new Entrie();
-        return view('entries.add', compact('entry','operations','categories','companies','units','materials'));
+        return view('entries.add', compact('entry','operations','categories','companies','units','materials'))->with("route","add");
     }
 
     /**
@@ -136,7 +136,7 @@ class EntriesController extends Controller
         $companies = Companie::all();
         $units = Unit::all();
         $materials = Material::all();
-        return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'));
+        return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'))->with("route","edit");
     }
 
     /**
@@ -198,6 +198,13 @@ class EntriesController extends Controller
         return redirect()->back();
     }
 
+    public function delete(Entrie $entry)
+    {
+        //        
+        $entry->forceDelete();        
+        return redirect('/entry');
+    }
+
     public function search()
     {
         $operations = Operation::all();
@@ -247,11 +254,10 @@ class EntriesController extends Controller
         }
     }
     
-    public function printPDF()
+    public function printPDF($date)
     {
-        # code...
-        $entries = Session::get('entries');
-        $today = date('d/m/Y');
+        # code...        
+        $entries = Session::get('entries');        
         //return view('entries.print', compact('entries'));
         
         if ($entries->isEmpty()) {            
@@ -259,7 +265,7 @@ class EntriesController extends Controller
             return back();
         } else {
             $pdf = PDF::loadView('entries.print', compact('entries'));
-            return $pdf->inline('ListadoRegistros-'.$today.'.pdf');
+            return $pdf->inline('ListadoRegistros-'.$date.'.pdf');
 
             Session::forget('entries');
         }     
@@ -304,14 +310,18 @@ class EntriesController extends Controller
                             return $query->where('conditions','LIKE','%"material":[%"%'.$entry->material_id.'%"%]%');
                         })                
                         ->get();
-        foreach ($notifications as $notification) {   
-            $entryConditions = [];         
-            $conditions = json_decode($notification->conditions, true);
-            $recipients = explode(',', $conditions['recipient']); 
 
-            //Mail::to($recipients)->queue(new EntryCreatedMD($entry));  
-            Mail::to($recipients)->send(new EntryCreatedMD($entry));                     
-        }
+        if(!$notifications->isEmpty())
+        {
+            foreach ($notifications as $notification) {   
+                $entryConditions = [];         
+                $conditions = json_decode($notification->conditions, true);
+                $recipients = explode(',', $conditions['recipient']); 
+
+                //Mail::to($recipients)->queue(new EntryCreatedMD($entry));  
+                Mail::to($recipients)->send(new EntryCreatedMD($entry));                     
+            }    
+        }            
     }
 
 
@@ -322,33 +332,38 @@ class EntriesController extends Controller
                         ->where('conditions','LIKE','%cron%')
                         ->get();
 
-        foreach ($notifications as $notification) {   
-            $entryConditions = [];         
-            $conditions = json_decode($notification->conditions, true);
-            $recipients = explode(',', $conditions['recipient']);
-            $entries = Entrie::
-                  whereIn('operation_id', $conditions['operation'])
-                ->whereIn('categorie_id', $conditions['category'])
-                ->whereIn('companie_id', $conditions['company'])
-                ->when(isset($conditions['material']), function($query) use ($conditions){
-                    return $query->whereIn('material_id', $conditions['material']);
-                })
-                ->orderBy('time')->paginate(20);
-            dd($entries);
-            if (!$entries->isEmpty()) {  
-                /*$data = array(
-                    'email' => $recipients,
-                    'subject' => 'Se ha creado un nuevo registro en ReMo.',
-                    'entries' => $entries
-                );
-                
-                Mail::send('entries.print', $data, function ($message) use ($data){       
+        if (!$notifications->isEmpty()) {
+            foreach ($notifications as $notification) {   
+                $entryConditions = [];         
+                $conditions = json_decode($notification->conditions, true);
+                $recipients = explode(',', $conditions['recipient']);
+                $entries = Entrie::
+                        whereIn('operation_id', $conditions['operation'])
+                        ->whereIn('categorie_id', $conditions['category'])
+                        ->whereIn('companie_id', $conditions['company'])
+                        ->when(isset($conditions['material']), function($query) use ($conditions){
+                            return $query->whereIn('material_id', $conditions['material']);
+                    })
+                    ->orderBy('time')->get();
+                //dd($entries);
+                if (!$entries->isEmpty()) {               
+                    Mail::to($recipients)->send(new DailyEntries($entries));
+                }            
+            }   
+        }                 
+    }
 
-                    $message->to($data['email'])->subject($data['subject']);
-
-                });*/
-                Mail::to($recipients)->send(new EntryCreated($entries));
-            }            
-        }
+    public function duplicate(Entrie $copy)
+    {
+        $entry = $copy->replicate();
+        $entry->save();
+        
+        $users = User::all();
+        $operations = Operation::all();
+        $categories = Categorie::all();
+        $companies = Companie::all();
+        $units = Unit::all();
+        $materials = Material::all();
+        return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'))->with("route","duplicate");
     }
 }

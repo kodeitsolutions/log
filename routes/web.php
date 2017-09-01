@@ -27,15 +27,17 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry/{entry}/edit', 'EntriesController@edit');
 	Route::get('entry/search', 'EntriesController@search');
 	Route::get('entry/searching', 'EntriesController@searching');
-	Route::patch('entry/{entry}', 'EntriesController@update');
+	Route::patch('entry/{entry}', 'EntriesController@update');	
 	Route::delete('entry/{entry}', 'EntriesController@destroy');
-	Route::get('entry/print', 'EntriesController@printPDF');
+	Route::get('entry/print/{date}', 'EntriesController@printPDF');
 	Route::post('entry/send', 'EntriesController@sendMail');
 	Route::get('entry/notify', 'EntriesController@notifications');
 	Route::get('entry/notification/{entry}', 'EntriesController@notificationStore');
+	Route::get('entry/{copy}/duplicate', 'EntriesController@duplicate');
+	Route::get('entry/delete/{entry}', 'EntriesController@delete');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
-	Route::get('category/getCategory/{id}', 'CategoriesController@show');
+	Route::get('category/getCategory/{id}', 'CategoriesController@show');	
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -101,6 +103,15 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('notification/searching', 'NotificationsController@searching');
 	Route::delete('notification/{notification}','NotificationsController@destroy');
 	Route::get('notification/notify', 'NotificationsController@notification');
+
+	Route::get('shift', 'ShiftsController@index');
+	Route::get('shift/add', 'ShiftsController@add');
+	Route::post('shift/add', 'ShiftsController@store');
+	Route::get('shift/getShift/{id}', 'ShiftsController@show');
+	Route::patch('shift/{shift}', 'ShiftsController@update');
+	Route::get('shift/search', 'ShiftsController@search');
+	Route::get('shift/searching', 'ShiftsController@searching');
+	Route::delete('shift/{shift}','ShiftsController@destroy');
 }) ;	
 
 
