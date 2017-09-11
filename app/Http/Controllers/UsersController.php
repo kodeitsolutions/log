@@ -58,10 +58,9 @@ class UsersController extends Controller
         ]);
         
         $user = new User($request->all());
-
-        if($request->has('isAdmin')){
-            $user->isAdmin = 1;
-        }
+        
+        $user->isAdmin = ($request->has('isAdmin')) ? 1 : 0;
+        $user->isGuard = ($request->has('isGuard')) ? 1 : 0;
         $user->password = bcrypt($request->password);
 
         $saved = $user->save();
@@ -116,11 +115,15 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email',
-            'username' => 'required|unique:users'
+            'username' => 'required'
         ]);
 
-        $user->isAdmin = ($request->has('isAdmin')) ? 1 : 0 ;
-        $saved = $user->update($request->all());
+        $data = $request->all();
+        
+        $data['isAdmin'] = ($request->has('isAdmin')) ? 1 : 0;
+        $data['isGuard'] = ($request->has('isGuard')) ? 1 : 0;
+
+        $saved = $user->update($data);
 
         if ($saved) {
             $request->session()->flash('flash_message', 'Usuario '.$user->name.' editado.');

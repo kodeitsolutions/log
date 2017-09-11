@@ -44,8 +44,8 @@ class ShiftsController extends Controller
         //
         $this->validate($request, [
             'description' => 'required|unique:shifts',
-            'start' => 'required|unique:shifts',
-            'end' => 'required|unique:shifts',
+            'start' => 'required|unique:shifts|different:end',
+            'end' => 'required|unique:shifts|',
         ]);
 
         $data = $request->all();
@@ -89,9 +89,11 @@ class ShiftsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function choose()
     {
         //
+        $shifts = Shift::all();
+        return view('shifts.choose',compact('shifts'));
     }
 
     /**
@@ -104,20 +106,31 @@ class ShiftsController extends Controller
     public function update(Request $request, Shift $shift)
     {
         //
+        $this->validate($request, [
+            'description' => 'required',
+            'start' => 'required|different:end',
+            'end' => 'required',
+        ]);
+
         $data = $request->all();
         $data['start'] = date("H:i", strtotime($request->start));
-        $data['end'] = date("H:i", strtotime($request->end));
+        $data['end'] = date("H:i", strtotime($request->end));            
 
-        $saved = $shift->update($data);
-
-        if ($saved) {
-            $request->session()->flash('flash_message', 'Turno '.$shift->description.' modificado.');
+        if ($validator->fails()) {
+            $request->session()->flash('flash_message_not', 'No se pudo modificar el turno.');  
+            return redirect('/shift')->withErrors();  
         }
         else {
-            $request->session()->flash('flash_message_not', 'No se pudo modificar el turno.');
-        }
+            $saved = $shift->update($data);
 
-        return redirect('/shift');
+            if ($saved) {
+                $request->session()->flash('flash_message', 'Turno '.$shift->description.' modificado.');
+            }
+            else {
+                $request->session()->flash('flash_message_not', 'No se pudo modificar el turno.');
+            }
+            return redirect('/shift');   
+        }        
     }
 
     /**
@@ -165,5 +178,20 @@ class ShiftsController extends Controller
             return view('shifts.index', compact('shifts'));
         }
         
+    }
+
+    public function chosen(Request $request)
+    {
+        # code...
+        //dd($request);
+        $this->validate($request, [
+            'shift' => 'required'
+        ]);
+
+        Auth::user()->shift = $request->shift;
+
+        Auth::user()->update();
+
+        return redirect('/entry');
     }
 }

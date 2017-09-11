@@ -66,7 +66,15 @@
                 </div>
               </div> 
               <br>
-            </div>               
+            </div>  
+
+            <div class="col-md-10">
+              @if($errors->any())
+                <div class="alert alert-danger">
+                  <strong>Campos requeridos</strong>
+                </div>
+              @endif
+            </div>
               
             <div class="modal-footer form-group">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -105,7 +113,16 @@
             </tr>
           @endforeach      
         </tbody>
-     </table>    
+     </table>  
+     <div class="col-md-10">
+        @if($errors->any())
+          <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+          </div>
+        @endif
+      </div>  
   </div>   
 @stop
 

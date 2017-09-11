@@ -167,6 +167,9 @@ return [
         ],
         'unit_id' => [
             'required_if' => 'El campo Unidad es obligatorio cuando la categoría incluye MATERIAL.',
+        ],
+        'start' => [
+            'different' => 'Los campos Comienzo y Fin deben ser diferentes.',
         ]
     ],
 

@@ -69,6 +69,9 @@
 					        <div class=" form-group checkbox">
 			  				    <label class="control-label"><input type="checkbox" name="isAdmin" id="isAdmin">Administrador</label>
 						    </div>
+						    <div class=" form-group checkbox">
+			  				    <label class="control-label"><input type="checkbox" name="isGuard" id="isGuard">Vigilante</label>
+						    </div>
 				        </div>
 				        <div class="modal-footer form-group">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -96,6 +99,7 @@
 		        <th>E-Mail</th>
 		        <th>Teléfono</th>
 		        <th style="text-align:center">Administrador</th>
+		        <th style="text-align:center">Vigilante</th>
 		      </tr>
 		    </thead>
 		    <tbody>
@@ -106,6 +110,7 @@
 		        		<td>{{ $user->email }}</td>
 		        		<td>{{ $user->telephone }}</td>	
 		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
+		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isGuard == 1) ? 'checked' : 'unchecked' }}></td>
 						<td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
@@ -150,6 +155,7 @@
 	  				$('input[id="isAdmin"]').prop('checked', false)
 	  			}*/
 	  			$('input[id="isAdmin"]').prop('checked', response.isAdmin == 1 ? true : false)
+	  			$('input[id="isGuard"]').prop('checked', response.isGuard == 1 ? true : false)
 			  })
 			  $('form[id="edit"]').attr('action','user/' + user_id)
 			});

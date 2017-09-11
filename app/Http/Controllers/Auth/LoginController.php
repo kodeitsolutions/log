@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -25,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/entry';
+    //protected $redirectTo = '/entry';
 
     /**
      * Create a new controller instance.
@@ -37,8 +40,32 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
+    protected function authenticated($request, $user)
+    {
+        if ($user->isGuard) {
+            return redirect('/shift/choose');
+        }   
+        else {
+            return redirect('/entry');
+        }
+    }
+
     public function username()
     {
         return 'username';
-    }    
+    } 
+
+    public function logout()
+    {
+        $user = Auth::user();
+        if ($user->isGuard) {
+            $user->shift = null;
+            $user->save();
+        }
+
+        Auth::logout();
+        Session::flush();
+        
+        return redirect('login');
+    }   
 }

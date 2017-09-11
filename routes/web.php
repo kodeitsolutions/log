@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::get('entry/delete/{entry}', 'EntriesController@delete');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
-	Route::get('category/getCategory/{id}', 'CategoriesController@show');	
+	Route::get('category/getCategory/{id}', 'CategoriesController@show');
+	Route::get('shift/choose','ShiftsController@choose');	
+	Route::patch('shift/choose','ShiftsController@chosen');	
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -112,6 +114,7 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('shift/search', 'ShiftsController@search');
 	Route::get('shift/searching', 'ShiftsController@searching');
 	Route::delete('shift/{shift}','ShiftsController@destroy');
+	//Route::get('shift/choose','ShiftsController@choose');
 }) ;	
 
 

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name','email','telephone','password','username',
+        'name','email','telephone','password','username','isGuard', 'isAdmin', 'shift'
     ];
 
     //protected $dates = ['deleted_at'];
@@ -35,6 +36,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->isAdmin;
+    }
+
+    public function isGuard()
+    {
+        return $this->isGuard;
     }
 
     public function operations()
@@ -65,5 +71,20 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
+
+    public function validateShift()
+    {
+        if ($this->isGuard){
+            $time = Carbon::now()->toTimeString();
+            $shift = Shift::find($this->shift);
+            return $shift->between($time);
+        }
+        return true;        
     }
 }

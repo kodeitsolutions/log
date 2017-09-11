@@ -35,9 +35,10 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ Auth::check() && ((Auth::user()->isGuard && !empty(Auth::user()->shift)) || Auth::user()->isAdmin) ? '/' : '' }}">
                         ReMo (Registro de Movimientos)
-                    </a>
+                    </a>                    
+
                 </div>
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
@@ -49,29 +50,31 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::check())
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Bienvenido {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                            @if((Auth::user()->isGuard && !empty(Auth::user()->shift)) || Auth::user()->isAdmin)
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Bienvenido {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="/user/reset/{{ Auth::user()->id }}">Cambiar contraseña</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Salir
-                                        </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="/user/reset/{{ Auth::user()->id }}">Cambiar contraseña</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/logout') }}"
+                                                onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                                Salir
+                                            </a>
 
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li> 
-                                                                       
-                                </ul>
-                            </li>
+                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li> 
+                                                                           
+                                    </ul>
+                                </li>
+                            @endif
                         @endif
                     </ul>
                 </div>                
@@ -82,7 +85,7 @@
         @if(Auth::check())
             @if(Auth::user()->isAdmin)
                 @include('adminDB')
-            @else
+            @elseif(!empty(Auth::user()->shift))
                 @include('regularDB')
             @endif
         @endif

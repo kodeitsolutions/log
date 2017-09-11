@@ -15,6 +15,7 @@ use App\Companie;
 use App\Unit;
 use App\Material;
 use App\Notification;
+use App\Shift;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmail;
@@ -44,6 +45,13 @@ class EntriesController extends Controller
     public function add()
     {
         //
+        $user = Auth::user();
+
+        if (!$user->validateShift()){        
+            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
+            return back();
+        }    
+        
         $operations = Operation::all();
         $categories = Categorie::all();
         $companies = Companie::all();
@@ -78,7 +86,14 @@ class EntriesController extends Controller
             'material_quantity' => 'required_if:categorie_id,2,3',
             'unit_id' => 'required_if:categorie_id,2,3',
 
-        ]);
+        ]);      
+
+        $user = Auth::user();
+
+        if (!$user->validateShift()){        
+            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
+            return back();
+        }       
 
         $data = $request->all();
         $data['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date)));
@@ -89,7 +104,6 @@ class EntriesController extends Controller
         $entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
-        $user = Auth::user();
         $entrie->user_id = $user->id;       
         
         $saved = $entrie->save();
@@ -130,6 +144,13 @@ class EntriesController extends Controller
     public function edit(Request $request, Entrie $entry)
     {
         //dd($entry);
+        $user = Auth::user();
+
+        if (!$user->validateShift()){        
+            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
+            return back();
+        }  
+
         $users = User::all();
         $operations = Operation::all();
         $categories = Categorie::all();
@@ -188,6 +209,13 @@ class EntriesController extends Controller
     public function destroy(Request $request, Entrie $entry)
     {
         //
+        $user = Auth::user();
+
+        if (!$user->validateShift()){        
+            $request->session()->flash('flash_message_not', 'No se puede eliminar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
+            return back();
+        }  
+
         $deleted = $entry->delete();
         if ($deleted) {
             $request->session()->flash('flash_message', 'Registro eliminado.');
