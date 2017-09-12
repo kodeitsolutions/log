@@ -109,7 +109,7 @@ class EntriesController extends Controller
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
-            $this->notificationStore($entrie);
+            $this->notifications($entrie);
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
@@ -226,13 +226,6 @@ class EntriesController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Entrie $entry)
-    {
-        //        
-        $entry->forceDelete();        
-        return redirect('/entry');
-    }
-
     public function search()
     {
         $operations = Operation::all();
@@ -327,7 +320,7 @@ class EntriesController extends Controller
         }       
     }
 
-    public function notificationStore(Entrie $entry)
+    public function notifications(Entrie $entry)
     {
         $notifications = Notification::where('status','A')
                         ->where('conditions','LIKE','%"moment":[%"%store%"%]%')
@@ -352,40 +345,8 @@ class EntriesController extends Controller
         }            
     }
 
-
-    public function notifications()
-    {
-        # code...
-        $notifications = Notification::where('status','A')
-                        ->where('conditions','LIKE','%cron%')
-                        ->get();
-
-        if (!$notifications->isEmpty()) {
-            foreach ($notifications as $notification) {   
-                $entryConditions = [];         
-                $conditions = json_decode($notification->conditions, true);
-                $recipients = explode(',', $conditions['recipient']);
-                $entries = Entrie::
-                        whereIn('operation_id', $conditions['operation'])
-                        ->whereIn('categorie_id', $conditions['category'])
-                        ->whereIn('companie_id', $conditions['company'])
-                        ->when(isset($conditions['material']), function($query) use ($conditions){
-                            return $query->whereIn('material_id', $conditions['material']);
-                    })
-                    ->orderBy('time')->get();
-                //dd($entries);
-                if (!$entries->isEmpty()) {               
-                    Mail::to($recipients)->send(new DailyEntries($entries));
-                }            
-            }   
-        }                 
-    }
-
-    public function duplicate(Entrie $copy)
-    {
-        $entry = $copy->replicate();
-        $entry->save();
-        
+    public function duplicate(Entrie $entry)
+    {       
         $users = User::all();
         $operations = Operation::all();
         $categories = Categorie::all();

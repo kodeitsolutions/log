@@ -31,10 +31,8 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::delete('entry/{entry}', 'EntriesController@destroy');
 	Route::get('entry/print/{date}', 'EntriesController@printPDF');
 	Route::post('entry/send', 'EntriesController@sendMail');
-	Route::get('entry/notify', 'EntriesController@notifications');
-	Route::get('entry/notification/{entry}', 'EntriesController@notificationStore');
-	Route::get('entry/{copy}/duplicate', 'EntriesController@duplicate');
-	Route::get('entry/delete/{entry}', 'EntriesController@delete');
+	Route::get('entry/notification/{entry}', 'EntriesController@notifications');
+	Route::get('entry/{entry}/duplicate', 'EntriesController@duplicate');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
