@@ -24,6 +24,11 @@ class Companie extends Model
     	return $this->hasMany(Entrie::class);
     }
 
+    public function workers()
+    {
+        return $this->hasMany(Worker::class);
+    }
+
     public function getName()
     {
         return $this->name;

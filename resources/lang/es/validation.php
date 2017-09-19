@@ -170,6 +170,18 @@ return [
         ],
         'start' => [
             'different' => 'Los campos Comienzo y Fin deben ser diferentes.',
+        ],
+        'worker_id' => [
+            'required' => 'El campo cédula es obligatorio.',
+        ],
+        'name' => [
+            'required' => 'El campo nombre es obligatorio.',
+        ],
+        'position' => [
+            'required' => 'El campo cargo es obligatorio.',
+        ],
+        'department' => [
+            'required' => 'El campo departamento es obligatorio.',
         ]
     ],
 

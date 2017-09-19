@@ -16,6 +16,7 @@ use App\Unit;
 use App\Material;
 use App\Notification;
 use App\Shift;
+use App\Worker;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmail;
@@ -75,7 +76,8 @@ class EntriesController extends Controller
             'operation_id' => 'required',
             'categorie_id' => 'required',
             'companie_id' => 'required',
-            'destination' => 'required|max:255',   
+            'destination' => 'required|max:255', 
+            'date' => 'required',  
             'time' => 'required',
             'person_name' => 'required_if:categorie_id,1,3', 
             'person_id' => 'required_if:categorie_id,1,3',
@@ -105,7 +107,7 @@ class EntriesController extends Controller
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
         $entrie->user_id = $user->id;       
-        
+        //dd($entrie);
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
@@ -115,7 +117,7 @@ class EntriesController extends Controller
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
         }
 
-        return redirect('/entry');
+        return redirect('/entry');        
     }
 
     /**
@@ -171,7 +173,8 @@ class EntriesController extends Controller
     {
         //dd($request);
         $this->validate($request, [
-            'destination' => 'required|max:255',   
+            'destination' => 'required|max:255', 
+            'date' => 'required',  
             'time' => 'required',
             'person_name' => 'required_if:categorie_id,1,3', 
             'person_id' => 'required_if:categorie_id,1,3',
@@ -354,5 +357,37 @@ class EntriesController extends Controller
         $units = Unit::all();
         $materials = Material::all();
         return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'))->with("route","duplicate");
+    }
+
+    public function worker()
+    {
+        # code...
+        $workers = Worker::where('status','A')->get();
+        return view('entries.workers', compact('workers'));
+    }
+
+    public function entryWorker(Request $request,$operation,$id)
+    {
+        # code...
+        $worker = Worker::find($id);
+        $entry = new Entrie();
+
+        $data['operation_id'] = $operation;
+        $data['categorie_id'] = 1;
+        $data['companie_id'] = $worker->companie_id;
+        $data['destination'] = $worker->department;
+        $data['time'] = $request->time;
+        $data['date'] = date('d/m/Y');
+        $data['person_name'] = $worker->name;
+        $data['person_id'] = $worker->worker_id;
+        $data['person_occupation'] = $worker->position;
+        $data['person_company'] = $worker->company->name;
+        $data['person_observations'] = ($operation == 1) ? 'Comienzo jornada laboral' : 'Fin jornada laboral';
+
+        $request->merge($data);
+        //dd($request);
+        $this->store($request);
+
+        return back();
     }
 }

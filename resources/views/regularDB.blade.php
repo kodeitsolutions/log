@@ -4,12 +4,13 @@
         <div class="navbar-header">          
         </div>
         <ul class="nav navbar-nav">
-          <li class="dropdown {{ setActive('entry')}} {{ setActive('entry/add')}} {{ setActive('entry/search')}} {{ setActive('entry/searching')}}">
+          <li class="dropdown {{ setActive('entry')}} {{ setActive('entry/add')}} {{ setActive('entry/search')}} {{ setActive('entry/searching')}} {{ setActive('entry/worker')}}">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Log <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="/entry">Ver</a></li>
               <li><a href="/entry/add">Agregar Log</a></li>
               <li ><a href="/entry/search">Buscar registro</a></li>
+              <li><a href="/entry/worker">E/S Trabajadores</a></li>
             </ul>
           </li>          
         </ul>

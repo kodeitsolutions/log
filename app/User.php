@@ -78,6 +78,11 @@ class User extends Authenticatable
         return $this->hasMany(Shift::class);
     }
 
+    public function workers()
+    {
+        return $this->hasMany(Worker::class);
+    }
+
     public function validateShift()
     {
         if ($this->isGuard){

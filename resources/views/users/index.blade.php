@@ -79,7 +79,7 @@
 						</div>
 			    </form> 		
 			</div>			
-		</div>		
+		</div>			
 	</div>
 @stop
 
@@ -160,7 +160,5 @@
 			  $('form[id="edit"]').attr('action','user/' + user_id)
 			});
 	    }); 
-
-		
 	</script>
 @stop

@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::post('entry/send', 'EntriesController@sendMail');
 	Route::get('entry/notification/{entry}', 'EntriesController@notifications');
 	Route::get('entry/{entry}/duplicate', 'EntriesController@duplicate');
+	Route::get('entry/worker', 'EntriesController@worker');
+	Route::get('entry/worker/{operation}/{id}', 'EntriesController@entryWorker');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
@@ -112,7 +114,15 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('shift/search', 'ShiftsController@search');
 	Route::get('shift/searching', 'ShiftsController@searching');
 	Route::delete('shift/{shift}','ShiftsController@destroy');
-	//Route::get('shift/choose','ShiftsController@choose');
+
+	Route::get('worker', 'WorkersController@index');
+	Route::get('worker/add', 'WorkersController@add');
+	Route::post('worker/add', 'WorkersController@store');
+	Route::get('worker/getWorker/{id}', 'WorkersController@show');
+	Route::patch('worker/{worker}', 'WorkersController@update');
+	Route::get('worker/search', 'WorkersController@search');
+	Route::get('worker/searching', 'WorkersController@searching');
+	Route::delete('worker/{worker}','WorkersController@destroy');
 }) ;	
 
 
