@@ -31,6 +31,7 @@ Observaciones: {{ $entry->material_observations }}.
 @endif
 @endif	
 
+@if( $entry->category->vehicle == 1 and !empty($entry->vehicle))
 **Datos del vehículo**   
 Descripción: {{ $entry->vehicle }}.  
 Placa: {{ $entry->vehicle_plate }}.  
@@ -38,7 +39,8 @@ Chofer: {{ $entry->driver_name }}.
 C.I: {{$entry->driver_id }}.  
 @if(!empty($entry->vehicle_observations))
 Observaciones: {{ $entry->vehicle_observations }}.  
-@endif  
+@endif 
+@endif 
 
 @component('mail::button', ['url' => ''])
 Ir a ReMo
