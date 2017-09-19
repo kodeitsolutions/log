@@ -106,7 +106,7 @@ class ShiftsController extends Controller
     public function update(Request $request, Shift $shift)
     {
         //
-        $this->validate($request, [
+        $validator = $this->validate($request, [
             'description' => 'required',
             'start' => 'required|different:end',
             'end' => 'required',
