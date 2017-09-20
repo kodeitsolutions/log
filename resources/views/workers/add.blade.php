@@ -45,7 +45,7 @@
 
         <div class="form-group col-xs-2 col-sm-8 {{ $errors->has('department') ? ' has-error' : '' }}">
           <label class="control-label">Departamento:</label>
-          <input type="text" class="form-control" name="department" placeholder="Ingrese el departamento al que pertenece." required>
+          <input type="text" class="form-control" name="department" value="{{ old('department') }} placeholder="Ingrese el departamento al que pertenece." required>
 
           @if ($errors->has('department'))
             <span class="help-block">
