@@ -8,6 +8,7 @@ use App\User;
 use App\Companie;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CompaniesController extends Controller
 {
@@ -99,6 +100,10 @@ class CompaniesController extends Controller
     public function update(Request $request, Companie $company)
     {
         //dd($request, $companie);
+        $this->validate($request, [
+            'name' => ['required','max:255',Rule::unique('companies')->ignore($company->id)]
+        ]);
+
         $saved = $company->update($request->all());
 
         if ($saved) {
@@ -132,8 +137,7 @@ class CompaniesController extends Controller
             }
         } else {
             $request->session()->flash('flash_message_not', 'No se pudo eliminar la Empresa ya que existen registros asociados a esta.');
-        }       
-        
+        }        
 
         return redirect('/company');
     }
@@ -156,8 +160,7 @@ class CompaniesController extends Controller
         $companies = Companie::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($companies->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('companies.index', compact('companies'));

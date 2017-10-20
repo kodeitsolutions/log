@@ -8,6 +8,7 @@ use App\User;
 use App\Material;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MaterialsController extends Controller
 {
@@ -100,6 +101,11 @@ class MaterialsController extends Controller
     public function update(Request $request, Material $material)
     {
         //
+        $this->validate($request, [
+            'code' => ['required','max:8','alpha_num',Rule::unique('materials')->ignore($material->id)],
+            'name' => 'required|max:255',
+        ]);
+
         $saved = $material->update($request->all());
 
         if ($saved) {
@@ -157,8 +163,7 @@ class MaterialsController extends Controller
         $materials = Material::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($materials->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('materials.index', compact('materials'));

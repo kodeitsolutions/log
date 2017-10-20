@@ -8,6 +8,7 @@ use App\User;
 use App\Unit;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UnitsController extends Controller
 {
@@ -100,6 +101,11 @@ class UnitsController extends Controller
     public function update(Request $request, Unit $unit)
     {
         //
+        $this->validate($request, [
+            'code' => ['required','max:5','alpha_num',Rule::unique('units')->ignore($unit->id)],
+            'name' => 'required|max:255',
+        ]);
+
         $saved = $unit->update($request->all());
 
         if ($saved) {
@@ -158,8 +164,7 @@ class UnitsController extends Controller
         $units = Unit::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($units->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('units.index', compact('units'));

@@ -8,6 +8,7 @@ use App\User;
 use App\Categorie;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
@@ -107,6 +108,11 @@ class CategoriesController extends Controller
     public function update(Request $request, Categorie $category)
     {
         //dd($request);
+        $this->validate($request, [
+            'name' => ['required','max:255',Rule::unique('categories')->ignore($category->id)],
+            'description' => 'required|max:255'
+        ]);
+
         $category->name = $request->name;
         $category->description = $request->description;
         
@@ -172,8 +178,7 @@ class CategoriesController extends Controller
         $categories = Categorie::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($categories->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('categories.index', compact('categories'));

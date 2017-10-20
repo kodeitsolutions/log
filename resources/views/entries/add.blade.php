@@ -54,7 +54,7 @@
     </div>   
 
     <div class="form-group col-xs-2 col-sm-12 row">
-      <label class="control-label col-md-2">Fecha:</label>
+      <label class="control-label col-md-2 {{ $errors->has('date') ? ' has-error' : '' }}">Fecha:</label>
       <div class="col-md-10"> 
         @if($entry->exists)
           <input type="text" class="form-control" name="date" id="date" value="{{ old('date', $entry->date->format('d/m/Y')) }}">
@@ -65,7 +65,7 @@
     </div>            
 
     <div class="form-group col-xs-2 col-sm-12 row">
-      <label class="control-label col-md-2  ">Hora:</label>
+      <label class="control-label col-md-2  {{ $errors->has('time') ? ' has-error' : '' }}">Hora:</label>
       <div class="col-md-4">
       @if($entry->exists)
         <input type="text" name="time"  value="{{ old('time', date('h:i A', strtotime($entry->time))) }}" class="form-control time_element"/>

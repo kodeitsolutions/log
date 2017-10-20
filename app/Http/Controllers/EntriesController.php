@@ -49,8 +49,7 @@ class EntriesController extends Controller
         $user = Auth::user();
 
         if (!$user->validateShift()){        
-            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
-            return back();
+            return back()->with('flash_message_not', 'No se puede agregar el registro. Está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');  
         }    
         
         $operations = Operation::all();
@@ -93,8 +92,7 @@ class EntriesController extends Controller
         $user = Auth::user();
 
         if (!$user->validateShift()){        
-            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
-            return back();
+            return back()->with('flash_message_not', 'No se puede guardar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno'); 
         }       
 
         $data = $request->all();
@@ -107,7 +105,7 @@ class EntriesController extends Controller
         $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
         $entrie->user_id = $user->id;       
-        //dd($entrie);
+       
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
@@ -149,8 +147,7 @@ class EntriesController extends Controller
         $user = Auth::user();
 
         if (!$user->validateShift()){        
-            $request->session()->flash('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
-            return back();
+            return back()->with('flash_message_not', 'No se puede editar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno'); 
         }  
 
         $users = User::all();
@@ -185,7 +182,7 @@ class EntriesController extends Controller
             'material_quantity' => 'required_if:categorie_id,2,3',
             'unit_id' => 'required_if:categorie_id,2,3',
 
-        ]);
+        ]); 
 
         $data = $request->all();
         $data['date'] = $entry->getFormatDate($request->date);
@@ -215,18 +212,16 @@ class EntriesController extends Controller
         $user = Auth::user();
 
         if (!$user->validateShift()){        
-            $request->session()->flash('flash_message_not', 'No se puede eliminar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');   
-            return back();
+            return back()->with('flash_message_not', 'No se puede eliminar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno');               
         }  
 
         $deleted = $entry->delete();
         if ($deleted) {
-            $request->session()->flash('flash_message', 'Registro eliminado.');
+            return back()->with('flash_message', 'Registro eliminado.');
         }
         else{
-            $request->session()->flash('flash_message_not', 'No se pudo eliminar el Registro.');   
+            return back()->with('flash_message_not', 'No se pudo eliminar el Registro.');   
         }
-        return redirect()->back();
     }
 
     public function search()
@@ -267,8 +262,7 @@ class EntriesController extends Controller
         $entries = Entrie::with('operation','category','company','unit','material')->where($conditions)->orderBy('date')->orderBy('time')->paginate(20);
 
         if($entries->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return redirect()->back()->withInput($input);
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.')->withInput($input);
         }
         else {
             $date_from = $request->date_from;
@@ -285,8 +279,7 @@ class EntriesController extends Controller
         //return view('entries.print', compact('entries'));
         
         if ($entries->isEmpty()) {            
-            Session::flash('flash_message_info', 'No hay datos para imprimir.');
-            return back();
+            return back()->with('flash_message_info', 'No hay datos para imprimir.');
         } else {
             $pdf = PDF::loadView('entries.print', compact('entries'));
             return $pdf->inline('ListadoRegistros-'.$date.'.pdf');
@@ -302,8 +295,7 @@ class EntriesController extends Controller
         $today = date('d/m/Y');
 
         if ($entries->isEmpty()) {            
-            Session::flash('flash_message_info', 'No hay datos para enviar.');
-            return back();
+            return back()->with('flash_message_info', 'No hay datos para enviar.');
         } else {
             $data = array(
                 'email' => $request->email,
@@ -317,8 +309,7 @@ class EntriesController extends Controller
 
             });
 
-            Session::flash('flash_message', 'Email enviado.');
-            return back();
+            return back()->with('flash_message', 'Email enviado.');
             Session::forget('entries');
         }       
     }
@@ -362,7 +353,7 @@ class EntriesController extends Controller
     public function worker()
     {
         # code...
-        $workers = Worker::where('status','A')->get();
+        $workers = Worker::where('status','A')->orderBy('name')->get();
         return view('entries.workers', compact('workers'));
     }
 

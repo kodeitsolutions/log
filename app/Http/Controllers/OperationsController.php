@@ -8,6 +8,7 @@ use App\User;
 use App\Operation;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class OperationsController extends Controller
 {
@@ -101,16 +102,18 @@ class OperationsController extends Controller
     public function update(Request $request, Operation $operation)
     {
         //
+        $this->validate($request, [
+            'name' => ['required','max:255',Rule::unique('operations')->ignore($operation->id)],
+        ]);
+
         $saved = $operation->update($request->all());
 
         if ($saved) {
-            $request->session()->flash('flash_message', 'Tipo de Movimiento '.$operation->name.' modificado.');
+            return back()->with('flash_message', 'Tipo de Movimiento '.$operation->name.' modificado.');
         }
         else {
-            $request->session()->flash('flash_message_not', 'No se pudo modificar el Tipo de Movimiento.');
+            return back()->with('flash_message_not', 'No se pudo modificar el Tipo de Movimiento.');
         }
-
-        return redirect('/operation');
     }
 
     /**
@@ -159,8 +162,7 @@ class OperationsController extends Controller
         $operations = Operation::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($operations->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('operations.index', compact('operations'));

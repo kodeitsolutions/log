@@ -70,6 +70,15 @@
 @section('content')
   <div class="col-md-11">
     <h4 class="text-info" align="center">UNIDADES</h4>
+    <div class="col-md-10">
+      @if($errors->any())
+        <div class="alert alert-danger">
+          @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+          @endforeach
+        </div>
+      @endif
+    </div>
     <table class="table table-striped" width="100%">
         <col style="width: 40%">
         <col style="width: 40%">
@@ -82,18 +91,18 @@
         </thead>
         <tbody>
           @foreach($units as $unit)
-              <tr id="unit{{ $unit->id }}">
-                <td><span id="{{ $unit->id }}">{{ $unit->code }}</span></td>
-                <td><span id="{{ $unit->id }}">{{ $unit->name }}</span></td>
-                <td>{{ $unit->description }}</td>
-                <td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
-                </td>   
+            <tr id="unit{{ $unit->id }}">
+              <td><span id="{{ $unit->id }}">{{ $unit->code }}</span></td>
+              <td><span id="{{ $unit->id }}">{{ $unit->name }}</span></td>
+              <td>{{ $unit->description }}</td>
+              <td>
+              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+              <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
+              </td>   
             </tr>
           @endforeach      
         </tbody>
-     </table>    
+    </table>        
   </div>   
 @stop
 

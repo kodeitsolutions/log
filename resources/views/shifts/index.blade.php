@@ -66,16 +66,8 @@
                 </div>
               </div> 
               <br>
-            </div>  
-
-            <div class="col-md-10">
-              @if($errors->any())
-                <div class="alert alert-danger">
-                  <strong>Campos requeridos</strong>
-                </div>
-              @endif
-            </div>
-              
+            </div> 
+                        
             <div class="modal-footer form-group">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
               <button type="submit" class="btn btn-primary btn-edit">Guardar</button>
@@ -88,7 +80,16 @@
 
 @section('content')  
   <div class="col-md-11">
-    <h4 class="text-info" align="center">TURNOS</h4>
+    <h4 class="text-info" align="center">TURNOS</h4>     
+    <div class="col-md-10">
+      @if($errors->any())
+        <div class="alert alert-danger">
+          @foreach ($errors->all() as $error)
+              <div>{{ $error }}</div>
+          @endforeach
+        </div>
+      @endif
+    </div>  
     <table class="table table-striped" width="100%">
         <col style="width: 40%">
         <col style="width: 40%">
@@ -113,16 +114,7 @@
             </tr>
           @endforeach      
         </tbody>
-     </table>  
-     <div class="col-md-10">
-        @if($errors->any())
-          <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-          </div>
-        @endif
-      </div>  
+    </table> 
   </div>   
 @stop
 

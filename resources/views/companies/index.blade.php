@@ -61,6 +61,15 @@
 @section('content')
   <div class="col-md-11">
     <h4 class="text-info" align="center">EMPRESAS</h4>
+    <div class="col-md-10">
+      @if($errors->any())
+        <div class="alert alert-danger">
+          @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+          @endforeach
+        </div>
+      @endif
+    </div>
     <table class="table table-striped" width="100%">
         <col style="width: 80%">
         <col style="width: 20%">

@@ -8,6 +8,7 @@ use Response;
 use App\User;
 use App\Entrie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -115,7 +116,7 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email',
-            'username' => 'required'
+            'username' => ['required',Rule::unique('users')->ignore($user->id)]
         ]);
 
         $data = $request->all();
@@ -183,8 +184,7 @@ class UsersController extends Controller
         $users = User::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($users->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
         }
         else {
             return view('users.index', compact('users'));

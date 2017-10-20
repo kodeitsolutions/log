@@ -116,6 +116,7 @@ return [
         ],
         'name' => [
             'unique'   => 'Este nombre ya se encuentra registrado.',
+            'required' => 'El campo nombre es obligatorio.',
         ],
         'password' => [
             'confirmed' => 'La confirmación de la contraseña no coincide.',
@@ -170,19 +171,33 @@ return [
         ],
         'start' => [
             'different' => 'Los campos Comienzo y Fin deben ser diferentes.',
+            'unique' => 'Hora de inicio de turno ya registrada.'
+        ],
+        'end' => [
+            'unique' => 'Hora de fin de turno ya registrada.'
         ],
         'worker_id' => [
             'required' => 'El campo cédula es obligatorio.',
-        ],
-        'name' => [
-            'required' => 'El campo nombre es obligatorio.',
+            'unique' => 'Esta cédula ya se encuentra registrada.'
         ],
         'position' => [
             'required' => 'El campo cargo es obligatorio.',
         ],
         'department' => [
             'required' => 'El campo departamento es obligatorio.',
-        ]
+        ],
+        'recipient' => [
+            'required' => 'El campo destinatario es obligatorio.',
+        ],
+         'moment' => [
+            'required' => 'El campo momento es obligatorio.',
+        ],   
+        'category' => [
+            'required' => 'El campo categoría es obligatorio.',
+        ],
+        'company' => [
+            'required' => 'El campo empresa es obligatorio.',
+        ],    
     ],
 
     /*

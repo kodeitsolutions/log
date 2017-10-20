@@ -7,6 +7,7 @@ use Response;
 use App\User;
 use App\Shift;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ShiftsController extends Controller
 {
@@ -106,31 +107,25 @@ class ShiftsController extends Controller
     public function update(Request $request, Shift $shift)
     {
         //
-        $validator = $this->validate($request, [
+        $this->validate($request, [
             'description' => 'required',
-            'start' => 'required|different:end',
-            'end' => 'required',
+            'start' => ['required','different:end',Rule::unique('shifts')->ignore($shift->id)],
+            'end' => ['required',Rule::unique('shifts')->ignore($shift->id)]
         ]);
 
         $data = $request->all();
         $data['start'] = date("H:i", strtotime($request->start));
         $data['end'] = date("H:i", strtotime($request->end));            
 
-        if ($validator->fails()) {
-            $request->session()->flash('flash_message_not', 'No se pudo modificar el turno.');  
-            return redirect('/shift')->withErrors();  
+        
+        $saved = $shift->update($data);
+
+        if ($saved) {
+            return back()->with('flash_message', 'Turno '.$shift->description.' modificado.');
         }
         else {
-            $saved = $shift->update($data);
-
-            if ($saved) {
-                $request->session()->flash('flash_message', 'Turno '.$shift->description.' modificado.');
-            }
-            else {
-                $request->session()->flash('flash_message_not', 'No se pudo modificar el turno.');
-            }
-            return redirect('/shift');   
-        }        
+            return back()->with('flash_message_not', 'No se pudo modificar el turno.');
+        }
     }
 
     /**
@@ -171,8 +166,8 @@ class ShiftsController extends Controller
         $shifts = Shift::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($shifts->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
+            ;
         }
         else {
             return view('shifts.index', compact('shifts'));

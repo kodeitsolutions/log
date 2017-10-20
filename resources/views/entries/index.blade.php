@@ -197,8 +197,8 @@
 		</div>
 		
 		<div class="form-group col-xs-2 col-sm-12" align="right">
-	        <a href="/entry/print/{{$string_date}}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body"><span class="glyphicon glyphicon-print"></a>
-	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body"><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
+	        <a href="/entry/print/{{$string_date}}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-print"></a>
+	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
 	    </div>
 	</div>
 @stop
