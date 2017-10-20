@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Response;
+use Storage;
 use App\User;
 use App\Worker;
 use App\Companie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class WorkersController extends Controller
 {
@@ -47,7 +49,7 @@ class WorkersController extends Controller
         //dd($request);
         $this->validate($request, [
             'name' => 'required',
-            'worker_id' => 'required',
+            'worker_id' => 'required|unique:workers',
             'companie_id' => 'required',
             'department' => 'required',
             'position' => 'required'
@@ -107,28 +109,22 @@ class WorkersController extends Controller
         //dd($request);        
         $this->validate($request, [
             'name' => 'required',
-            'worker_id' => 'required',
+            'worker_id' => ['required',Rule::unique('workers')->ignore($worker->id)],
             'companie_id' => 'required',
             'department' => 'required',
             'position' => 'required',
             'status' => 'required'
-        ]);      
+        ]);     
 
-        /*if ($validator->fails()) {
-            $request->session()->flash('flash_message_not', 'No se pudo modificar el trabajador.');  
-            return redirect('/worker')->withErrors();  
+        
+        $saved = $worker->update($request->all());
+
+        if ($saved) {
+            return back()->with('flash_message', 'Trabajador '.$worker->name.' modificado.');
         }
-        else {*/
-            $saved = $worker->update($request->all());
-
-            if ($saved) {
-                $request->session()->flash('flash_message', 'Trabajador '.$worker->name.' modificado.');
-            }
-            else {
-                $request->session()->flash('flash_message_not', 'No se pudo modificar el trabajador.');
-            }
-            return redirect('/worker');   
-        //}        
+        else {
+            return back()->with('flash_message_not', 'No se pudo modificar el trabajador.');
+        }  
     }
 
     /**
@@ -169,8 +165,7 @@ class WorkersController extends Controller
         $workers = Worker::where($parameter, 'LIKE', '%' . $query . '%')->get();
         
         if($workers->isEmpty()) {
-            $request->session()->flash('flash_message_info', 'No hay resultados para la búsqueda realizada.');
-            return back();
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');;
         }
         else {
             $companies = Companie::all();
@@ -178,4 +173,53 @@ class WorkersController extends Controller
         }
         
     }
+
+    public function upload()
+    {
+        # code...
+        $companies = Companie::all();
+        return view('workers.upload',compact('companies'));
+    }
+
+    public function import(Request $request)
+    {
+        # code...
+        //dd($request);
+        $this->validate($request,[
+            'companie_id' => 'required',
+            'file' => 'mimes:text/xml|file'
+        ]);
+       
+        if ($request->hasFile('trabajadores')) {
+            $file = $request->file('trabajadores');
+            
+            $ext = $request->file('trabajadores')->getClientOriginalExtension();
+            
+            if ($ext != 'xml') {
+               return back()->with('flash_message_not','El archivo debe ser .xml.')->with($request);
+            } else {
+                $path = $file->storeAs('workers/'.$request->companie_id, 'workers.xml');
+
+                $xml = simplexml_load_file($file, null, LIBXML_NOCDATA);
+                
+                foreach ($xml->registro as $registros) {
+                    $worker = new Worker(); 
+                    
+                    $worker->name = (string)$registros->nom_tra;
+                    $worker->worker_id = (string)$registros->cedula;
+                    $worker->companie_id = $request->companie_id;
+                    $worker->department = $worker->getDepartment((string)$registros->cod_dep);
+                    $worker->position = $worker->getPosition((string)$registros->cod_car);
+                    $worker->status = 'A';
+                    $worker->user_id = Auth::id();
+
+                    $worker->save();
+                }
+                return redirect('/worker')->with('flash_message','Trabajadores cargados');
+            }
+        } else {            
+            return back()->with('flash_message_not','No seleccionó ningún archivo.');             
+        }        
+    }  
+        
 }

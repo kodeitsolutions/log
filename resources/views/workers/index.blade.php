@@ -135,6 +135,15 @@
 @section('content')  
   <div class="col-md-11">
     <h4 class="text-info" align="center">TRABAJADORES</h4>
+    <div class="col-md-10">
+      @if($errors->any())
+        <div class="alert alert-danger">
+          @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+          @endforeach
+        </div>
+      @endif
+    </div> 
     <div class="form-group col-xs-2 col-sm-12" align="right">         
       <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="Filtar empresa" data-container="body"><span class="glyphicon glyphicon-filter" data-toggle="modal" data-target="#myModalCompany">
     </div>
@@ -171,16 +180,7 @@
             </tr>
           @endforeach      
         </tbody>
-     </table>  
-     <div class="col-md-10">
-        @if($errors->any())
-          <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-          </div>
-        @endif
-      </div>  
+     </table>     
   </div>   
 @stop
 

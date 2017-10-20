@@ -119,6 +119,8 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('worker/search', 'WorkersController@search');
 	Route::get('worker/searching', 'WorkersController@searching');
 	Route::delete('worker/{worker}','WorkersController@destroy');
+	Route::get('worker/upload', 'WorkersController@upload');
+	Route::post('worker/import', 'WorkersController@import');
 }) ;	
 
 
