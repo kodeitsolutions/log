@@ -90,8 +90,7 @@ class NotificationsController extends Controller
             
             return redirect('/notification');
         } else {
-            $request->session()->flash('flash_message_not', 'Los destinatarios deben estar separados por coma.');
-            return redirect()->back()->withInput($request->all);
+            return back()->withInput($request->all)->with('flash_message_not', 'Los destinatarios deben estar separados por coma.');
         }     
     }
 
@@ -175,6 +174,54 @@ class NotificationsController extends Controller
         else{
             $request->session()->flash('flash_message_not', 'No se pudo eliminar la Notificación.');   
         }
-        return redirect()->back();
+        return back();
+    }
+
+    public function search()
+    {
+        $operations = Operation::all();
+        $categories = Categorie::all();
+        $companies = Companie::all();
+        $units = Unit::orderBy('code')->get();
+        $users = User::all();
+        $materials = Material::all();
+        return view('notifications.search',compact('operations','categories','companies','units','users','materials'));
+    }
+
+    public function searching(Request $request)
+    {
+        //dd($request);
+        
+        $notifications = Notification::when(($request->has('user_id')), function($query) use ($request){
+                            return $query->where('user_id','=',$request->user_id);
+                        })   
+                        ->when(($request->has('moment')), function($query) use ($request){
+                            return $query->where('conditions','LIKE','%"moment":[%"%'.$request->moment.'%"%]%');
+                        })   
+                        ->when(($request->has('operation')), function($query) use ($request){
+                            return $query->where('conditions','LIKE','%"operation":[%"%'.$request->operation.'%"%]%');
+                        })
+                         ->when(($request->has('category')), function($query) use ($request){
+                            return $query->where('conditions','LIKE','%"category":[%"%'.$request->category.'%"%]%');
+                        })
+                         ->when(($request->has('company')), function($query) use ($request){
+                            return $query->where('conditions','LIKE','%"company":[%"%'.$request->company.'%"%]%');
+                        })
+                         ->when(($request->has('material')), function($query) use ($request){
+                            return $query->where('conditions','LIKE','%"material":[%"%'.$request->material.'%"%]%');
+                        })          
+                        ->get();
+                
+        if($notifications->isEmpty()) {
+            return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');
+        }
+        else {
+            $operations = Operation::all();
+            $categories = Categorie::all();
+            $companies = Companie::all();
+            $materials = Material::all();
+            return view('notifications.index', compact('notifications','operations','categories','companies','materials'));
+        }
+        
     }
 }

@@ -55,7 +55,7 @@
 					            </div>
 					        </div>
 					        <div class="form-group form-check form-check-inline" >
-				        		<label class="control-label {{ $errors->has('moment') ? ' has-error' : '' }}">Momento:</label><br>        					  	
+				        		<label class="control-label">Momento:</label><br>        					  	
 								<input class="form-check-input" type="checkbox" name="moment[]" id="store" value="store"> Guardar registro				  	
 							  	<input class="form-check-input" type="checkbox" name="moment[]" id="cron" value="cron"> Final del día
 							</div>
@@ -100,6 +100,15 @@
 @section('content')
 	<div class="col-md-11">
 	    <h4 class="text-info" align="center">NOTIFICACIONES</h4>
+	    <div class="col-md-10">
+		    @if($errors->any())
+		        <div class="alert alert-danger">
+		        	@foreach ($errors->all() as $error)
+		            	<div>{{ $error }}</div>
+		          	@endforeach
+		        </div>
+		    @endif
+		</div>
 	    <table class="table table-striped" width="100%">
 	        <col style="width: 15%">
 	        <col style="width: 15%">
@@ -158,6 +167,7 @@
 	          	@endforeach      
 	        </tbody>
 	    </table>
+	    
 	</div>   
 @stop
 
