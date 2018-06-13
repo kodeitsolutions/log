@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => 'remo@kodeit.info.ve',
+    'username' => env('MAIL_USERNAME','remo@kodeit.info.ve'),
 
-    'password' => 'kodeit123',
+    'password' => env('MAIL_PASSWORD','kodeit123'),
 
     /*
     |--------------------------------------------------------------------------

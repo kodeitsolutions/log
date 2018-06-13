@@ -29,13 +29,17 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::post('entry/send', 'EntriesController@sendMail');
 	Route::get('entry/notification/{entry}', 'EntriesController@notifications');
 	Route::get('entry/{entry}/duplicate', 'EntriesController@duplicate');
-	Route::get('entry/worker', 'EntriesController@worker');
+	Route::get('entry/worker', 'EntriesController@worker')->name('workers');
 	Route::get('entry/worker/{operation}/{id}', 'EntriesController@entryWorker');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
 	Route::get('shift/choose','ShiftsController@choose');	
 	Route::patch('shift/choose','ShiftsController@chosen');	
+
+	Route::get('employees/search/{data?}', 'WorkersController@search2');
+
+	
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -101,6 +105,7 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('notification/searching', 'NotificationsController@searching');
 	Route::delete('notification/{notification}','NotificationsController@destroy');
 	Route::get('notification/notify', 'NotificationsController@notification');
+	Route::get('notification/{notification}/edit', 'NotificationsController@edit');
 
 	Route::get('shift', 'ShiftsController@index');
 	Route::get('shift/add', 'ShiftsController@add');

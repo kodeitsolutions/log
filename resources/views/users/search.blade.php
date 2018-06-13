@@ -20,7 +20,7 @@
             	</select>
             	@if ($errors->has('search'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('search') }}</strong>
+                      <strong>{{ $errors->first('search') }}</strong>
                     </span>
                 @endif                    
           	</div>

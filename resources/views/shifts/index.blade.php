@@ -90,26 +90,27 @@
         </div>
       @endif
     </div>  
-    <table class="table table-striped" width="100%">
-        <col style="width: 40%">
-        <col style="width: 40%">
-        <col style="width: 20%">
+    <table class="table table-striped">
+        <col class="col-5">
+        <col class="col-5">
+        <col class="col-2">
         <thead>
             <tr>
               <th>Descripción</th>
               <th>Comienzo</th>
               <th>Fin</th>
+              <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
           @foreach($shifts as $shift)
               <tr id="{{ $shift->id }}">
                 <td>{{ $shift->description }}</td>
-                <td>{{ date("g:i A", strtotime($shift->start)) }}</td>
-                <td>{{ date("g:i A", strtotime($shift->end)) }}</td>
+                <td>{{ $shift->timeView($shift->start) }}</td>
+                <td>{{ $shift->timeView($shift->end) }}</td>
                 <td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
+                  <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                  <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
                 </td>   
             </tr>
           @endforeach      
@@ -119,45 +120,20 @@
 @stop
 
 @section('script')
-  <script type="text/javascript">   
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
-        $(".time_element").timepicki()
-    }); 
+  <script type="text/javascript">      
 
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) 
-        var shift_id = button.data('id')
+        var button = $(event.relatedTarget);
+        var shift_id = button.data('id');
 
-        $.get('/shift/getShift/' + shift_id, function(response){
-          $('label[id="description"]').text(response.description)
-        })
-        $('form[id="delete"]').attr('action','shift/' + shift_id)
+        modalDelete("shift", shift_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var shift_id = button.data('id')
+        var button = $(event.relatedTarget);
+        var shift_id = button.data('id');
 
-        function formatTime(time){
-          var shift_time = time.substring(0,5)
-
-          if(shift_time.substring(0,2) < 12) {
-            shift_time += ' AM';
-          }
-          else {
-            shift_time = ((shift_time.substring(0,2) - 12) < 10) ? shift_time = '0'+(shift_time.substring(0,2) - 12) + shift_time.substring(2,5) + ' PM' : shift_time = (shift_time.substring(0,2) - 12) + shift_time.substring(2,5) + ' PM';
-          }
-          return shift_time
-        }
-
-        $.get('/shift/getShift/' + shift_id, function(response){
-          console.log(response)
-          $('input[id="description"]').val(response.description) 
-          $('input[id="start"]').val(formatTime(response.start))
-          $('input[id="end"]').val(formatTime(response.end))
-        })
-        $('form[id="edit"]').attr('action','shift/' + shift_id)
+        modalEdit("shift",shift_id);
     });    
   </script>
 @stop

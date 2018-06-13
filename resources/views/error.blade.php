@@ -1,13 +1,9 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Error</title>
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}"> 
-        <style>
-            html, body {
-                height: 100%;
-            }           
-        </style>
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">         
     </head>
     <body class="error">
         <div class="container error">

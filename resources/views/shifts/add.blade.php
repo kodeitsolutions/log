@@ -44,11 +44,3 @@
       </div>
     </div>
 @stop
-
-@section('script')
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $(".time_element").timepicki()
-    });
-  </script>
-@stop

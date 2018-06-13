@@ -162,7 +162,7 @@ class WorkersController extends Controller
         $parameter = $request->search;
         $query = $request->value;
 
-        $workers = Worker::where($parameter, 'LIKE', '%' . $query . '%')->get();
+        $workers = Worker::where($parameter, 'LIKE', '%' . $query . '%')->orderBy('name')->get();
         
         if($workers->isEmpty()) {
             return back()->with('flash_message_info', 'No hay resultados para la búsqueda realizada.');;
@@ -170,8 +170,28 @@ class WorkersController extends Controller
         else {
             $companies = Companie::all();
             return view('workers.index', compact('workers','companies'));
+
+            /*if (URL::previous() === URL::route('workers')) {
+                # code...
+            } else {
+                # code...
+            }*/
+            
         }
         
+    }
+
+
+    public function search2()
+    {
+        $workers = Worker::where('name', 'LIKE', '%'.$data.'%');
+        //dd($profile);
+        //optional, 
+        if(is_null($workers)){
+            return Response::json('error');
+        }else{
+            return Response::json($workers);
+        }
     }
 
     public function upload()

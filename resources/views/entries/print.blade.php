@@ -13,15 +13,10 @@
         
         <h3 class="text-info" align="center">LISTADO DE REGISTROS</h3>
     </head>
-
-    <style type="text/css">
-        thead { display: table-header-group }
-        tr { page-break-inside: avoid }
-    </style>
     
     <body>        
         <table class="table" border="0">
-            <thead>
+            <thead class="print">
                 <tr>
                     <th>#</th>
                     <th>Fecha</th>
@@ -39,10 +34,10 @@
             {{--dd($entries)--}}
             <tbody>
                 @foreach($entries as $index => $entry)
-                    <tr>
+                    <tr class="print">
                         <td valign="top">{{ $index + 1 }}</td>                        
-                        <td valign="top">{{ $entry->date->format('d/m/Y')}}</td>
-                        <td valign="top">{{ date("g:i a", strtotime($entry->time)) }}</td>
+                        <td valign="top">{{ $entry->dateView() }}</td>
+                        <td valign="top">{{ $entry->timeView() }}</td>
                         <td valign="top">{{ $entry->operation->name }}</td>
                         <td valign="top">{{ $entry->category->name }}</td>
                         <td valign="top">{{ $entry->company->name }}</td>

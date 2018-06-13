@@ -17,7 +17,7 @@ use App\Material;
 use App\Notification;
 use App\Shift;
 use App\Worker;
-use Carbon\Carbon;
+//use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmail;
 use App\Mail\EntryCreatedMD;
@@ -87,7 +87,9 @@ class EntriesController extends Controller
             'material_quantity' => 'required_if:categorie_id,2,3',
             'unit_id' => 'required_if:categorie_id,2,3',
 
-        ]);      
+        ]);   
+
+
 
         $user = Auth::user();
 
@@ -95,17 +97,22 @@ class EntriesController extends Controller
             return back()->with('flash_message_not', 'No se puede guardar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno'); 
         }       
 
-        $data = $request->all();
+        /*$data = $request->all();
         $data['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date)));
         $data['time'] = date("H:i", strtotime($request->time));
 
-        $entrie = new Entrie($data);   
+        $entrie = new Entrie($data);  */
 
-        $entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
-        $entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
+        $entrie = new Entrie($request->all());
+        
+        $entrie->date = $entrie->getFormatDate($entrie->date);
+        $entrie->time = $entrie->getFormatTime($entrie->time);
+
+        //$entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
+        //$entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
 
         $entrie->user_id = $user->id;       
-       
+        //dd($entrie);
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
@@ -186,7 +193,7 @@ class EntriesController extends Controller
 
         $data = $request->all();
         $data['date'] = $entry->getFormatDate($request->date);
-        $data['time'] = date("H:i", strtotime($request->time));
+        $data['time'] = $entry->getFormatTime($request->time);
 
         $saved = $entry->update($data);
 
@@ -380,5 +387,10 @@ class EntriesController extends Controller
         $this->store($request);
 
         return back();
+    }
+
+    public function searchpeeps($q)
+    {      
+        return Workers::where('name', 'LIKE' , '%'.$q.'%')->orderBy("name")->get(); 
     }
 }

@@ -109,53 +109,53 @@
 		        </div>
 		    @endif
 		</div>
-	    <table class="table table-striped" width="100%">
-	        <col style="width: 15%">
-	        <col style="width: 15%">
-	        <col style="width: 70%">	        
+	    <table class="table table-striped">
+	        <col class="col-2">
+	        <col class="col-2">
+	        <col class="col-8">    
 	        <thead>
 	            <tr>
 	              <th>Creado por</th>
 	              <th>Estatus</th>
 	              <th>Condiciones</th>
+	              <th colspan="2"></th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	          	@foreach($notifications as $notification)
-	          		<?php $conditions = json_decode($notification->conditions, true); ?>
+	          	@foreach($notifications as $notification)	          		
 	              	<tr>
 		                <td>{{ $notification->user->name }}</span></td>
 		                <td>{{ ($notification->status == 'A') ? 'ACTIVO' : 'INACTIVO' }}</td>
 		                <td>
-			                Destinatario: {{ $conditions['recipient'] }}.<br>
-			                Momento:
-			                @foreach($conditions['moment'] as $moment)
+			                Destinatario: {{ $notification->conditions()['recipient'] }}.<br>
+			               	Momento:
+			                @foreach($notification->conditions()['moment'] as $moment)
 			                	{{ ($moment == 'cron') ? ' Final del día.' : ' Guardar registro.' }}
 			                @endforeach
 			                <br>
 			                Tipo de Movimiento:
-			                @foreach($conditions['operation'] as $operation)
-			                	 {{ $notification->operation($operation) }}.
+			                @foreach($notification->conditions()['operation'] as $operation)
+			                	{{ $notification->operation($operation) }}.
 			               	@endforeach
 			               	<br>
-			               	@if(isset($conditions['category']))
+			               	@if(isset($notification->conditions()['category']))
 			               		Categoría:
-				               	@foreach($conditions['category'] as $category)
-				                	 {{ $notification->category($category) }}.
+				               	@foreach($notification->conditions()['category'] as $category)
+				                	{{ $notification->category($category) }}.
 				               	@endforeach
 				            @endif
 			               	<br>
-			               	@if(isset($conditions['company']))
+			               	@if(isset($notification->conditions()['company']))
 			               		Empresa:
-				               	@foreach($conditions['company'] as $company)
-				                	 {{ $notification->company($company) }}.
+				               	@foreach($notification->conditions()['company'] as $company)
+				                	{{ $notification->company($company) }}.
 				               	@endforeach
 				            @endif
 			               	<br>
-			               	@if(isset($conditions['material']))
+			               	@if(isset($notification->conditions()['material']))
 			               		Material:
-				               	@foreach($conditions['material'] as $material)
-				                	 {{ $notification->material($material) }}.
+				               	@foreach($notification->conditions()['material'] as $material)
+				                	{{ $notification->material($material) }}.
 				               	@endforeach
 				            @endif
 		                </td>
@@ -173,46 +173,21 @@
 
 @section('script')
 	<script type="text/javascript">
-		$(document).ready(function(){
-	        $('[data-toggle="tooltip"]').tooltip(); 
+		$(document).ready(function(){ 
 
 	        $('#myModalDelete').on('show.bs.modal', function (event) {
-		        var button = $(event.relatedTarget) // Button that triggered the modal
-		        var notification_id = button.data('id')
-
-		        /*$.get('/unit/getUnit/' + notification_id, function(response){
-		        $('label[id="name"]').text(response.name)
-		        })*/
-		        $('form[id="delete"]').attr('action','notification/' + notification_id)
+		        var button = $(event.relatedTarget); 
+		        var notification_id = button.data('id');
+		        
+		        modalDelete("notification", notification_id);
 		    });
 
 		    $('#myModalEdit').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget) // Button that triggered the modal
+		    	var button = $(event.relatedTarget)
 			  	var notification_id = button.data('id')
-			  	$(".form-check-input").prop('checked', false)
+			  	$(".form-check-input").prop('checked', false);
 
-			  	$.get('/notification/getNotification/' + notification_id, function(response){
-			  		var conditions = jQuery.parseJSON(response.conditions)
-			  		$('input[id="recipient"]').val(conditions.recipient)
-	  				$.each(conditions.moment, function(key, value) {
-					    $('input[id="'+ value +'"]').prop('checked',true)
-					})
-					$.each(conditions.operation, function(key, value) {
-					    $('input[id="operation/'+ value +'"]').prop('checked', true)
-					})
-					$.each(conditions.category, function(key, value) {
-					    $('input[id="category/'+ value +'"]').prop('checked',true)
-					})
-		  			$.each(conditions.company, function(key, value) {
-					    $('input[id="company/'+ value +'"]').prop('checked',true)
-					})
-					$.each(conditions.material, function(key, value) {
-					    $('input[id="material/'+ value +'"]').prop('checked',true)
-					})
-					$("#status").val(response.status)
-				  })
-				$('form[id="edit"]').attr('action','notification/' + notification_id)
-
+			  	modalEdit("notification",notification_id);
 			});
 	    });     
 	</script>

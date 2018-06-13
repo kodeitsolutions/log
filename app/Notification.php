@@ -42,4 +42,9 @@ class Notification extends Model
         $material = Material::find($id);
         return $material->getName();
     }    
+
+    public function conditions()
+    {
+        return json_decode($this->conditions, true);
+    }  
 }

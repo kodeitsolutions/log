@@ -69,12 +69,13 @@
         </div>
       @endif
     </div>
-    <table class="table table-striped"width="100%">
-        <col style="width: 80%">
-        <col style="width: 20%">
+    <table class="table table-striped">
+        <col class="col-10">
+        <col class="col-2">
         <thead>
           <tr>
             <th>Nombre</th>
+            <th colspan="2"></th>
           </tr>
         </thead>
         <tbody>
@@ -94,28 +95,19 @@
 
 @section('script')
   <script type="text/javascript">   
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
-    });
-
+    
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var operation_id = button.data('id')
+        var button = $(event.relatedTarget); 
+        var operation_id = button.data('id');
 
-        $.get('/operation/getOperation/' + operation_id, function(response){
-        $('label[id="name"]').text(response.name)
-        })
-        $('form[id="delete"]').attr('action','operation/' + operation_id)
+        modalDelete("operation", operation_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var operation_id = button.data('id')
+        var button = $(event.relatedTarget);
+        var operation_id = button.data('id');
 
-        $.get('/operation/getOperation/' + operation_id, function(response){
-          $('input[id="name"]').val(response.name)
-        })
-        $('form[id="edit"]').attr('action','operation/' + operation_id)        
+        modalEdit("operation",operation_id);        
     });    
   </script>
 @stop

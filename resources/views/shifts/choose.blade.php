@@ -12,7 +12,7 @@
 		                        {{ csrf_field() }}
 								@foreach($shifts as $shift)
 									<div class="radio">
-										<label><input type="radio" value="{{$shift->id}}" name="shift">{{$shift->description}}</label>
+										<label><input type="radio" value="{{$shift->id}}" name="shift">{{$shift->description}} ({{ $shift->timeView($shift->start) }} - {{ $shift->timeView($shift->end) }})</label>
 									</div>
 								@endforeach
 

@@ -95,21 +95,23 @@
 		        </div>
 	        @endif
 	    </div>
-		<table class="table table-striped" width="100%">
-        <col style="width: 20%">
-        <col style="width: 20%">
-        <col style="width: 20%">
-        <col style="width: 20%">
-        <col style="width: 20%">
+		<table class="table table-striped">
+        <col class="col-2">
+        <col class="col-2">
+        <col class="col-2">
+        <col class="col-2">
+        <col class="col-2">
+        <col class="col-2">
 		    <thead>
-		      <tr>
-		        <th>Nombre</th>
-		        <th>Usuario</th>
-		        <th>E-Mail</th>
-		        <th>Teléfono</th>
-		        <th style="text-align:center">Administrador</th>
-		        <th style="text-align:center">Vigilante</th>
-		      </tr>
+		    	<tr>
+			        <th>Nombre</th>
+			        <th>Usuario</th>
+			        <th>E-Mail</th>
+			        <th>Teléfono</th>
+			        <th class="centered">Administrador</th>
+			        <th class="centered">Vigilante</th>
+			        <th colspan="3"></th>
+		      	</tr>
 		    </thead>
 		    <tbody>
 		    	@foreach($users as $user)
@@ -118,8 +120,8 @@
 		        		<td>{{ $user->username }}</td>
 		        		<td>{{ $user->email }}</td>
 		        		<td>{{ $user->telephone }}</td>	
-		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
-		        		<td style="text-align:center"><input type="checkbox" disabled {{ ($user->isGuard == 1) ? 'checked' : 'unchecked' }}></td>
+		        		<td align="center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
+		        		<td align="center"><input type="checkbox" disabled {{ ($user->isGuard == 1) ? 'checked' : 'unchecked' }}></td>
 						<td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
 							<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
@@ -134,39 +136,20 @@
 
 @section('script')
 	<script type="text/javascript">
-		$(document).ready(function(){
-	        $('[data-toggle="tooltip"]').tooltip(); 
+		$(document).ready(function(){	        
 
 	        $('#myModalDelete').on('show.bs.modal', function (event) {
-			  var button = $(event.relatedTarget) // Button that triggered the modal
-			  var user_id = button.data('id')
+				var button = $(event.relatedTarget); // Button that triggered the modal
+			  	var user_id = button.data('id');
 
-			  $.get('/user/getUser/' + user_id, function(response){
-	  			$('label[id="name"]').text(response.name)  			
-			  })
-			  $('form[id="delete"]').attr('action','user/' + user_id)
+				modalDelete("user", user_id);
 			});
 
 			$('#myModalEdit').on('show.bs.modal', function (event) {
-			  var button = $(event.relatedTarget) // Button that triggered the modal
-			  var user_id = button.data('id')
+				var button = $(event.relatedTarget) // Button that triggered the modal
+			  	var user_id = button.data('id')
 
-			  $.get('/user/getUser/' + user_id, function(response){
-	  			$('input[id="name"]').val(response.name)
-	  			$('input[id="username"]').val(response.username)
-	  			$('input[id="email"]').val(response.email)
-	  			$('input[id="telephone"]').val(response.telephone)
-
-	  			/*if (response.isAdmin == 1){
-	  				$('input[id="isAdmin"]').prop('checked', true)
-	  			}
-	  			else{
-	  				$('input[id="isAdmin"]').prop('checked', false)
-	  			}*/
-	  			$('input[id="isAdmin"]').prop('checked', response.isAdmin == 1 ? true : false)
-	  			$('input[id="isGuard"]').prop('checked', response.isGuard == 1 ? true : false)
-			  })
-			  $('form[id="edit"]').attr('action','user/' + user_id)
+			  	modalEdit("user",user_id);
 			});
 	    }); 
 	</script>

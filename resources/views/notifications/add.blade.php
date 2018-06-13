@@ -49,7 +49,7 @@
 			<div class="form-group col-xs-2 col-sm-8 form-check form-check-inline">
         		<label class="control-label">Materiales:</label><br>
         		@foreach($materials as $material)				  	
-				    <input class="form-check-input" type="checkbox" name="material[]" id="material" value="{{ $material->id}}" @if(is_array(old('material')) && in_array($material->id, old('material'))) checked @endif> {{ $material->name }}				  	
+				    <input class="form-check-input" type="checkbox" name="material[]" id="material" value="{{ $material->id}}" @if(is_array(old('material')) && in_array($material->id, old('material'))) checked @endif disabled> {{ $material->name }}				  	
 			  	@endforeach
 			  	<button type="button" class="btn btn-default btn-xs" id="material_all">Todos</button>
 			</div>
@@ -74,70 +74,7 @@
 @section('script')
 	<script type="text/javascript">
 		$(document).ready(function(){
-		    $("#operation_all").click(function () {
-			    if($('input[id="operation"]').is(':checked')){
-					$('input[id="operation"]').prop('checked',false)
-					$("#operation_all").text('Todos')
-				}
-				else {
-					$('input[id="operation"]').prop('checked',true)
-					$("#operation_all").text('Quitar')
-				}			    
-			});
-
-			$("#category_all").click(function () {
-				if($('input[id="category"]').is(':checked')){
-					$('input[id="category"]').prop('checked',false)
-					$("#category_all").text('Todos')
-				}
-				else {
-					$('input[id="category"]').prop('checked',true)
-					$("#category_all").text('Quitar')
-				}					    
-			});
-
-			$("#company_all").click(function () {
-			    if($('input[id="company"]').is(':checked')){
-					$('input[id="company"]').prop('checked',false)
-					$("#company_all").text('Todos')
-				}
-				else {
-					$('input[id="company"]').prop('checked',true)
-					$("#company_all").text('Quitar')
-				}
-			});
-
-			$("#material_all").click(function () {
-			    if($('input[id="material"]').is(':checked')){
-					$('input[id="material"]').prop('checked',false)
-					$("#material_all").text('Todos')
-				}
-				else {
-					$('input[id="material"]').prop('checked',true)
-					$("#material_all").text('Quitar')
-				}
-			});
-
-			$('input[id="category"][value=1]').click(function () {
-				console.log($('input[id="category"]').val())
-				if($('input[id="category"]').val() == 1 && $('input[id="category"][value=1]').is(':checked')){
-					$('input[id="material"]').attr('disabled',true)
-					$("#material_all").attr('disabled',true)
-				}
-				else {
-					$('input[id="material"]').attr('disabled',false)
-					$("#material_all").attr('disabled',false)
-				}
-			});
-			$('input[id="category"][value=2]').click(function () {
-				$('input[id="material"]').attr('disabled',false)
-				$("#material_all").attr('disabled',false)
-			});
-			$('input[id="category"][value=3]').click(function () {
-				$('input[id="material"]').attr('disabled',false)
-				$("#material_all").attr('disabled',false)
-			});
-
+		    notifications();
 		})
 	</script>
 @stop

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -46,15 +46,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
+        /*if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
             return response()->view('error');
         }
         elseif ($exception instanceof AuthenticationException) {
             return redirect('/login');
         }
-        else {
+        else {*/
             return parent::render($request, $exception);
-        }
+        //}
     }
 
     /**

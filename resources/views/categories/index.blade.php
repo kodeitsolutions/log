@@ -91,18 +91,19 @@
         </div>
       @endif
     </div>
-    <table class="table table-striped" width="100%" id="index">
-      <col style="width: 40%">
-      <col style="width: 40%">
-      <col style="width: 20%">
+    <table class="table table-striped">
+      <col class="col-5">
+      <col class="col-5">
+      <col class="col-2">
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Descripción</th>
-          <th style="text-align:center">Persona</th>
-          <th style="text-align:center">Material</th>
-          <th style="text-align:center">Vehículo</th>
-          <th style="text-align:center">Combinado</th>
+          <th class="centered">Persona</th>
+          <th class="centered">Material</th>
+          <th class="centered">Vehículo</th>
+          <th class="centered">Combinado</th>
+          <th colspan="2"></th>
         </tr>
       </thead>
       <tbody>
@@ -110,14 +111,15 @@
           <tr id="category{{ $category->id }}">
             <td><span id="{{ $category->id }}">{{ $category->name }}</span></td>
             <td>{{ $category->description }}</td>
-            <td style="text-align:center"><input type="checkbox" disabled {{ ($category->person == 1) ? 'checked' : 'unchecked' }}></td>
-            <td style="text-align:center"><input type="checkbox" disabled {{ ($category->material == 1) ? 'checked' : 'unchecked' }}></td>
-            <td style="text-align:center"><input type="checkbox" disabled {{ ($category->vehicle == 1) ? 'checked' : 'unchecked' }}></td>
-            <td style="text-align:center"><input type="checkbox" disabled {{ ($category->combined == 1) ? 'checked' : 'unchecked' }}></td>
+            <td align="center"><input type="checkbox" disabled {{ ($category->person == 1) ? 'checked' : 'unchecked' }}></td>
+            <td align="center"><input type="checkbox" disabled {{ ($category->material == 1) ? 'checked' : 'unchecked' }}></td>
+            <td align="center"><input type="checkbox" disabled {{ ($category->vehicle == 1) ? 'checked' : 'unchecked' }}></td>
+            <td align="center"><input type="checkbox" disabled {{ ($category->combined == 1) ? 'checked' : 'unchecked' }}></td>
             <td>
-            <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$category->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-            <td data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body">
-            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$category->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>   </td>
+              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$category->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+              <td data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body">
+              <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$category->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>   
+            </td>
           </tr>
         @endforeach      
       </tbody>
@@ -126,58 +128,20 @@
 @stop
 
 @section('script')
-  <script type="text/javascript">   
-    $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip() 
-    });
-
+  <script type="text/javascript"> 
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
+        var button = $(event.relatedTarget) // BOTÓN QUE EJECUTÓ EL MODAL
         var category_id = button.data('id')
 
-        $.get('/category/getCategory/' + category_id, function(response){
-        $('label[id="name"]').text(response.name)
-        })
-        $('form[id="delete"]').attr('action','category/' + category_id)
+        modalDelete("category", category_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var category_id = button.data('id')
+        var button = $(event.relatedTarget); 
+        var category_id = button.data('id');
 
-        $.get('/category/getCategory/' + category_id, function(response){
-          $('input[id="name"]').val(response.name)
-          $('textarea[id="description"]').text(response.description)
-
-          if (response.person == 1){
-            $('input[id="person"]').prop('checked', true)
-          }
-          else{
-            $('input[id="person"]').prop('checked', false)
-          }
-          if (response.material == 1){
-            $('input[id="material"]').prop('checked', true)
-          }
-          else{
-            $('input[id="material"]').prop('checked', false)
-          }
-          if (response.vehicle == 1){
-            $('input[id="vehicle"]').prop('checked', true)
-          }
-          else{
-            $('input[id="vehicle"]').prop('checked', false)
-          }
-          if (response.combined == 1){
-            $('input[id="combined"]').prop('checked', true)
-          }
-          else{
-            $('input[id="combined"]').prop('checked', false)
-          }          
-        })
-        $('form[id="edit"]').attr('action','category/' + category_id)
-    });  
-
-     
+        modalEdit("category",category_id);
+    });       
   </script>
 @stop
   

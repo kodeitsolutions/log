@@ -82,25 +82,3 @@
     </form>
   </div>
 @stop
-
-@section('script')
-  <script type="text/javascript">
-    $(document).ready(function(){  
-      $.datepicker.regional['es'] = {
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        weekHeader: 'Sm',
-        dateFormat: 'dd/mm/yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-      };
-      $.datepicker.setDefaults($.datepicker.regional['es']);
-      $(function () {
-        $("#date_from").datepicker();
-        $("#date_to").datepicker();
-      });
-    });
-  </script>
-@stop

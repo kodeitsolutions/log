@@ -147,13 +147,13 @@
     <div class="form-group col-xs-2 col-sm-12" align="right">         
       <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="Filtar empresa" data-container="body"><span class="glyphicon glyphicon-filter" data-toggle="modal" data-target="#myModalCompany">
     </div>
-    <table class="table table-striped" width="100%">
-      <col style="width: 20%">
-      <col style="width: 20%">
-      <col style="width: 20%">
-      <col style="width: 20%">
-      <col style="width: 10%">
-      <col style="width: 10%">
+    <table class="table table-striped">
+      <col class="col-2">
+      <col class="col-2">
+      <col class="col-2">
+      <col class="col-2">
+      <col class="col-2">
+      <col class="col-2">      
       <thead>
         <tr>
           <th>Nombre</th>
@@ -162,6 +162,7 @@
           <th>Departamento</th>
           <th>Cargo</th>
           <th>Estatus</th>
+          <th colspan="2"></th>
         </tr>
       </thead>
         <tbody>
@@ -174,8 +175,8 @@
               <td>{{ $worker->position }}</td>
               <td>{{ ($worker->status == 'A') ? 'ACTIVO' : 'INACTIVO' }}</td>
               <td>
-              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$worker->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-              <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$worker->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$worker->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$worker->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
               </td>   
             </tr>
           @endforeach      
@@ -185,35 +186,20 @@
 @stop
 
 @section('script')
-  <script type="text/javascript">   
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
-    }); 
+  <script type="text/javascript"> 
 
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) 
-        var worker_id = button.data('id')
+        var button = $(event.relatedTarget); 
+        var worker_id = button.data('id');
 
-        $.get('/worker/getWorker/' + worker_id, function(response){
-          $('label[id="name"]').text(response.name)
-        })
-        $('form[id="delete"]').attr('action','worker/' + worker_id)
+        modalDelete("worker", worker_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var worker_id = button.data('id')        
+        var button = $(event.relatedTarget);
+        var worker_id = button.data('id');     
 
-        $.get('/worker/getWorker/' + worker_id, function(response){
-          console.log(response)
-          $('input[id="name"]').val(response.name) 
-          $('input[id="worker_id"]').val(response.worker_id)
-          $("#companie_id").val(response.companie_id)
-          $('input[id="department"]').val(response.department) 
-          $('input[id="position"]').val(response.position)
-          $("#status").val(response.status)          
-        })
-        $('form[id="edit"]').attr('action','worker/' + worker_id)
+        modalEdit("worker",worker_id);
     });    
   </script>
 @stop

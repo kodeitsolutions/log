@@ -13,7 +13,7 @@
               <li><a href="/unit">Unidades</a></li>
               <li><a href="/material">Tipos de Material</a></li>
               <li><a href="/user">Usuarios</a></li>
-              <li><a href="/notification">Notificaciones</a></li>
+              {{--<li><a href="/notification">Notificaciones</a></li>--}}
               <li><a href="/shift">Turnos</a></li>
               <li><a href="/worker">Trabajadores</a></li>
             </ul>

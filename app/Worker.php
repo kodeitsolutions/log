@@ -53,6 +53,11 @@ class Worker extends Model
         return (empty($entry)) ? null : $entry->time;
     }
 
+    public function timeView($value)
+    {
+        return date("g:i A", strtotime($value));
+    }
+
     public function getDepartment($code)
     {
         # code...

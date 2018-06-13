@@ -16,7 +16,7 @@ class Entrie extends Model
 
     //protected $guarded = ['id','created_at','updated_at', 'deleted_at']; //opposite from fillable
  
-    protected $dates = ['date'];
+    //protected $dates = ['date'];
 
     public function user()
     {
@@ -49,8 +49,9 @@ class Entrie extends Model
     }
 
     public function getFormatDate($value)
-    {
-        return date('Y-m-d', strtotime(str_replace('/', '-', $value)));
+    {    
+        $date = date_create_from_format('d/m/y', $value);
+        return date_format($date, 'Y-m-d');
     }
 
     public function setFormatDate($value)
@@ -58,4 +59,24 @@ class Entrie extends Model
         # code...
         $this->attributes['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $value)));
     }
+
+    public function getFormatTime($value)
+    {
+        return date("H:i", strtotime($value));
+    }
+
+    public function setFormatTime($value)
+    {
+        $this->attributes['time'] = date("H:i", strtotime($value));
+    }
+
+    public function dateView()
+    {
+        return date("d/m/y", strtotime($this->date));
+    }
+
+    public function timeView()
+    {
+        return date("g:i A", strtotime($this->time));
+    }       
 }

@@ -79,14 +79,15 @@
         </div>
       @endif
     </div>
-    <table class="table table-striped" width="100%">
-        <col style="width: 40%">
-        <col style="width: 40%">
-        <col style="width: 20%">
+    <table class="table table-striped">
+        <col class="col-5">
+        <col class="col-5">
+        <col class="col-2">
         <thead>
             <tr>
               <th>Código</th>
               <th>Nombre</th>
+              <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
@@ -96,8 +97,8 @@
               <td><span id="{{ $unit->id }}">{{ $unit->name }}</span></td>
               <td>{{ $unit->description }}</td>
               <td>
-              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-              <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$unit->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
               </td>   
             </tr>
           @endforeach      
@@ -107,30 +108,20 @@
 @stop
 
 @section('script')
-  <script type="text/javascript">   
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip(); 
-    }); 
+  <script type="text/javascript">        
 
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var unit_id = button.data('id')
+        var button = $(event.relatedTarget);
+        var unit_id = button.data('id');
 
-        $.get('/unit/getUnit/' + unit_id, function(response){
-        $('label[id="name"]').text(response.name)
-        })
-        $('form[id="delete"]').attr('action','unit/' + unit_id)
+        modalDelete("unit", unit_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var unit_id = button.data('id')
+        var button = $(event.relatedTarget);
+        var unit_id = button.data('id');
 
-        $.get('/unit/getUnit/' + unit_id, function(response){
-          $('input[id="code"]').val(response.code)
-          $('input[id="name"]').val(response.name)
-        })
-        $('form[id="edit"]').attr('action','unit/' + unit_id)
+        modalEdit("unit",unit_id);
     });    
   </script>
 @stop

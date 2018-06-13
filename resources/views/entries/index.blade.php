@@ -120,22 +120,18 @@
 @stop
 
 @section('table')
-	<div class="col-md-12">
+	<div class="table-responsive col-md-12">
 		@if(!empty($date_from))
-			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>
-			@php				
-				$string_date = str_replace("/","-",$date_from)."_".str_replace("/","-",$date_to)
-			@endphp
+			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>			
 		@else
-			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
-			@php
-				$string_date = str_replace("/","-",$date)
-			@endphp
+			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>			
 		@endif
-		<div class="form-group col-xs-2 col-sm-12" align="right">        	
-        	<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span>  Agregar</a>
-        </div>
-		<table class="table table-striped log">
+
+		<div class="col-md-12 row button-table" align="right">        	
+    		<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span>Agregar </a>
+    	</div>
+		
+		<table class="table table-striped" id="log">			
 			<thead>
 				<tr>
 					<th>#</th>
@@ -148,14 +144,15 @@
 					<th>Destino / Origen</th>
 					<th>Datos</th>
 					<th>Observaciones</th>
+					<th colspan="4"></th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach($entries as $index => $entry)
 					<tr id="{{ $index + 1 }}">
 						<td>{{ $index + 1 }}</td>
-						<td>{{ $entry->date->format('d/m/Y')}}</td>
-						<td>{{ date("g:i A", strtotime($entry->time)) }}</td>
+						<td>{{ $entry->dateView() }}</td>
+						<td>{{ $entry->timeView() }}</td>
 						<td>{{ $entry->user->name }}</td>
 						<td>{{ $entry->operation->name }}</td>
 						<td>{{ $entry->category->name }}</td>
@@ -182,12 +179,14 @@
 								Vehículo: {{ $entry->vehicle_observations }}.<br>
 							@endif
 						</td>
-						<td align="right" data-toggle="tooltip" data-placement="top" title="Ver más" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-eye-open"></span></button>
-                		</td>
-						<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
-               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
-                		</td>
-                		<td align="right" data-toggle="tooltip" data-placement="top" title="Duplicar" data-container="body"><a href="/entry/{{$entry->id}}/duplicate" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-duplicate"></span></a></td>
+						<td>
+							<td align="right" data-toggle="tooltip" data-placement="top" title="Ver más" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}" id="info"><span class="glyphicon glyphicon-eye-open"></span></button>
+	                		</td>
+							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
+	               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
+	                		</td>
+	                		<td align="right" data-toggle="tooltip" data-placement="top" title="Duplicar" data-container="body"><a href="/entry/{{$entry->id}}/duplicate" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-duplicate"></span></a></td>
+	                	</td>
 					</tr>
 				@endforeach				
 			</tbody>			
@@ -196,92 +195,30 @@
 			{{ $entries->appends(Request::except('page'))->render() }}
 		</div>
 		
-		<div class="form-group col-xs-2 col-sm-12" align="right">
-	        <a href="/entry/print/{{$string_date}}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-print"></a>
+		<div class="col-md-12 row" align="right" id="button-table">
+	        <a href="/entry/print/{{ !empty($date_from) ? str_replace('/','-',$date_from).'_'.str_replace('/','-',$date_to) : str_replace('/','-',$date) }}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-print"></a>
 	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
 	    </div>
 	</div>
 @stop
 
 @section('script')
-	<script type="text/javascript">
-		$(document).ready(function(){
-		    $('[data-toggle="tooltip"]').tooltip(); 
-		});
+	<script type="text/javascript">		
 
 		$('#myModalDelete').on('show.bs.modal', function (event) {
-		  	var button = $(event.relatedTarget) // Button that triggered the modal
-		  	var entry_id = button.data('id')
-		  	var tr = button.closest('tr').attr('id')
-        	$('h4[id="info').text('Eliminar registro N° ' + tr)
+		  	var button = $(event.relatedTarget);
+		  	var entry_id = button.data('id');
+		  	var tr = button.closest('tr').attr('id');
 
-		 	$.get('/entry/getEntry/' + entry_id, function(response){
-  				$('label[id="name"]').text(response.name)  			
-		  	})
-		  	$('form[id="delete"]').attr('action','/entry/' + entry_id)
+		  	modalDeleteEntry(entry_id,tr);        	
 		});
 
 		$('#myModalInfo').on('show.bs.modal', function (event) {
-        	var button = $(event.relatedTarget) // Button that triggered the modal
-        	var entry_id = button.data('id')
-        	var tr = button.closest('tr').attr('id')
-        	$('h4[id="info').text('Datos del registro N° ' + tr)
-        	
+        	var button = $(event.relatedTarget);
+        	var entry_id = button.data('id');
+        	var tr = button.closest('tr').attr('id');
 
-        	$.get('/entry/getEntry/' + entry_id, function(response){    
-
-        		$.get('/category/getCategory/' + response.categorie_id, function(category){
-        			if(category.person == 1 || category.combined == 1){
-        				$('dd[id="person_name').text(response.person_name)
-			          	$('dd[id="person_id').text(response.person_id)
-			          	$('dd[id="person_occupation').text(response.person_occupation)
-			          	$('dd[id="person_company').text(response.person_company)  
-			          	$('dd[id="person_observations').text(response.person_observations)		            
-			        }
-
-			        if(category.material == 1 || category.combined == 1){
-			        	$('dd[id="material_type').text(response.material_type)
-			          	var material_id = response.material_id
-			          	$.get('/material/getMaterial/' + material_id, function(material){
-			          		$('dd[id="material').text(material.code + ' - ' + material.name)
-			          	})
-			          	$('dd[id="material_quantity').text(response.material_quantity)
-			          	var unit_id = response.unit_id
-			          	$.get('/unit/getUnit/' + unit_id, function(unit){
-			          		$('dd[id="unit').text(unit.code + ' - ' + unit.name)
-			          	})
-			          	$('dd[id="material_observations').text(response.material_observations)
-			        }
-
-			        if(category.vehicle == 1 || category.combined == 1){ 
-			        	$('dd[id="vehicle').text(response.vehicle)
-			          	$('dd[id="vehicle_plate').text(response.vehicle_plate)
-			          	$('dd[id="driver_name').text(response.driver_name)
-			          	$('dd[id="driver_id').text(response.driver_id)
-			          	$('dd[id="vehicle_observations').text(response.vehicle_observations)
-			        }  
-
-			        if(category.person == 1){            
-			        	$('#material').hide()
-			            $("#person").show()            
-			        }
-
-			        if(category.material == 1){
-			            $("#person").hide()
-			            $('#material').show()            
-			        }
-
-			        if(category.vehicle == 1){           
-			        	$("#vehicle").show()
-			        }  
-
-			        if(category.combined == 1){
-			            $("#person").show()
-			            $('#material').show()
-			            $("#vehicle").show()
-			        }
-        		})	          	
-	        })
+        	modalInfo(entry_id,tr);
     	});
 	</script>
 @stop

@@ -30,5 +30,10 @@ class Shift extends Model
 
 		return ($f <= $i && $i <= $t) || ($f <= $i->modify('+1 day') && $i <= $t);
     }
+
+    public function timeView($time)
+    {
+        return date("g:i A", strtotime($time));  
+    }
      	 
 }

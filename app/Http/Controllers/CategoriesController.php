@@ -113,15 +113,14 @@ class CategoriesController extends Controller
             'description' => 'required|max:255'
         ]);
 
-        $category->name = $request->name;
-        $category->description = $request->description;
+        $data = $request->all();
         
-        $category->person = ($request->has('person')) ? 1 : 0 ;
-        $category->material = ($request->has('material')) ? 1 : 0 ;
-        $category->vehicle = ($request->has('vehicle')) ? 1 : 0 ;
-        $category->combined = ($request->has('combined')) ? 1 : 0 ;
+        $data['person'] = ($request->has('person')) ? 1 : 0 ;
+        $data['material'] = ($request->has('material')) ? 1 : 0 ;
+        $data['vehicle'] = ($request->has('vehicle')) ? 1 : 0 ;
+        $data['combined'] = ($request->has('combined')) ? 1 : 0 ;
         
-        $saved = $category->update();
+        $saved = $category->update($data);
 
         if ($saved) {
             $request->session()->flash('flash_message', 'Categoría '.$category->name.' modificada.');
