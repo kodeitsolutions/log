@@ -102,7 +102,7 @@ class CategoriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  App\Categorie  $category
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Categorie $category)
@@ -135,7 +135,8 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Categorie  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Categorie $category)
@@ -159,11 +160,22 @@ class CategoriesController extends Controller
         return redirect('/category');
     }
 
+    /**
+     * Show the form for searching.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search()
     {
         return view('categories.search');
     }
 
+    /**
+     * Search the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function searching(Request $request)
     {
         $this->validate($request, [

@@ -7,6 +7,7 @@ use Session;
 use PDF;
 use Response;
 use Mail;
+use URL;
 use App\User;
 use App\Entrie;
 use App\Operation;
@@ -17,7 +18,6 @@ use App\Material;
 use App\Notification;
 use App\Shift;
 use App\Worker;
-//use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmail;
 use App\Mail\EntryCreatedMD;
@@ -89,30 +89,19 @@ class EntriesController extends Controller
 
         ]);   
 
-
-
         $user = Auth::user();
 
         if (!$user->validateShift()){        
             return back()->with('flash_message_not', 'No se puede guardar el registro, está fuera de su turno. Debe salir del sistema y volver a entrar para escoger el nuevo turno'); 
-        }       
-
-        /*$data = $request->all();
-        $data['date'] = date('Y-m-d', strtotime(str_replace('/', '-', $request->date)));
-        $data['time'] = date("H:i", strtotime($request->time));
-
-        $entrie = new Entrie($data);  */
+        } 
 
         $entrie = new Entrie($request->all());
         
         $entrie->date = $entrie->getFormatDate($entrie->date);
-        $entrie->time = $entrie->getFormatTime($entrie->time);
-
-        //$entrie->material_id = (empty($request->material_id)) ? 0 : $request->material_id;
-        //$entrie->material_quantity = (empty($request->material_quantity)) ? 0 : $request->material_quantity ;  
+        $entrie->time = $entrie->getFormatTime($entrie->time);;  
 
         $entrie->user_id = $user->id;       
-        //dd($entrie);
+     
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
@@ -145,12 +134,14 @@ class EntriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Entrie  $entry
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Entrie $entry)
     {
         //dd($entry);
+        Session::put('PreviousURL', URL::previous());
         $user = Auth::user();
 
         if (!$user->validateShift()){        
@@ -170,7 +161,7 @@ class EntriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Entrie  $entry
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Entrie $entry)
@@ -204,13 +195,14 @@ class EntriesController extends Controller
             $request->session()->flash('flash_message_not', 'No se pudo modificar el Registro.');
         }
 
-        return redirect('/entry');
+        return redirect(Session::get('PreviousURL'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Entrie  $entry
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Entrie $entry)
@@ -231,6 +223,11 @@ class EntriesController extends Controller
         }
     }
 
+    /**
+     * Show the form for searching.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search()
     {
         $operations = Operation::all();
@@ -242,6 +239,12 @@ class EntriesController extends Controller
         return view('entries.search',compact('operations','categories','companies','units','users','materials'));
     }
 
+    /**
+     * Search the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function searching(Request $request)
     {
         //dd($request);
@@ -279,6 +282,12 @@ class EntriesController extends Controller
         }
     }
     
+    /**
+     * Print in PDF the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function printPDF($date)
     {
         # code...        
@@ -295,6 +304,13 @@ class EntriesController extends Controller
         }     
         
     }
+
+    /**
+     * Send via enmail the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
 
     public function sendMail(Request $request)
     {
@@ -321,6 +337,12 @@ class EntriesController extends Controller
         }       
     }
 
+    /**
+     * Send notfications of entry registered.
+     *
+     * @param  App\Entrie  $entry
+     * @return \Illuminate\Http\Response
+     */
     public function notifications(Entrie $entry)
     {
         $notifications = Notification::where('status','A')
@@ -346,6 +368,12 @@ class EntriesController extends Controller
         }            
     }
 
+    /**
+     * Duplicate the specified resource.
+     *
+     * @param  App\Entrie  $entry
+     * @return \Illuminate\Http\Response
+     */
     public function duplicate(Entrie $entry)
     {       
         $users = User::all();
@@ -357,12 +385,27 @@ class EntriesController extends Controller
         return view('entries.add', compact('entry','operations','categories','companies','units','users','materials'))->with("route","duplicate");
     }
 
+    /**
+     * Show form for registering the workers
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function worker()
     {
         # code...
+        $companies = Companie::all();
         $workers = Worker::where('status','A')->orderBy('name')->get();
-        return view('entries.workers', compact('workers'));
+        return view('entries.workers', compact('workers','companies'));
     }
+
+    /**
+     * Store the specified worker.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $operation
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
 
     public function entryWorker(Request $request,$operation,$id)
     {
@@ -389,8 +432,4 @@ class EntriesController extends Controller
         return back();
     }
 
-    public function searchpeeps($q)
-    {      
-        return Workers::where('name', 'LIKE' , '%'.$q.'%')->orderBy("name")->get(); 
-    }
 }

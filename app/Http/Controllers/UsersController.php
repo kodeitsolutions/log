@@ -107,7 +107,7 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -139,7 +139,8 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, User $user)
@@ -166,11 +167,22 @@ class UsersController extends Controller
 
     }
 
+    /**
+     * Show the form for searching.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search()
     {
         return view('users.search');
     }
 
+    /**
+     * Search the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function searching(Request $request)
     {
         $this->validate($request, [
@@ -192,11 +204,24 @@ class UsersController extends Controller
         
     }
 
+    /**
+     * Show the form for reseting the password.
+     *
+     * @param  App\User  $user
+     * @return \Illuminate\Http\Response
+     */
     public function resetForm(User $user)
     {
         return view('users.reset', compact('user'));
     }
 
+    /**
+     * Reset the password of the specified user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\User  $user
+     * @return \Illuminate\Http\Response
+     */
     public function updatePassword(Request $request, User $user)
     {
         //dd($request);
