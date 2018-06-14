@@ -57,7 +57,7 @@
       <label class="control-label col-md-2 {{ $errors->has('date') ? ' has-error' : '' }}">Fecha:</label>
       <div class="col-md-10"> 
         @if($entry->exists)
-          <input type="text" class="form-control" name="date" id="date" value="{{ old('date', date('d/m/y', strtotime($entry->date))) }}">
+          <input type="text" class="form-control" name="date" id="date" value="{{ old('date', date('d/m/Y', strtotime($entry->date))) }}">
         @else
           <input type="text" class="form-control" name="date" id="date" value="{{ old('date', $date) }}">
         @endif

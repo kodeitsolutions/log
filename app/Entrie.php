@@ -49,9 +49,8 @@ class Entrie extends Model
     }
 
     public function getFormatDate($value)
-    {    
-        $date = date_create_from_format('d/m/y', $value);
-        return date_format($date, 'Y-m-d');
+    {   
+        return date('Y-m-d', strtotime(str_replace('/', '-', $value)));
     }
 
     public function setFormatDate($value)
