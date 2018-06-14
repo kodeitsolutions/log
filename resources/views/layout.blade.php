@@ -103,6 +103,8 @@
             @yield('modal-delete')
             @yield('modal-edit')
             @yield('modal-info')
+            @yield('modal-hours')
+            @yield('modal-filter')
             @yield('modal-email')
             <div class="col-md-10">
                 <div class="col-md-12">

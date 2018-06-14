@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use URL;
 use Auth;
 use Response;
 use Storage;
@@ -101,7 +102,7 @@ class WorkersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  App\Worker  $worker
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Worker $worker)
@@ -130,7 +131,8 @@ class WorkersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Worker  $worker
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Worker $worker)
@@ -146,11 +148,22 @@ class WorkersController extends Controller
         return redirect('/worker');
     }
 
+    /**
+     * Show the form for searching.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function search()
     {
         return view('workers.search');
     }
 
+    /**
+     * Search the specified resource(s).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function searching(Request $request)
     {   
         //dd($request);
@@ -169,31 +182,20 @@ class WorkersController extends Controller
         }
         else {
             $companies = Companie::all();
-            return view('workers.index', compact('workers','companies'));
-
-            /*if (URL::previous() === URL::route('workers')) {
-                # code...
+            if (URL::previous() === URL::route('workers.index')) { 
+               return view('workers.index', compact('workers','companies'));
             } else {
-                # code...
-            }*/
-            
+               return view('entries.workers', compact('workers','companies'));
+            }
         }
         
     }
 
-
-    public function search2()
-    {
-        $workers = Worker::where('name', 'LIKE', '%'.$data.'%');
-        //dd($profile);
-        //optional, 
-        if(is_null($workers)){
-            return Response::json('error');
-        }else{
-            return Response::json($workers);
-        }
-    }
-
+    /**
+     * Show the form for uploading the file of workers.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function upload()
     {
         # code...
@@ -201,6 +203,12 @@ class WorkersController extends Controller
         return view('workers.upload',compact('companies'));
     }
 
+    /**
+     * Store the workers from uploaded file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function import(Request $request)
     {
         # code...

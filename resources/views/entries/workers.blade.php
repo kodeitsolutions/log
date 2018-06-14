@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('modal-info')
+@section('modal-hours')
   <div id="myModalHours" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -41,11 +41,47 @@
   </div>
 @stop
 
+@section('modal-filter')
+  <div id="myModalCompany" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="email">Filtrar por empresa</h4>
+        </div>
+
+        <form method="GET" action="/worker/searching" id="email">              
+          {{ csrf_field() }}
+          <div class="modal-body form-group">
+            <div class="form-group form-check form-check-inline">
+              <input type="hidden" class="form-control" name="search" id="search" value="companie_id">
+              <label class="control-label">Empresa:</label>
+              <select class="form-control input-sm" id="value" name="value">
+                @foreach($companies as $company)
+                  <option value="{{ $company->id }}">{{ $company->name }}</option>
+                 @endforeach
+              </select>                 
+            </div>
+          </div>
+          <div class="modal-footer form-group">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary btn-edit">Aceptar</button>
+          </div>
+        </form>     
+      </div>      
+    </div>    
+  </div>
+@stop
+
 @section('table')
 	<div class="container">	
 		<div class="col-md-12">
 			<h3 class="text-info" align="center">Entrada y Salida de Trabajadores</h3>
 			
+			<div class="form-group col-xs-2 col-sm-12" align="right">         
+		      	<button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="Filtar empresa" data-container="body"><span class="glyphicon glyphicon-filter" data-toggle="modal" data-target="#myModalCompany">
+		    </div>
+
 			<table class="table table-striped">
 				<thead>
 					<tr>

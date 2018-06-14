@@ -100,7 +100,7 @@
   </div>
 @stop
 
-@section('modal-info')
+@section('modal-filter')
   <div id="myModalCompany" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">

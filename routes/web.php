@@ -29,17 +29,13 @@ Route::group(['middleware' => ['auth','revalidate']], function(){
 	Route::post('entry/send', 'EntriesController@sendMail');
 	Route::get('entry/notification/{entry}', 'EntriesController@notifications');
 	Route::get('entry/{entry}/duplicate', 'EntriesController@duplicate');
-	Route::get('entry/worker', 'EntriesController@worker')->name('workers');
+	Route::get('entry/worker', 'EntriesController@worker')->name('entries.workers');
 	Route::get('entry/worker/{operation}/{id}', 'EntriesController@entryWorker');
 	Route::get('unit/getUnit/{id}', 'UnitsController@show');
 	Route::get('material/getMaterial/{id}', 'MaterialsController@show');
 	Route::get('category/getCategory/{id}', 'CategoriesController@show');
 	Route::get('shift/choose','ShiftsController@choose');	
 	Route::patch('shift/choose','ShiftsController@chosen');	
-
-	Route::get('employees/search/{data?}', 'WorkersController@search2');
-
-	
 });
 
 Route::group(['middleware' => ['auth','user','revalidate']], function(){
@@ -116,7 +112,7 @@ Route::group(['middleware' => ['auth','user','revalidate']], function(){
 	Route::get('shift/searching', 'ShiftsController@searching');
 	Route::delete('shift/{shift}','ShiftsController@destroy');
 
-	Route::get('worker', 'WorkersController@index');
+	Route::get('worker', 'WorkersController@index')->name('workers.index');
 	Route::get('worker/add', 'WorkersController@add');
 	Route::post('worker/add', 'WorkersController@store');
 	Route::get('worker/getWorker/{id}', 'WorkersController@show');
