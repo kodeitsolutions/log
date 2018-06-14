@@ -46,15 +46,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        /*if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
+        if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
             return response()->view('error');
         }
         elseif ($exception instanceof AuthenticationException) {
             return redirect('/login');
         }
-        else {*/
-            return parent::render($request, $exception);
-        //}
+        else {
+            return parent::render($request, $exception);//-//
+        }
     }
 
     /**
