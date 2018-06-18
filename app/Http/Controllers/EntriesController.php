@@ -105,7 +105,7 @@ class EntriesController extends Controller
         $saved = $entrie->save();
         if ($saved) {
             $request->session()->flash('flash_message', 'Registro creado.');
-            $this->notifications($entrie);
+            //$this->notifications($entrie);
         }
         else {
             $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
@@ -413,7 +413,8 @@ class EntriesController extends Controller
         $worker = Worker::find($id);
         $entry = new Entrie();
 
-        $data['operation_id'] = $operation;
+         $user = Auth::user();
+        /*$data['operation_id'] = $operation;
         $data['categorie_id'] = 1;
         $data['companie_id'] = $worker->companie_id;
         $data['destination'] = $worker->department;
@@ -423,11 +424,37 @@ class EntriesController extends Controller
         $data['person_id'] = $worker->worker_id;
         $data['person_occupation'] = $worker->position;
         $data['person_company'] = $worker->company->name;
-        $data['person_observations'] = ($operation == 1) ? 'Comienzo jornada laboral' : 'Fin jornada laboral';
+        $data['person_observations'] = ($operation == 1) ? 'Comienzo jornada laboral' : 'Fin jornada laboral';*/
 
-        $request->merge($data);
+        $entry->operation_id = $operation;
+        $entry->categorie_id = 1;
+        $entry->companie_id = $worker->companie_id;
+        $entry->destination = $worker->department;
+        $entry->time = $entry->getFormatTime($request->time);
+        $entry->date = $entry->getFormatDate(date('d/m/Y'));
+        $entry->person_name = $worker->name;
+        $entry->person_id = $worker->worker_id;
+        $entry->person_occupation = $worker->position;
+        $entry->person_company = $worker->company->name;
+        $entry->person_observations = ($operation == 1) ? 'Comienzo jornada laboral' : 'Fin jornada laboral';
+        $entry->user_id = $user->id;
+        /*dd($entry);
+        $entry->save();
+        $entrie->date = $entrie->getFormatDate($entrie->date);
+        $entrie->time = $entrie->getFormatTime($entrie->time);;  */
+
+               
+     
+        $saved = $entry->save();
+        if ($saved) {
+            $request->session()->flash('flash_message', 'Registro creado.');
+        }
+        else {
+            $request->session()->flash('flash_message_not', 'No se pudo crear el registro.');   
+        }
+        //$request->merge($data);
         //dd($request);
-        $this->store($request);
+        //$this->store($request);
 
         return back();
     }
