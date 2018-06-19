@@ -24,10 +24,11 @@
         <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>  
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery-ui.min.js') }}"></script>  
         <script type="text/javascript" src="{{ URL::asset('assets/js/timepicki.js') }}"></script>
-        <script type="text/javascript" src="{{ URL::asset('assets/js/remo.js') }}"></script>
-
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
+        <script type="text/javascript" src="{{ URL::asset('assets/js/remo.js') }}"></script>                
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default navbar-static-top">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
@@ -44,12 +45,8 @@
                     </a>                    
 
                 </div>
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">                    
+                    
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
@@ -81,58 +78,52 @@
                             @endif
                         @endif
                     </ul>
-                </div>                
-            </div>
-        </nav>        
-    </head>
-    <body>
-        @if(Auth::check())
-            @if(Auth::user()->isAdmin)
-                @include('adminDB')
-            @elseif(!empty(Auth::user()->shift))
-                @include('regularDB')
+                </div>  
+            </nav>
+            @if(Auth::check())
+                @if(Auth::user()->isAdmin)
+                    @include('adminDB')
+                @elseif(!empty(Auth::user()->shift))
+                    @include('regularDB')
+                @endif
             @endif
-        @endif
 
-        <div class="row">
-            <div class="col-md-2">
-                <ul class="nav nav-pills nav-stacked" id="sidebar">
-                    @yield('sidebar')    
-                </ul>
-            </div>
-            @yield('modal-delete')
-            @yield('modal-edit')
-            @yield('modal-info')
-            @yield('modal-hours')
-            @yield('modal-filter')
-            @yield('modal-email')
-            <div class="col-md-10">
-                <div class="col-md-12">
-                    @if(Session::has('flash_message'))
-                        <div class="alert alert-success"><span class="glyphicon glyphicon-ok-sign"></span><em> {{ session('flash_message') }}</em></div>
-                    @endif
-                    @if(Session::has('flash_message_not'))
-                        <div class="alert alert-danger"><span class="glyphicon glyphicon-remove-sign"></span><em> {{ session('flash_message_not') }}</em></div>
-                    @endif
-                    @if(Session::has('flash_message_info'))
-                        <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span><em> {{ session('flash_message_info') }}</em></div>
-                    @endif
+            <div class="row">
+                <div class="col-md-2">
+                    <ul class="nav nav-pills nav-stacked" id="sidebar">
+                        @yield('sidebar')    
+                    </ul>
                 </div>
-            <div class="container col-md-12">
-                @yield('content')    
-            </div>            
-        </div>        
-        <div class="container col-md-12">
-            @yield('login')        
-        </div>
-       
-        {{--<div class="table-responsive col-md-12">--}}
-            @yield('table')    
-        {{--</div>        --}}
+                @yield('modal-delete')
+                @yield('modal-edit')
+                @yield('modal-info')
+                @yield('modal-hours')
+                @yield('modal-filter')
+                @yield('modal-email')
+                <div class="col-md-10">
+                        @if(Session::has('flash_message'))
+                            <div class="alert alert-success"><span class="glyphicon glyphicon-ok-sign"></span><em> {{ session('flash_message') }}</em></div>
+                        @endif
+                        @if(Session::has('flash_message_not'))
+                            <div class="alert alert-danger"><span class="glyphicon glyphicon-remove-sign"></span><em> {{ session('flash_message_not') }}</em></div>
+                        @endif
+                        @if(Session::has('flash_message_info'))
+                            <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span><em> {{ session('flash_message_info') }}</em></div>
+                        @endif
+                    <div class="col-md-12">
+                        @yield('content')    
+                    </div>            
+                </div>        
+                <div class="col-md-12">
+                    @yield('login')   
+                    @yield('table')     
+                </div>              
 
-        <div class="container col-md-11 col-md-offset-1">
-            @yield('form')
-        </div>
-        @yield('script')       
+                <div class="col-md-11 col-md-offset-1">
+                    @yield('form')
+                </div>
+                @yield('script')
+            </div> 
+        </div>      
     </body>
 </html>

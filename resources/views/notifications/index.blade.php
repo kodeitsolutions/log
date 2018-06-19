@@ -172,23 +172,20 @@
 @stop
 
 @section('script')
-	<script type="text/javascript">
-		$(document).ready(function(){ 
+	<script>
+        $('#myModalDelete').on('show.bs.modal', function (event) {
+	        var button = $(event.relatedTarget); 
+	        var notification_id = button.data('id');
+	        
+	        modalDelete("notification", notification_id);
+	    });
 
-	        $('#myModalDelete').on('show.bs.modal', function (event) {
-		        var button = $(event.relatedTarget); 
-		        var notification_id = button.data('id');
-		        
-		        modalDelete("notification", notification_id);
-		    });
+	    $('#myModalEdit').on('show.bs.modal', function (event) {
+	    	var button = $(event.relatedTarget)
+		  	var notification_id = button.data('id')
+		  	$(".form-check-input").prop('checked', false);
 
-		    $('#myModalEdit').on('show.bs.modal', function (event) {
-		    	var button = $(event.relatedTarget)
-			  	var notification_id = button.data('id')
-			  	$(".form-check-input").prop('checked', false);
-
-			  	modalEdit("notification",notification_id);
-			});
-	    });     
+		  	modalEdit("notification",notification_id);
+		});
 	</script>
 @stop

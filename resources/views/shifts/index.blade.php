@@ -4,7 +4,6 @@
   @include('shifts.sidebar') 
 @stop
 
-
 @section('modal-delete')
   <div id="myModalDelete" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -79,61 +78,58 @@
 @stop
 
 @section('content')  
-  <div class="col-md-11">
-    <h4 class="text-info" align="center">TURNOS</h4>     
-    <div class="col-md-10">
-      @if($errors->any())
-        <div class="alert alert-danger">
-          @foreach ($errors->all() as $error)
-              <div>{{ $error }}</div>
-          @endforeach
-        </div>
-      @endif
-    </div>  
-    <table class="table table-striped">
-        <col class="col-5">
-        <col class="col-5">
-        <col class="col-2">
-        <thead>
-            <tr>
-              <th>Descripción</th>
-              <th>Comienzo</th>
-              <th>Fin</th>
-              <th colspan="2"></th>
-            </tr>
-        </thead>
-        <tbody>
-          @foreach($shifts as $shift)
+  <h4 class="text-info" align="center">TURNOS</h4>     
+  <div class="col-md-10">
+    @if($errors->any())
+      <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+      </div>
+    @endif
+  </div> 
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Comienzo</th>
+                <th>Fin</th>
+                <th colspan="2" class="text-center">Operación</th>
+              </tr>
+          </thead>
+          <tbody>
+            @foreach($shifts as $shift)
               <tr id="{{ $shift->id }}">
                 <td>{{ $shift->description }}</td>
                 <td>{{ $shift->timeView($shift->start) }}</td>
                 <td>{{ $shift->timeView($shift->end) }}</td>
-                <td>
-                  <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                  <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
-                </td>   
-            </tr>
-          @endforeach      
-        </tbody>
-    </table> 
+                <td align="right"><span data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-pencil"></span></button></span></td>
+                <td align="left"><span data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$shift->id}}"><span class="glyphicon glyphicon-trash"></span></button></span></td>
+              </tr>
+            @endforeach      
+          </tbody>
+      </table>
+    </div> 
   </div>   
 @stop
 
 @section('script')
-  <script type="text/javascript">      
+  <script>      
 
     $('#myModalDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var shift_id = button.data('id');
+      var button = $(event.relatedTarget);
+      var shift_id = button.data('id');
 
-        modalDelete("shift", shift_id);
+      modalDelete("shift", shift_id);
     });
 
     $('#myModalEdit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var shift_id = button.data('id');
+      var button = $(event.relatedTarget);
+      var shift_id = button.data('id');
 
-        modalEdit("shift",shift_id);
+      modalEdit("shift",shift_id);
     });    
   </script>
 @stop

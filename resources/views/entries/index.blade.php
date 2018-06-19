@@ -120,91 +120,99 @@
 @stop
 
 @section('table')
-	<div class="table-responsive col-md-12">
-		@if(!empty($date_from))
-			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>			
-		@else
-			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>			
-		@endif
-
-		<div class="col-md-12 row button-table" align="right">        	
-    		<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span>Agregar </a>
-    	</div>
-		
-		<table class="table table-striped" id="log">			
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Fecha</th>
-					<th>Hora</th>
-					<th>Usuario</th>
-					<th>Movimiento</th>
-					<th>Categoría</th>
-					<th>Empresa</th>
-					<th>Destino / Origen</th>
-					<th>Datos</th>
-					<th>Observaciones</th>
-					<th colspan="4"></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($entries as $index => $entry)
-					<tr id="{{ $index + 1 }}">
-						<td>{{ $index + 1 }}</td>
-						<td>{{ $entry->dateView() }}</td>
-						<td>{{ $entry->timeView() }}</td>
-						<td>{{ $entry->user->name }}</td>
-						<td>{{ $entry->operation->name }}</td>
-						<td>{{ $entry->category->name }}</td>
-						<td>{{ $entry->company->name }}</td>
-						<td>{{ $entry->destination }}</td>						
-						@if( $entry->category->person == 1 )
-							<td>{{ $entry->person_name }}</td>
-						@endif
-						@if( $entry->category->material == 1)
-							<td>{{ $entry->material_type }}</td>							
-						@endif
-						@if( $entry->category->combined == 1)
-							<td>Persona: {{ $entry->person_name }}. <br>
-							Material: {{ $entry->material_type }}</td>
-						@endif						
-						<td>
-							@if( !empty($entry->person_observations))
-								Persona: {{ $entry->person_observations }}.<br>
-							@endif
-							@if( !empty($entry->material_observations))
-								Material: {{ $entry->material_observations }}.<br>
-							@endif
-							@if( !empty($entry->vehicle_observations))
-								Vehículo: {{ $entry->vehicle_observations }}.<br>
-							@endif
-						</td>
-						<td>
-							<td align="right" data-toggle="tooltip" data-placement="top" title="Ver más" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}" id="info"><span class="glyphicon glyphicon-eye-open"></span></button>
-	                		</td>
-							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
-	               			<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button>
-	                		</td>
-	                		<td align="right" data-toggle="tooltip" data-placement="top" title="Duplicar" data-container="body"><a href="/entry/{{$entry->id}}/duplicate" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-duplicate"></span></a></td>
-	                	</td>
-					</tr>
-				@endforeach				
-			</tbody>			
-		</table>		
-		<div class="text-center">
-			{{ $entries->appends(Request::except('page'))->render() }}
+	
+	@if(!empty($date_from))
+		<div class="row">
+			<h3 class="text-info" align="center">LOG DE REGISTROS DESDE {{ $date_from }} HASTA {{ $date_to }} </h3>
 		</div>
+	@else
+		<div class="row">
+			<h3 class="text-info" align="center">LOG DE REGISTROS AL {{ $date }} </h3>
+		</div>
+	@endif
+
+	<div class="col-md-12" align="right">  
+		<div class="row">
+			<a href="/entry/add" class="btn btn-success btn-xs" role="button"><span class="glyphicon glyphicon-plus"></span> Agregar </a>
+		</div>   	
+	</div>
 		
-		<div class="col-md-12 row" align="right" id="button-table">
+	<div class="col-md-12">
+		<div class="table-responsive">
+			<table class="table table-striped" id="log">			
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Fecha</th>
+						<th>Hora</th>
+						<th>Usuario</th>
+						<th>Movimiento</th>
+						<th>Categoría</th>
+						<th>Empresa</th>
+						<th>Destino / Origen</th>
+						<th>Datos</th>
+						<th>Observaciones</th>
+						<th colspan="4" class="text-center">Operación</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($entries as $index => $entry)
+						<tr id="{{ $index + 1 }}">
+							<th scope="row"> {{ $index + 1 }}</th>
+							<td>{{ $entry->dateView() }}</td>
+							<td>{{ $entry->timeView() }}</td>
+							<td>{{ $entry->user->name }}</td>
+							<td>{{ $entry->operation->name }}</td>
+							<td>{{ $entry->category->name }}</td>
+							<td>{{ $entry->company->name }}</td>
+							<td>{{ $entry->destination }}</td>						
+							@if( $entry->category->person == 1 )
+								<td>{{ $entry->person_name }}</td>
+							@endif
+							@if( $entry->category->material == 1)
+								<td>{{ $entry->material_type }}</td>							
+							@endif
+							@if( $entry->category->combined == 1)
+								<td>Persona: {{ $entry->person_name }}. <br>
+								Material: {{ $entry->material_type }}</td>
+							@endif						
+							<td>
+								@if( !empty($entry->person_observations))
+									Persona: {{ $entry->person_observations }}.<br>
+								@endif
+								@if( !empty($entry->material_observations))
+									Material: {{ $entry->material_observations }}.<br>
+								@endif
+								@if( !empty($entry->vehicle_observations))
+									Vehículo: {{ $entry->vehicle_observations }}.<br>
+								@endif
+							</td>
+							
+							<td align="center"><span data-toggle="tooltip" data-placement="top" title="Ver mas" data-container="body"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalInfo" data-id="{{$entry->id}}" id="info"><span class="glyphicon glyphicon-eye-open"></span></button></span></td>
+							<td align="center"><span data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><a href="/entry/{{$entry->id}}/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></span></td>
+	               			<td align="center"><span data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$entry->id}}"><span class="glyphicon glyphicon-trash"></span></button></span></td>
+	                		<td align="center"><span data-toggle="tooltip" data-placement="top" title="Duplicar" data-container="body"><a href="/entry/{{$entry->id}}/duplicate" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-duplicate"></span></a></span></td>
+						</tr>
+					@endforeach				
+				</tbody>			
+			</table>
+		</div>
+	</div>
+	<div class="text-center">
+		{{ $entries->appends(Request::except('page'))->render() }}
+	</div>
+		
+	<div class="col-md-12" align="right" id="button-table">
+		<div class="row">
 	        <a href="/entry/print/{{ !empty($date_from) ? str_replace('/','-',$date_from).'_'.str_replace('/','-',$date_to) : str_replace('/','-',$date) }}" target="blank" class="btn btn-info btn-xs" role="button" data-toggle="tooltip" data-placement="top" title="Imprimir" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-print"></a>
 	        <button class="btn btn-basic btn-xs" data-toggle="tooltip" data-placement="top" title="e-mail" data-container="body" @if($entries->isEmpty()) disabled @endif><span class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModalEmail"></button>
 	    </div>
 	</div>
+	
 @stop
 
 @section('script')
-	<script type="text/javascript">		
-
+	<script>
 		$('#myModalDelete').on('show.bs.modal', function (event) {
 		  	var button = $(event.relatedTarget);
 		  	var entry_id = button.data('id');

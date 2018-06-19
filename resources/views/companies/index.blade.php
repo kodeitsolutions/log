@@ -59,43 +59,41 @@
 @stop
 
 @section('content')
-  <div class="col-md-11">
-    <h4 class="text-info" align="center">EMPRESAS</h4>
-    <div class="col-md-10">
-      @if($errors->any())
-        <div class="alert alert-danger">
-          @foreach ($errors->all() as $error)
-            <div>{{ $error }}</div>
-          @endforeach
-        </div>
-      @endif
-    </div>
-    <table class="table table-striped">
-        <col class="col-10">
-        <col class="col-2">
+  <h4 class="text-info" align="center">EMPRESAS</h4>
+  <div class="col-md-10">
+    @if($errors->any())
+      <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+          <div>{{ $error }}</div>
+        @endforeach
+      </div>
+    @endif
+  </div>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-striped">
         <thead>
           <tr>
             <th>Nombre</th>
-            <th colspan="2"></th>
+            <th colspan="2" class="text-center">Operación</th>
           </tr>
         </thead>
         <tbody>
           @foreach($companies as $company)
             <tr id="company{{ $company->id }}">
-              <td><span id="{{ $company->id }}">{{ $company->name }}</span></td>  
-              <td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$company->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                <td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$company->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
-              </td>
+              <td><span id="{{ $company->id }}">{{ $company->name }}</span></td> 
+              <td align="right"><span data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$company->id}}"><span class="glyphicon glyphicon-pencil"></span></button></span></td>
+              <td align="left"><span data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$company->id}}"><span class="glyphicon glyphicon-trash"></span></button></span></td>
             </tr>
           @endforeach      
         </tbody>
-     </table>    
-  </div>   
+      </table>
+    </div>
+  </div>  
 @stop
 
 @section('script')
-  <script type="text/javascript">
+  <script>
     $('#myModalDelete').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); 
         var company_id = button.data('id');

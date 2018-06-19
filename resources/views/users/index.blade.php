@@ -83,74 +83,65 @@
 	</div>
 @stop
 
-@section('content')
-	<div class="col-md-11">
-		<h4 class="text-info" align="center">USUARIOS</h4>
-		<div class="col-md-10">
-	        @if($errors->any())
-		        <div class="alert alert-danger">
-		            @foreach ($errors->all() as $error)
-		            	<div>{{ $error }}</div>
-		            @endforeach
-		        </div>
-	        @endif
-	    </div>
-		<table class="table table-striped">
-        <col class="col-2">
-        <col class="col-2">
-        <col class="col-2">
-        <col class="col-2">
-        <col class="col-2">
-        <col class="col-2">
-		    <thead>
-		    	<tr>
-			        <th>Nombre</th>
-			        <th>Usuario</th>
-			        <th>E-Mail</th>
-			        <th>Teléfono</th>
-			        <th class="centered">Administrador</th>
-			        <th class="centered">Vigilante</th>
-			        <th colspan="3"></th>
-		      	</tr>
-		    </thead>
-		    <tbody>
-		    	@foreach($users as $user)
-		      		<tr>
-		        		<td>{{ $user->name }}</td>
-		        		<td>{{ $user->username }}</td>
-		        		<td>{{ $user->email }}</td>
-		        		<td>{{ $user->telephone }}</td>	
-		        		<td align="center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
-		        		<td align="center"><input type="checkbox" disabled {{ ($user->isGuard == 1) ? 'checked' : 'unchecked' }}></td>
-						<td>
-							<td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-							<td align="right" data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>
-				        	<td align="right" data-toggle="tooltip" data-placement="top" title="Cambiar contraseña" data-container="body"><a href="/user/reset/{{$user->id}}" class="btn btn-info btn-xs" role="button"><span class="glyphicon glyphicon-lock"></span></a></td>
-			        	</td>
-		     		</tr>
-		     	@endforeach	     
-		    </tbody>
-		</table>		
-	</div>
+@section('content')	
+	<h4 class="text-info" align="center">USUARIOS</h4>
+	<div class="col-md-10">
+        @if($errors->any())
+	        <div class="alert alert-danger">
+	            @foreach ($errors->all() as $error)
+	            	<div>{{ $error }}</div>
+	            @endforeach
+	        </div>
+        @endif
+    </div>
+    <div class="col-md-12">
+    	<div class="table-responsive">
+			<table class="table table-striped">
+			    <thead>
+			    	<tr>
+				        <th>Nombre</th>
+				        <th>Usuario</th>
+				        <th>E-Mail</th>
+				        <th>Teléfono</th>
+				        <th class="text-center">Administrador</th>
+				        <th class="text-center">Vigilante</th>
+				        <th colspan="3" class="text-center">Operación</th>
+			      	</tr>
+			    </thead>
+			    <tbody>
+			    	@foreach($users as $user)
+			      		<tr>
+			        		<td>{{ $user->name }}</td>
+			        		<td>{{ $user->username }}</td>
+			        		<td>{{ $user->email }}</td>
+			        		<td>{{ $user->telephone }}</td>	
+			        		<td align="center"><input type="checkbox" disabled {{ ($user->isAdmin == 1) ? 'checked' : 'unchecked' }}></td>
+			        		<td align="center"><input type="checkbox" disabled {{ ($user->isGuard == 1) ? 'checked' : 'unchecked' }}></td>
+							<td align="right"><span data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$user->id}}"><span class="glyphicon glyphicon-pencil"></span></button></span></td>
+							<td align="center"><span data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$user->id}}"><span class="glyphicon glyphicon-trash"></span></button></span></td>
+				        	<td align="left"><span data-toggle="tooltip" data-placement="top" title="Cambiar contraseña" data-container="body"><a href="/user/reset/{{$user->id}}" class="btn btn-info btn-xs" role="button"><span class="glyphicon glyphicon-lock"></span></a></span></td>
+			     		</tr>
+			     	@endforeach	     
+			    </tbody>
+			</table>
+		</div>
+	</div>	
 @stop
 
 @section('script')
-	<script type="text/javascript">
-		$(document).ready(function(){	        
+	<script>
+	    $('#myModalDelete').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget); // Button that triggered the modal
+		  	var user_id = button.data('id');
 
-	        $('#myModalDelete').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget); // Button that triggered the modal
-			  	var user_id = button.data('id');
+			modalDelete("user", user_id);
+		});
 
-				modalDelete("user", user_id);
-			});
+		$('#myModalEdit').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+		  	var user_id = button.data('id')
 
-			$('#myModalEdit').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget) // Button that triggered the modal
-			  	var user_id = button.data('id')
-
-			  	modalEdit("user",user_id);
-			});
-	    }); 
+		  	modalEdit("user",user_id);
+		});
 	</script>
 @stop

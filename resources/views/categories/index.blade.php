@@ -80,55 +80,51 @@
 @stop
 
 @section('content')
-  <div class="col-md-11">
-    <h4 class="text-info" align="center">CATEGORÍAS</h4>
-    <div class="col-md-10">
-      @if($errors->any())
-        <div class="alert alert-danger">
-          @foreach ($errors->all() as $error)
-            <div>{{ $error }}</div>
-          @endforeach
-        </div>
-      @endif
-    </div>
-    <table class="table table-striped">
-      <col class="col-5">
-      <col class="col-5">
-      <col class="col-2">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th class="centered">Persona</th>
-          <th class="centered">Material</th>
-          <th class="centered">Vehículo</th>
-          <th class="centered">Combinado</th>
-          <th colspan="2"></th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($categories as $category)
-          <tr id="category{{ $category->id }}">
-            <td><span id="{{ $category->id }}">{{ $category->name }}</span></td>
-            <td>{{ $category->description }}</td>
-            <td align="center"><input type="checkbox" disabled {{ ($category->person == 1) ? 'checked' : 'unchecked' }}></td>
-            <td align="center"><input type="checkbox" disabled {{ ($category->material == 1) ? 'checked' : 'unchecked' }}></td>
-            <td align="center"><input type="checkbox" disabled {{ ($category->vehicle == 1) ? 'checked' : 'unchecked' }}></td>
-            <td align="center"><input type="checkbox" disabled {{ ($category->combined == 1) ? 'checked' : 'unchecked' }}></td>
-            <td>
-              <td align="right" data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$category->id}}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-              <td data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body">
-              <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$category->id}}"><span class="glyphicon glyphicon-trash"></span></button></td>   
-            </td>
+  <h4 class="text-info" align="center">CATEGORÍAS</h4>
+  <div class="col-md-10">
+    @if($errors->any())
+      <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+          <div>{{ $error }}</div>
+        @endforeach
+      </div>
+    @endif
+  </div>
+  <div class="col-md-12">
+    <div class="table-responsive">     
+      <table class="table table-striped">          
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th class="text-center">Persona</th>
+            <th class="text-center">Material</th>
+            <th class="text-center">Vehículo</th>
+            <th class="text-center">Combinado</th>
+            <th colspan="2" class="text-center"> Operación</th>
           </tr>
-        @endforeach      
-      </tbody>
-     </table>    
-  </div>   
+        </thead>
+        <tbody>
+          @foreach($categories as $category)
+            <tr id="category{{ $category->id }}">
+              <td><span id="{{ $category->id }}">{{ $category->name }}</span></td>
+              <td>{{ $category->description }}</td>
+              <td align="center"><input type="checkbox" disabled {{ ($category->person == 1) ? 'checked' : 'unchecked' }}></td>
+              <td align="center"><input type="checkbox" disabled {{ ($category->material == 1) ? 'checked' : 'unchecked' }}></td>
+              <td align="center"><input type="checkbox" disabled {{ ($category->vehicle == 1) ? 'checked' : 'unchecked' }}></td>
+              <td align="center"><input type="checkbox" disabled {{ ($category->combined == 1) ? 'checked' : 'unchecked' }}></td>            
+              <td align="right"><span data-toggle="tooltip" data-placement="top" title="Editar" data-container="body"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalEdit" data-id="{{$category->id}}"><span class="glyphicon glyphicon-pencil"></span></button></span></td>
+              <td align="left"><span data-toggle="tooltip" data-placement="top" title="Eliminar" data-container="body"><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete" data-id="{{$category->id}}"><span class="glyphicon glyphicon-trash"></span></button></span></td>               
+            </tr>
+          @endforeach      
+        </tbody>
+       </table> 
+    </div>
+  </div>
 @stop
 
 @section('script')
-  <script type="text/javascript"> 
+  <script> 
     $('#myModalDelete').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // BOTÓN QUE EJECUTÓ EL MODAL
         var category_id = button.data('id')
